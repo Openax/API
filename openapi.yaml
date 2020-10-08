@@ -27,7 +27,7 @@ paths:
           description: Invalid input
       parameters: []
       description: for Register a new account
-  '/bank/beneficiary/{id}':
+  '/api/beneficiary/{id}':
     get:
       summary: Beneficiary
       operationId: getBeneficiary
@@ -72,7 +72,7 @@ paths:
         '404':
           description: No beneficiaries found
       parameters: []
-      description: Retrive beneficiary
+      description: Retrive beneficiary by ID
     post:
       summary: ''
       operationId: postNewBeneficiary
@@ -166,19 +166,19 @@ paths:
           format: uuid
         name: id
         in: path
+        description: Id of beneficiary to return
         required: true
-        description: id of the beneficiary to return
-  /bank/beneficiaries:
+  /api/beneficiaries:
     get:
       summary: Find all beneficiaries
-      operationId: getBeneficiaryById
+      operationId: getBeneficiaries
       responses:
         '200':
           description: successful operation
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/beneficiary'
+                $ref: '#/components/schemas/arrayOfBeneficiaries'
               examples:
                 All beneficiaries:
                   value:
@@ -214,7 +214,8 @@ paths:
           description: Not Found -- The requested resource could not be found.
         '':
           description: ''
-      description: Endpoint to retrieve a single beneficiary
+      description: Endpoint to retrieve all beneficiaries
+    parameters: []
   '/bank/beneficiary/delete/{id}':
     post:
       summary: Delete a beneficiary by ID
@@ -689,6 +690,39 @@ components:
         method:
           type: string
           default: IFCCTRNS
+    arrayOfBeneficiaries:
+      title: arrayOfBeneficiaries
+      type: array
+      items:
+        $ref: '#/components/schemas/beneficiary'
+      x-examples:
+        array Of Beneficiaries:
+          - id: 537f6eca-6276-4993-bfeb-53cbbbba6d19
+            iban: GB55OPEX00993010899608
+            bank_address: 45 KING WILLIAM STREET REGIS HOUSE FLOOR 2
+            bank_name: Openax Limited
+            company_name: Smith Co.
+            bic: OPEXGB2LXXX
+            name: Smith
+            address: 123 King street
+            city: London
+            type: corporate
+            bank_country: UK
+            currency: EUR
+          - id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+            iban: GB10OPEX00993074774433
+            bank_address: 45 KING WILLIAM STREET REGIS HOUSE FLOOR 2
+            bank_account_holder_name: John Doe
+            bank_name: Openax Limited
+            first_name: John
+            last_name: Doe
+            bic: OPEXGB2LXXX
+            name: John
+            address: 123 King street
+            city: London
+            type: individual
+            bank_country: UK
+            currency: EUR
   links: {}
   callbacks: {}
 servers:
