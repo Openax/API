@@ -39,9 +39,24 @@ paths:
               schema:
                 $ref: '#/components/schemas/arrayOfBeneficiaries'
               examples:
-                example-1:
+                post Individual:
                   value:
-                    - id: 0ab9eaa0-8cf7-43bc-a8b4-a3e2a43d8c26
+                    iban: GB55OPEX00993010899608
+                    bank_address: 45 KING WILLIAM STREET REGIS HOUSE FLOOR 2
+                    bank_account_holder_name: John Doe
+                    bank_name: Openax Limited
+                    first_name: John
+                    last_name: Doe
+                    bic: OPEXGB2LXXX
+                    name: John
+                    address: 123 King street
+                    city: London
+                    type: individual
+                    bank_country: UK
+                    currency: EUR
+                example-2:
+                  value:
+                    - id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                       iban: string
                       bank_address: string
                       bank_account_holder_name: string
@@ -53,14 +68,44 @@ paths:
                       address: string
                       city: string
                       type: individual
-                      bankcountry_id: {}
                       company_name: string
-                      currency_id: {}
+                      bank_country: string
+                      currency: string
         '400':
           description: Invalid request
         '404':
           description: No beneficiaries found
       parameters: []
+    post:
+      summary: ''
+      operationId: postNewBeneficiary
+      responses:
+        '200':
+          description: OK
+      description: Endpoin to create a new Beneficiary
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/beneficiary'
+            examples:
+              example-1:
+                value:
+                  id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                  iban: string
+                  bank_address: string
+                  bank_account_holder_name: string
+                  bank_name: string
+                  first_name: string
+                  last_name: string
+                  bic: string
+                  name: string
+                  address: string
+                  city: string
+                  type: individual
+                  bankcountry_id: {}
+                  company_name: string
+                  currency_id: {}
   '/bank/beneficiary/{id}':
     get:
       summary: Find beneficiary by ID
@@ -370,6 +415,50 @@ components:
           type: string
     beneficiary:
       type: object
+      description: Beneficiary object
+      x-examples:
+        post individual:
+          iban: GB55OPEX00993010899608
+          bank_address: 45 KING WILLIAM STREET REGIS HOUSE FLOOR 2
+          bank_account_holder_name: John Doe
+          bank_name: Openax Limited
+          first_name: John
+          last_name: Doe
+          bic: OPEXGB2LXXX
+          name: John
+          address: 123 King street
+          city: London
+          type: individual
+          bank_country: UK
+          currency: EUR
+        post corporate:
+          iban: GB55OPEX00993010899608
+          bank_address: 45 KING WILLIAM STREET REGIS HOUSE FLOOR 2
+          bank_name: Openax Limited
+          company_name: Smith Co.
+          bic: OPEXGB2LXXX
+          name: Smith
+          address: 123 King street
+          city: London
+          type: corporate
+          bank_country: UK
+          currency: EUR
+        get one:
+          id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+          iban: GB55OPEX00993010899608
+          bank_address: 45 KING WILLIAM STREET REGIS HOUSE FLOOR 2
+          bank_account_holder_name: John Doe
+          bank_name: Openax Limited
+          first_name: John
+          last_name: Doe
+          bic: OPEXGB2LXXX
+          name: John
+          address: 123 King street
+          city: London
+          type: individual
+          bank_country: UK
+          currency: EUR
+      title: Beneficiary
       properties:
         id:
           type: string
@@ -384,8 +473,10 @@ components:
           type: string
         first_name:
           type: string
+          description: 'first name of the individual beneficiary, this field must exist when company_name does not'
         last_name:
           type: string
+          description: 'last name of the individual beneficiary, this field must exist when company_name does not'
         bic:
           type: string
         name:
@@ -399,38 +490,17 @@ components:
           enum:
             - individual
             - corporate
-        bankcountry_id:
-          type: string
-          $ref: '#/components/schemas/country'
         company_name:
           type: string
-        currency_id:
-          $ref: '#/components/schemas/currency'
+          description: 'name of the corporate beneficiary, this field must exist when type is set to "corporate"'
+        bank_country:
+          type: string
+        currency:
+          type: string
       required:
-        - id
         - iban
         - bic
         - type
-        - currency_id
-      description: Beneficiary object
-      x-examples:
-        example-1:
-          id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
-          iban: string
-          bank_address: string
-          bank_account_holder_name: string
-          bank_name: string
-          first_name: string
-          last_name: string
-          bic: string
-          name: string
-          address: string
-          city: string
-          type: individual
-          bankcountry_id: {}
-          company_name: string
-          currency_id: {}
-      title: Beneficiary
     country:
       type: object
     currency:
