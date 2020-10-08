@@ -37,10 +37,56 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/arrayOfBeneficiaries'
+                $ref: '#/components/schemas/beneficiary'
               examples:
-                post Individual:
+                All beneficiaries:
                   value:
+                    - id: 537f6eca-6276-4993-bfeb-53cbbbba6d19
+                      iban: GB55OPEX00993010899608
+                      bank_address: 45 KING WILLIAM STREET REGIS HOUSE FLOOR 2
+                      bank_name: Openax Limited
+                      company_name: Smith Co.
+                      bic: OPEXGB2LXXX
+                      name: Smith
+                      address: 123 King street
+                      city: London
+                      type: corporate
+                      bank_country: UK
+                      currency: EUR
+                    - id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                      iban: GB10OPEX00993074774433
+                      bank_address: 45 KING WILLIAM STREET REGIS HOUSE FLOOR 2
+                      bank_account_holder_name: John Doe
+                      bank_name: Openax Limited
+                      first_name: John
+                      last_name: Doe
+                      bic: OPEXGB2LXXX
+                      name: John
+                      address: 123 King street
+                      city: London
+                      type: individual
+                      bank_country: UK
+                      currency: EUR
+        '400':
+          description: Invalid request
+        '404':
+          description: No beneficiaries found
+      parameters: []
+      description: Retrive all beneficiaries
+    post:
+      summary: ''
+      operationId: postNewBeneficiary
+      responses:
+        '200':
+          description: Succesfull
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/beneficiary'
+              examples:
+                Individual beneficiary created:
+                  value:
+                    id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                     iban: GB55OPEX00993010899608
                     bank_address: 45 KING WILLIAM STREET REGIS HOUSE FLOOR 2
                     bank_account_holder_name: John Doe
@@ -54,58 +100,66 @@ paths:
                     type: individual
                     bank_country: UK
                     currency: EUR
-                example-2:
+                Corporate beneficiary created:
                   value:
-                    - id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
-                      iban: string
-                      bank_address: string
-                      bank_account_holder_name: string
-                      bank_name: string
-                      first_name: string
-                      last_name: string
-                      bic: string
-                      name: string
-                      address: string
-                      city: string
-                      type: individual
-                      company_name: string
-                      bank_country: string
-                      currency: string
+                    id: 537f6eca-6276-4993-bfeb-53cbbbba6d19
+                    iban: GB55OPEX00993010899608
+                    bank_address: 45 KING WILLIAM STREET REGIS HOUSE FLOOR 2
+                    bank_name: Openax Limited
+                    company_name: Smith Co.
+                    bic: OPEXGB2LXXX
+                    name: Smith
+                    address: 123 King street
+                    city: London
+                    type: corporate
+                    bank_country: UK
+                    currency: EUR
         '400':
-          description: Invalid request
-        '404':
-          description: No beneficiaries found
-      parameters: []
-    post:
-      summary: ''
-      operationId: postNewBeneficiary
-      responses:
-        '200':
-          description: OK
-      description: Endpoin to create a new Beneficiary
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+              examples:
+                example-1:
+                  value: {}
+      description: Endpoint to create a new Beneficiary
       requestBody:
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/beneficiary'
             examples:
-              example-1:
+              post corporate beneficiary:
                 value:
-                  id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
-                  iban: string
-                  bank_address: string
-                  bank_account_holder_name: string
-                  bank_name: string
-                  first_name: string
-                  last_name: string
-                  bic: string
-                  name: string
-                  address: string
-                  city: string
+                  iban: GB55OPEX00993010899608
+                  bank_address: 45 KING WILLIAM STREET REGIS HOUSE FLOOR 2
+                  bank_name: Openax Limited
+                  company_name: Smith Co.
+                  bic: OPEXGB2LXXX
+                  name: Smith
+                  address: 123 King street
+                  city: London
+                  type: corporate
+                  bank_country: UK
+                  currency: EUR
+              post individual beneficiary:
+                value:
+                  iban: GB10OPEX00993074774433
+                  bank_address: 45 KING WILLIAM STREET REGIS HOUSE FLOOR 2
+                  bank_account_holder_name: John Doe
+                  bank_name: Openax Limited
+                  first_name: John
+                  last_name: Doe
+                  bic: OPEXGB2LXXX
+                  name: John
+                  address: 123 King street
+                  city: London
                   type: individual
-                  bankcountry_id: {}
-                  company_name: string
-                  currency_id: {}
+                  bank_country: UK
+                  currency: EUR
+        description: Create a new beneficiary
   '/bank/beneficiary/{id}':
     get:
       summary: Find beneficiary by ID
@@ -135,57 +189,20 @@ paths:
                     bank_country: UK
                     currency: EUR
         '400':
-          description: Invalid ID supplied
+          description: Bad request
         '404':
-          description: Beneficiary not found
+          description: Not Found -- The requested resource could not be found.
+        '':
+          description: ''
       description: Endpoint to retrieve a single beneficiary
     parameters:
       - schema:
           type: string
+          format: uuid
         name: id
         in: path
+        description: Id of the beneficiry to return
         required: true
-        description: uuid
-  '/bank/beneficiary/individual/update/{id}':
-    post:
-      summary: Update an existing individual beneficiary
-      operationId: updateBeneficiaryIndividual
-      parameters:
-        - name: id
-          in: path
-          description: ID of beneficiary to update
-          required: true
-          schema:
-            type: string
-            format: uuidv4
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/beneficiaryIndividual'
-      responses:
-        '405':
-          description: Invalid input
-  '/bank/beneficiary/corporate/update/{id}':
-    post:
-      summary: Update an existing corporate beneficiary
-      operationId: updateBeneficiaryCorporate
-      parameters:
-        - name: id
-          in: path
-          description: ID of beneficiary to update
-          required: true
-          schema:
-            type: string
-            format: uuidv4
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/beneficiaryCorporate'
-      responses:
-        '405':
-          description: Invalid input
   '/bank/beneficiary/delete/{id}':
     post:
       summary: Delete a beneficiary by ID
@@ -200,11 +217,22 @@ paths:
             format: uuidv4
       responses:
         '200':
-          description: successful operation
+          description: successful operation - beneficiary removed
         '400':
-          description: Invalid ID supplied
+          description: Bad request
         '404':
-          description: Beneficiary not found
+          description: Not Found -- The requested resource could not be found.
+        '':
+          description: ''
+      description: Endpoint te remove a beneficiary from your list
+    parameters:
+      - schema:
+          type: string
+          format: uuid
+        name: id
+        in: path
+        required: true
+        description: id of the beneficiary to remove
   /bank/transaction:
     get:
       summary: get all transactions
@@ -418,7 +446,7 @@ components:
       description: Beneficiary object
       x-examples:
         post individual:
-          iban: GB55OPEX00993010899608
+          iban: GB10OPEX00993074774433
           bank_address: 45 KING WILLIAM STREET REGIS HOUSE FLOOR 2
           bank_account_holder_name: John Doe
           bank_name: Openax Limited
@@ -445,7 +473,7 @@ components:
           currency: EUR
         get one:
           id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
-          iban: GB55OPEX00993010899608
+          iban: GB10OPEX00993074774433
           bank_address: 45 KING WILLIAM STREET REGIS HOUSE FLOOR 2
           bank_account_holder_name: John Doe
           bank_name: Openax Limited
@@ -458,6 +486,33 @@ components:
           type: individual
           bank_country: UK
           currency: EUR
+        Array of beneficiaries:
+          - id: 537f6eca-6276-4993-bfeb-53cbbbba6d19
+            iban: GB55OPEX00993010899608
+            bank_address: 45 KING WILLIAM STREET REGIS HOUSE FLOOR 2
+            bank_name: Openax Limited
+            company_name: Smith Co.
+            bic: OPEXGB2LXXX
+            name: Smith
+            address: 123 King street
+            city: London
+            type: corporate
+            bank_country: UK
+            currency: EUR
+          - id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+            iban: GB10OPEX00993074774433
+            bank_address: 45 KING WILLIAM STREET REGIS HOUSE FLOOR 2
+            bank_account_holder_name: John Doe
+            bank_name: Openax Limited
+            first_name: John
+            last_name: Doe
+            bic: OPEXGB2LXXX
+            name: John
+            address: 123 King street
+            city: London
+            type: individual
+            bank_country: UK
+            currency: EUR
       title: Beneficiary
       properties:
         id:
@@ -505,88 +560,6 @@ components:
       type: object
     currency:
       type: object
-    beneficiaryIndividual:
-      type: object
-      properties:
-        iban:
-          type: string
-        bank_address:
-          type: string
-        bank_account_holder_name:
-          type: string
-        bank_name:
-          type: string
-        first_name:
-          type: string
-        last_name:
-          type: string
-        bic:
-          type: string
-        name:
-          type: string
-        address:
-          type: string
-        city:
-          type: string
-        type:
-          type: string
-          default: individual
-        bankcountry_id:
-          format: ISO
-          type: string
-        currency_id:
-          type: string
-      required:
-        - iban
-        - first_name
-        - last_name
-        - bic
-      x-examples:
-        Individual Beneficiary:
-          id: 0ab9eaa0-8cf7-43bc-a8b4-a3e2a43d8c26
-          iban: GB55OPEX00993010899608
-          bank_address: 45 KING WILLIAM STREET REGIS HOUSE FLOOR 2
-          bank_account_holder_name: John Doe
-          bank_name: Openax Limited
-          first_name: John
-          last_name: Doe
-          bic: OPEXGB2LXXX
-          name: John
-          address: 123 King street
-          city: string
-          type: London
-          bankcountry_id: 1eb1a199-6762-4a8b-8eb9-0174a138e389
-          currency_id: 0f543a3a-47f2-4a59-9c59-7eaddc894bfd
-    beneficiaryCorporate:
-      type: object
-      properties:
-        iban:
-          type: string
-        bank_address:
-          type: string
-        bank_account_holder_name:
-          type: string
-        bank_name:
-          type: string
-        bic:
-          type: string
-        name:
-          type: string
-        address:
-          type: string
-        city:
-          type: string
-        type:
-          type: string
-          default: corporate
-        bankcountry_id:
-          $ref: '#/components/schemas/country'
-        currency_id:
-          $ref: '#/components/schemas/currency'
-    arrayOfBeneficiaries:
-      type: array
-      items:
-        $ref: '#/components/schemas/beneficiary'
     payment:
       type: object
       properties:
@@ -599,15 +572,12 @@ components:
         reason:
           type: string
         beneficiary_id:
-          type: string
           $ref: '#/components/schemas/beneficiary'
         payment_date:
           type: string
         account_id:
-          type: string
           $ref: '#/components/schemas/account'
         ledger:
-          type: string
           $ref: '#/components/schemas/ledger'
         methode:
           type: string
