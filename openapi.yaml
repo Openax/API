@@ -216,7 +216,7 @@ paths:
           description: ''
       description: Endpoint to retrieve all beneficiaries
     parameters: []
-  '/bank/beneficiary/delete/{id}':
+  '/api/beneficiary/delete/{id}':
     post:
       summary: Delete a beneficiary by ID
       operationId: deleteBeneficiaryById
@@ -366,7 +366,7 @@ paths:
         '405':
           description: Invalid input
       parameters: []
-  '/bank/beneficiary/update/{id}':
+  '/api/beneficiary/update/{id}':
     parameters:
       - schema:
           type: string
