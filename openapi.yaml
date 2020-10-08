@@ -27,7 +27,7 @@ paths:
           description: Invalid input
       parameters: []
       description: for Register a new account
-  /api/beneficiary/{id}:
+  '/api/beneficiary/{id}':
     get:
       summary: Beneficiary
       operationId: getBeneficiary
@@ -115,7 +115,9 @@ paths:
                     bank_country: UK
                     currency: EUR
         '400':
-          description: Bad Request
+          description: Internal Server Error
+        '406':
+          description: Not Acceptable
           content:
             application/json:
               schema:
@@ -216,7 +218,7 @@ paths:
           description: ''
       description: Endpoint to retrieve all beneficiaries
     parameters: []
-  /api/beneficiary/delete/{id}:
+  '/api/beneficiary/delete/{id}':
     post:
       summary: Delete a beneficiary by ID
       operationId: deleteBeneficiaryById
