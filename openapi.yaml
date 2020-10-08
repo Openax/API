@@ -552,6 +552,6 @@ components:
   callbacks: {}
 servers:
   - description: SwaggerHub API Auto Mocking
-    url: 'https://virtserver.swaggerhub.com/openax/dev_version_3/1.0.0'
+    url: 'https://sandboxcrm.openax.com'
 security: []
 tags: []
