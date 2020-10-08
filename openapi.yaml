@@ -27,7 +27,7 @@ paths:
           description: Invalid input
       parameters: []
       description: for Register a new account
-  '/api/beneficiary/{id}':
+  /api/beneficiary/{id}:
     get:
       summary: Beneficiary
       operationId: getBeneficiary
@@ -216,7 +216,7 @@ paths:
           description: ''
       description: Endpoint to retrieve all beneficiaries
     parameters: []
-  '/api/beneficiary/delete/{id}':
+  /api/beneficiary/delete/{id}:
     post:
       summary: Delete a beneficiary by ID
       operationId: deleteBeneficiaryById
@@ -253,8 +253,6 @@ paths:
           description: Invalid request
         '404':
           description: No beneficiaries found
-      tags:
-        - Transactions
       parameters: []
   '/bank/transaction/{id}':
     get:
