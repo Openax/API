@@ -74,7 +74,7 @@ paths:
       parameters: []
       description: Retrive beneficiary by ID
     post:
-      summary: ''
+      summary: Beneficiary
       operationId: postNewBeneficiary
       responses:
         '200':
@@ -417,6 +417,12 @@ paths:
                   bank_country: UK
                   currency: EUR
         description: Update to do to the specified beneficiary
+  /api/beneficiary/add:
+    get:
+      summary: Add beneficiary
+      tags: [beneficiary]
+      responses: {}
+      operationId: get-api-beneficiary-add
 components:
   schemas:
     account:
