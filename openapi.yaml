@@ -236,7 +236,7 @@ paths:
         '404':
           description: Transaction not found
       description: Endpoint to retrieve one transaction by Id
-  /bank/payments:
+  /api/payments:
     get:
       summary: get all payments
       operationId: getAllPayments
@@ -264,7 +264,7 @@ paths:
         '405':
           description: Invalid input
       parameters: []
-  '/bank/payments/{id}':
+  '/api/payments/{id}':
     get:
       summary: Find payment by ID
       operationId: getPaymentById
@@ -289,7 +289,7 @@ paths:
           description: Payment not found
       tags:
         - Payments
-  '/bank/payment/canceled/{id}':
+  '/api/payment/canceled/{id}':
     post:
       summary: Delete a payment by ID
       operationId: deletePaymentsById
