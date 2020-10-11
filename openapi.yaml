@@ -11,22 +11,6 @@ info:
     url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
   version: 1.0.0
 paths:
-  /bank-register:
-    post:
-      summary: Add a new account
-      operationId: addAccount
-      requestBody:
-        content:
-          application/json:
-            schema:
-              oneOf:
-                - $ref: '#/components/schemas/registerIndividual'
-                - $ref: '#/components/schemas/registerCorporate'
-      responses:
-        '405':
-          description: Invalid input
-      parameters: []
-      description: for Register a new account
   '/api/beneficiary/{id}':
     get:
       summary: Beneficiary
@@ -73,6 +57,8 @@ paths:
           description: No beneficiaries found
       parameters: []
       description: Retrive beneficiary by ID
+      tags:
+        - Beneficiary
     parameters:
       - schema:
           type: string
@@ -128,6 +114,8 @@ paths:
         '':
           description: ''
       description: Endpoint to retrieve all beneficiaries
+      tags:
+        - Beneficiary
     parameters: []
   '/api/beneficiary/delete/{id}':
     post:
@@ -143,6 +131,8 @@ paths:
         '':
           description: ''
       description: Endpoint te remove a beneficiary from your list
+      tags:
+        - Beneficiary
     parameters:
       - schema:
           type: string
@@ -189,6 +179,8 @@ paths:
           description: No beneficiaries found
       parameters: []
       description: Endpoint to retrieve all transactions
+      tags:
+        - Transaction
   '/api/transaction/{id}':
     get:
       summary: Find transaction by ID
@@ -236,6 +228,8 @@ paths:
         '404':
           description: Transaction not found
       description: Endpoint to retrieve one transaction by Id
+      tags:
+        - Transaction
   /api/payments:
     get:
       summary: get all payments
@@ -254,7 +248,7 @@ paths:
       parameters: []
       description: Endpoint to get all payments
       tags:
-        - payments
+        - Payment
   '/api/payment/{id}':
     get:
       summary: Find payment by ID
@@ -278,9 +272,9 @@ paths:
           description: Invalid ID supplied
         '404':
           description: Payment not found
-      tags:
-        - payments
       description: Endpoint to get one payment by Id
+      tags:
+        - Payment
   '/api/payment/canceled/{id}':
     post:
       summary: Delete a payment by ID
@@ -304,7 +298,7 @@ paths:
           description: payment cannot be deleted
       description: Endpoint to cancel a peyment by Id
       tags:
-        - payments
+        - Payment
   '/api/beneficiary/update/{id}':
     parameters:
       - schema:
@@ -383,9 +377,11 @@ paths:
                   bank_country: UK
                   currency: EUR
         description: Update to do to the specified beneficiary
+      tags:
+        - Payment
   /api/beneficiary/add:
     post:
-      summary: ''
+      summary: Create a Beneficiary
       operationId: postNewBeneficiary
       responses:
         '200':
@@ -502,9 +498,11 @@ paths:
                   bank_country: UK
                   currency: EUR
         description: Create a new beneficiary
+      tags:
+        - Beneficiary
   /api/payment/add:
     post:
-      summary: ''
+      summary: Create a payment
       operationId: postNewPayment
       responses:
         '200':
@@ -513,6 +511,39 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/payment'
+              examples:
+                example-1:
+                  value:
+                    type: debit
+                    amount: 0
+                    reason: string
+                    beneficiary_id:
+                      id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                      iban: string
+                      bank_address: string
+                      bank_account_holder_name: string
+                      bank_name: string
+                      first_name: string
+                      last_name: string
+                      bic: string
+                      name: string
+                      address: string
+                      city: string
+                      type: individual
+                      company_name: string
+                      bank_country: string
+                      currency: string
+                    payment_date: string
+                    account_id:
+                      first_name: string
+                      last_name: string
+                      password: string
+                      email: string
+                      type: individual
+                      company_name: string
+                      country: string
+                    ledger: {}
+                    methode: FFCCTRNS
         '400':
           description: Bad Request
         '406':
@@ -586,6 +617,8 @@ paths:
                   beneficiary:
                     id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
         description: Create a new payment
+      tags:
+        - Payment
 components:
   schemas:
     account:
@@ -808,6 +841,38 @@ components:
           enum:
             - FFCCTRNS
             - IFCCTRNS
+      x-examples:
+        example-1:
+          type: debit
+          amount: 0
+          reason: string
+          beneficiary_id:
+            id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+            iban: string
+            bank_address: string
+            bank_account_holder_name: string
+            bank_name: string
+            first_name: string
+            last_name: string
+            bic: string
+            name: string
+            address: string
+            city: string
+            type: individual
+            company_name: string
+            bank_country: string
+            currency: string
+          payment_date: string
+          account_id:
+            first_name: string
+            last_name: string
+            password: string
+            email: string
+            type: individual
+            company_name: string
+            country: string
+          ledger: {}
+          methode: FFCCTRNS
     ledger:
       type: object
     transaction:
@@ -878,18 +943,6 @@ components:
       type: array
       items:
         $ref: '#/components/schemas/payment'
-    createPayment:
-      type: object
-      properties:
-        amount:
-          type: integer
-        reason:
-          type: string
-        payment_date:
-          type: string
-        method:
-          type: string
-          default: FFCCTRNS
     arrayOfBeneficiaries:
       title: arrayOfBeneficiaries
       type: array
@@ -932,5 +985,6 @@ servers:
 security: []
 tags:
   - name: transactions
-  
-  
+  - name: Beneficiary
+  - name: Transaction
+  - name: Payment
