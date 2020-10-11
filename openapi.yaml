@@ -253,6 +253,8 @@ paths:
           description: No payments found
       parameters: []
       description: Endpoint to get all payments
+      tags:
+        - payments
   '/api/payment/{id}':
     get:
       summary: Find payment by ID
@@ -277,7 +279,7 @@ paths:
         '404':
           description: Payment not found
       tags:
-        - Payments
+        - payments
       description: Endpoint to get one payment by Id
   '/api/payment/canceled/{id}':
     post:
@@ -301,6 +303,8 @@ paths:
         '408':
           description: payment cannot be deleted
       description: Endpoint to cancel a peyment by Id
+      tags:
+        - payments
   '/api/beneficiary/update/{id}':
     parameters:
       - schema:
@@ -505,6 +509,10 @@ paths:
       responses:
         '200':
           description: Succesfull
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/payment'
         '400':
           description: Bad Request
         '406':
@@ -529,16 +537,54 @@ paths:
                     - IFCCTRNS
                 currency:
                   type: string
-                ledger_id:
-                  type: string
-                beneficiary_id:
-                  type: string
+                ledger:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                beneficiary:
+                  type: object
+                  properties:
+                    id:
+                      type: string
               required:
                 - amount
                 - method
                 - currency
-                - ledger_id
-                - beneficiary_id
+                - ledger
+                - beneficiary
+            examples:
+              Add regular SCT payment:
+                value:
+                  amount: 10
+                  reason: Invoice 123
+                  method: FFCCTRNS
+                  currency: EUR
+                  ledger:
+                    id: 9e51441c-de1a-4638-ba3a-6394f45b6b99
+                  beneficiary:
+                    id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+              Add a scheduled payment:
+                value:
+                  amount: 10
+                  payment_date: '2020-10-05'
+                  reason: Invoice 123
+                  method: FFCCTRNS
+                  currency: EUR
+                  ledger:
+                    id: 9e51441c-de1a-4638-ba3a-6394f45b6b99
+                  beneficiary:
+                    id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+              Add a fast payment:
+                value:
+                  amount: 10
+                  reason: Invoice 123
+                  method: IFCCTRNS
+                  currency: EUR
+                  ledger:
+                    id: 9e51441c-de1a-4638-ba3a-6394f45b6b99
+                  beneficiary:
+                    id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
         description: Create a new payment
 components:
   schemas:
@@ -886,4 +932,5 @@ servers:
 security: []
 tags:
   - name: transactions
-  - name: transactions
+  
+  
