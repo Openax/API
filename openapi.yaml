@@ -626,6 +626,25 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/arrayOfLedgers'
+              examples:
+                All Ledgers:
+                  value:
+                    - id: b94d6b3d-0034-4772-abf2-16c237f7be9f
+                      iban: GB73OPEX00993093052561
+                      balance:
+                        id: 40a1e2d3-f401-47e9-b781-180cec1e32bc
+                        amount: '1000'
+                        currency: EUR
+                    - id: 2b870cf2-94c3-46a1-924d-c8179db63d1d
+                      iban: GB37OPEX00993068086670
+                      balance:
+                        id: 66f773bc-5f89-424e-860f-d6e55195f23e
+                        amount: '900'
+                        currency: GBP
+        '400':
+          description: Bad Request
+        '406':
+          description: Unauthorized
       operationId: getInfo
       description: Endpoint to retrieve Ledgers and balance informations
 components:
