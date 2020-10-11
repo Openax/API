@@ -615,18 +615,23 @@ paths:
         description: Create a new payment
       tags:
         - Payment
+  /api/info:
+    get:
+      summary: Your GET endpoint
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/arrayOfLedgers'
+      operationId: getInfo
+      description: Endpoint to retrieve Ledgers and balance informations
 components:
   schemas:
     account:
       type: object
-      required:
-        - first_name
-        - last_name
-        - password
-        - email
-        - type
-        - company_name
-        - country
       properties:
         first_name:
           type: string
@@ -641,55 +646,6 @@ components:
           enum:
             - individual
             - corporate
-        company_name:
-          type: string
-        country:
-          type: string
-    registerIndividual:
-      type: object
-      required:
-        - first_name
-        - last_name
-        - password
-        - email
-        - type
-        - country
-      properties:
-        first_name:
-          type: string
-        last_name:
-          type: string
-        password:
-          type: string
-        email:
-          type: string
-        type:
-          type: string
-          default: individual
-        country:
-          type: string
-    registerCorporate:
-      type: object
-      required:
-        - first_name
-        - last_name
-        - password
-        - email
-        - type
-        - company_name
-        - country
-      properties:
-        first_name:
-          type: string
-        last_name:
-          type: string
-        password:
-          type: string
-        email:
-          type: string
-        type:
-          type: string
-          default: corporate
         company_name:
           type: string
         country:
@@ -809,34 +765,8 @@ components:
         - iban
         - bic
         - type
-    country:
-      type: object
-    currency:
-      type: object
     payment:
       type: object
-      properties:
-        type:
-          type: string
-          enum:
-            - debit
-        amount:
-          type: integer
-        reason:
-          type: string
-        beneficiary_id:
-          $ref: '#/components/schemas/beneficiary'
-        payment_date:
-          type: string
-        account_id:
-          $ref: '#/components/schemas/account'
-        ledger:
-          $ref: '#/components/schemas/ledger'
-        methode:
-          type: string
-          enum:
-            - FFCCTRNS
-            - IFCCTRNS
       x-examples:
         example-1:
           type: debit
@@ -869,8 +799,56 @@ components:
             country: string
           ledger: {}
           methode: FFCCTRNS
+      properties:
+        type:
+          type: string
+          enum:
+            - debit
+        amount:
+          type: integer
+        reason:
+          type: string
+        beneficiary_id:
+          $ref: '#/components/schemas/beneficiary'
+        payment_date:
+          type: string
+        account_id:
+          $ref: '#/components/schemas/account'
+        ledger:
+          $ref: '#/components/schemas/ledger'
+        methode:
+          type: string
+          enum:
+            - FFCCTRNS
+            - IFCCTRNS
+        id:
+          type: string
+        status:
+          type: string
     ledger:
       type: object
+      properties:
+        id:
+          type: string
+        iban:
+          type: string
+        balance:
+          type: object
+          properties:
+            id:
+              type: string
+            amount:
+              type: string
+            currency:
+              type: string
+      x-examples:
+        Ledger:
+          id: b94d6b3d-0034-4772-abf2-16c237f7be9f
+          iban: GB73OPEX00993093052561
+          balance:
+            id: 40a1e2d3-f401-47e9-b781-180cec1e32bc
+            amount: '1000'
+            currency: EUR
     transaction:
       type: object
       properties:
@@ -972,6 +950,25 @@ components:
             type: individual
             bank_country: UK
             currency: EUR
+    arrayOfLedgers:
+      title: arrayOfLedgers
+      type: array
+      items:
+        $ref: '#/components/schemas/ledger'
+      x-examples:
+        All Legers:
+          - id: b94d6b3d-0034-4772-abf2-16c237f7be9f
+            iban: GB73OPEX00993093052561
+            balance:
+              id: 40a1e2d3-f401-47e9-b781-180cec1e32bc
+              amount: '1000'
+              currency: EUR
+          - id: 2b870cf2-94c3-46a1-924d-c8179db63d1d
+            iban: GB37OPEX00993068086670
+            balance:
+              id: 66f773bc-5f89-424e-860f-d6e55195f23e
+              amount: '900'
+              currency: GBP
   links: {}
   callbacks: {}
   securitySchemes: {}
