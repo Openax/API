@@ -617,8 +617,9 @@ paths:
         - Payment
   /api/info:
     get:
-      summary: Your GET endpoint
-      tags: []
+      summary: Find account info
+      tags:
+        - Account
       responses:
         '200':
           description: OK
@@ -996,7 +997,7 @@ servers:
     url: 'https://sandboxcrm.openax.com'
 security: []
 tags:
-  - name: transactions
   - name: Beneficiary
   - name: Transaction
   - name: Payment
+  - name: Account
