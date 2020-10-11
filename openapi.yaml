@@ -292,7 +292,7 @@ paths:
           description: Payment not found
         '408':
           description: payment cannot be deleted
-      description: Endpoint to cancel a peyment by Id
+      description: Endpoint to cancel a payment by Id
       tags:
         - Payment
   '/api/beneficiary/update/{id}':
@@ -374,7 +374,7 @@ paths:
                   currency: EUR
         description: Update to do to the specified beneficiary
       tags:
-        - Payment
+        - Beneficiary
   /api/beneficiary/add:
     post:
       summary: Create a Beneficiary
