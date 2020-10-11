@@ -71,9 +71,12 @@ paths:
     get:
       summary: Find all beneficiaries
       operationId: getBeneficiaries
+      description: Endpoint to retrieve all beneficiaries
+      tags:
+        - Beneficiary
       responses:
         '200':
-          description: successful operation
+          description: Succesful
           content:
             application/json:
               schema:
@@ -108,31 +111,24 @@ paths:
                       bank_country: UK
                       currency: EUR
         '400':
-          description: Bad request
+          description: Bad Request
         '404':
-          description: Not Found -- The requested resource could not be found.
-        '':
-          description: ''
-      description: Endpoint to retrieve all beneficiaries
-      tags:
-        - Beneficiary
+          description: UnauthorizedNot Found -- The requested resource could not be found.
     parameters: []
   '/api/beneficiary/delete/{id}':
     post:
       summary: Delete a beneficiary by ID
       operationId: deleteBeneficiaryById
+      description: Endpoint te remove a beneficiary from your list
+      tags:
+        - Beneficiary
       responses:
         '200':
           description: successful operation - beneficiary removed
         '400':
-          description: Bad request
-        '404':
+          description: Bad Request
+        '401':
           description: Not Found -- The requested resource could not be found.
-        '':
-          description: ''
-      description: Endpoint te remove a beneficiary from your list
-      tags:
-        - Beneficiary
     parameters:
       - schema:
           type: string
