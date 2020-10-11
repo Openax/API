@@ -508,38 +508,17 @@ paths:
               schema:
                 $ref: '#/components/schemas/payment'
               examples:
-                example-1:
+                Posted Payment:
                   value:
-                    type: debit
-                    amount: 0
-                    reason: string
-                    beneficiary_id:
+                    id: 71873979-1c48-44a1-b740-90a2bcb2835e
+                    amount: 10
+                    reason: Invoice 123
+                    method: FFCCTRNS
+                    currency: EUR
+                    ledger:
+                      id: 9e51441c-de1a-4638-ba3a-6394f45b6b99
+                    beneficiary:
                       id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
-                      iban: string
-                      bank_address: string
-                      bank_account_holder_name: string
-                      bank_name: string
-                      first_name: string
-                      last_name: string
-                      bic: string
-                      name: string
-                      address: string
-                      city: string
-                      type: individual
-                      company_name: string
-                      bank_country: string
-                      currency: string
-                    payment_date: string
-                    account_id:
-                      first_name: string
-                      last_name: string
-                      password: string
-                      email: string
-                      type: individual
-                      company_name: string
-                      country: string
-                    ledger: {}
-                    methode: FFCCTRNS
         '400':
           description: Bad Request
         '406':
@@ -788,37 +767,16 @@ components:
     payment:
       type: object
       x-examples:
-        example-1:
-          type: debit
-          amount: 0
-          reason: string
-          beneficiary_id:
+        Posted payment:
+          id: 71873979-1c48-44a1-b740-90a2bcb2835e
+          amount: 10
+          reason: Invoice 123
+          method: FFCCTRNS
+          currency: EUR
+          ledger:
+            id: 9e51441c-de1a-4638-ba3a-6394f45b6b99
+          beneficiary:
             id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
-            iban: string
-            bank_address: string
-            bank_account_holder_name: string
-            bank_name: string
-            first_name: string
-            last_name: string
-            bic: string
-            name: string
-            address: string
-            city: string
-            type: individual
-            company_name: string
-            bank_country: string
-            currency: string
-          payment_date: string
-          account_id:
-            first_name: string
-            last_name: string
-            password: string
-            email: string
-            type: individual
-            company_name: string
-            country: string
-          ledger: {}
-          methode: FFCCTRNS
       properties:
         type:
           type: string
@@ -828,12 +786,13 @@ components:
           type: integer
         reason:
           type: string
-        beneficiary_id:
-          $ref: '#/components/schemas/beneficiary'
+        beneficiary:
+          type: object
+          properties:
+            id:
+              type: string
         payment_date:
           type: string
-        account_id:
-          $ref: '#/components/schemas/account'
         ledger:
           $ref: '#/components/schemas/ledger'
         methode:
@@ -845,6 +804,8 @@ components:
           type: string
         status:
           type: string
+      title: Payment
+      description: This is the Payment object
     ledger:
       type: object
       properties:
@@ -869,6 +830,8 @@ components:
             id: 40a1e2d3-f401-47e9-b781-180cec1e32bc
             amount: '1000'
             currency: EUR
+      description: This is the Ledger Object
+      title: Ledger
     transaction:
       type: object
       properties:
@@ -909,6 +872,8 @@ components:
           Ffcctrn.DbtrNm: Jack Smith
           Ffcctrn.CdtrNm: John Smith
           Currency.symbol: EUR
+      title: Transaction
+      description: This is the transaction Object
     arrayOfTransactions:
       type: array
       items:
