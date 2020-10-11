@@ -252,19 +252,8 @@ paths:
         '404':
           description: No payments found
       parameters: []
-    post:
-      summary: Add a new payment
-      operationId: addPayment
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/createPayment'
-      responses:
-        '405':
-          description: Invalid input
-      parameters: []
-  '/api/payments/{id}':
+      description: Endpoint to get all payments
+  '/api/payment/{id}':
     get:
       summary: Find payment by ID
       operationId: getPaymentById
@@ -289,6 +278,7 @@ paths:
           description: Payment not found
       tags:
         - Payments
+      description: Endpoint to get one payment by Id
   '/api/payment/canceled/{id}':
     post:
       summary: Delete a payment by ID
@@ -310,19 +300,7 @@ paths:
           description: Payment not found
         '408':
           description: payment cannot be deleted
-  /bank/fast-payment/:
-    post:
-      summary: Add a new fast-payment
-      operationId: addFastPayment
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/createFastPayment'
-      responses:
-        '405':
-          description: Invalid input
-      parameters: []
+      description: Endpoint to cancel a peyment by Id
   '/api/beneficiary/update/{id}':
     parameters:
       - schema:
@@ -343,7 +321,34 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/beneficiary'
+              type: object
+              properties:
+                iban:
+                  type: string
+                bank_address:
+                  type: string
+                bank_account_holder_name:
+                  type: string
+                bank_name:
+                  type: string
+                first_name:
+                  type: string
+                last_name:
+                  type: string
+                bic:
+                  type: string
+                address:
+                  type: string
+                city:
+                  type: string
+                type:
+                  type: string
+                bank_country:
+                  type: string
+                currency:
+                  type: string
+                company_name:
+                  type: string
             examples:
               Individual update:
                 value:
@@ -425,7 +430,44 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/beneficiary'
+              type: object
+              properties:
+                iban:
+                  type: string
+                bank_address:
+                  type: string
+                bank_name:
+                  type: string
+                company_name:
+                  type: string
+                  description: must be present when type is corporate
+                first_name:
+                  type: string
+                  description: must be present only when type is individual
+                last_name:
+                  type: string
+                  description: must be present only when type is individual
+                bic:
+                  type: string
+                name:
+                  type: string
+                address:
+                  type: string
+                city:
+                  type: string
+                type:
+                  type: string
+                  enum:
+                    - individual
+                    - corporate
+                bank_country:
+                  type: string
+                currency:
+                  type: string
+              required:
+                - iban
+                - bic
+                - type
             examples:
               post corporate beneficiary:
                 value:
@@ -456,6 +498,48 @@ paths:
                   bank_country: UK
                   currency: EUR
         description: Create a new beneficiary
+  /api/payment/add:
+    post:
+      summary: ''
+      operationId: postNewPayment
+      responses:
+        '200':
+          description: Succesfull
+        '400':
+          description: Bad Request
+        '406':
+          description: Not Acceptable
+      description: Endpoint to create a new payment
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                amount:
+                  type: integer
+                reason:
+                  type: string
+                payment_date:
+                  type: string
+                method:
+                  type: string
+                  enum:
+                    - FFCCTRNS
+                    - IFCCTRNS
+                currency:
+                  type: string
+                ledger_id:
+                  type: string
+                beneficiary_id:
+                  type: string
+              required:
+                - amount
+                - method
+                - currency
+                - ledger_id
+                - beneficiary_id
+        description: Create a new payment
 components:
   schemas:
     account:
@@ -760,16 +844,6 @@ components:
         method:
           type: string
           default: FFCCTRNS
-    createFastPayment:
-      type: object
-      properties:
-        amount:
-          type: integer
-        reason:
-          type: string
-        method:
-          type: string
-          default: IFCCTRNS
     arrayOfBeneficiaries:
       title: arrayOfBeneficiaries
       type: array
@@ -805,8 +879,11 @@ components:
             currency: EUR
   links: {}
   callbacks: {}
+  securitySchemes: {}
 servers:
   - description: SwaggerHub API Auto Mocking
     url: 'https://sandboxcrm.openax.com'
 security: []
-tags: []
+tags:
+  - name: transactions
+  - name: transactions
