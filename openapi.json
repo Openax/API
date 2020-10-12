@@ -1329,15 +1329,6 @@
             }
           ]
         }
-      },
-      "hello": {
-        "title": "hello",
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string"
-          }
-        }
       }
     },
     "links": {},
