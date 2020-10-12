@@ -921,6 +921,17 @@
           "country": {
             "type": "string"
           }
+        },
+        "x-examples": {
+          "example-1": {
+            "first_name": "string",
+            "last_name": "string",
+            "password": "string",
+            "email": "string",
+            "type": "individual",
+            "company_name": "string",
+            "country": "string"
+          }
         }
       },
       "beneficiary": {
