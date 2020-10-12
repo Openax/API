@@ -1080,11 +1080,12 @@
       "payment": {
         "type": "object",
         "x-examples": {
-          "Posted payment": {
+          "Payment Object  SCT": {
             "id": "71873979-1c48-44a1-b740-90a2bcb2835e",
             "amount": 10,
             "reason": "Invoice 123",
             "method": "FFCCTRNS",
+            "payment_date": "2020-10-06",
             "currency": "EUR",
             "ledger": {
               "id": "9e51441c-de1a-4638-ba3a-6394f45b6b99"
@@ -1094,6 +1095,8 @@
             }
           }
         },
+        "title": "Payment",
+        "description": "This is the Payment object",
         "properties": {
           "type": {
             "type": "string",
@@ -1119,7 +1122,12 @@
             "type": "string"
           },
           "ledger": {
-            "$ref": "#/components/schemas/ledger"
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              }
+            }
           },
           "methode": {
             "type": "string",
@@ -1134,9 +1142,7 @@
           "status": {
             "type": "string"
           }
-        },
-        "title": "Payment",
-        "description": "This is the Payment object"
+        }
       },
       "ledger": {
         "type": "object",
@@ -1246,9 +1252,7 @@
               "amount": 10,
               "method": "FFCCTRNS",
               "old_balance": 90,
-              "Ffcctrn.DbtrNm": "John Doe",
-              "Ffcctrn.CdtrNm": "Mike Smith",
-              "Currency.symbol": "EUR"
+              "currency": "EUR"
             },
             {
               "id": "3383dbd0-cbc9-4005-a00d-834d691e918f",
@@ -1258,9 +1262,7 @@
               "amount": 15,
               "method": "FFCCTRNS",
               "old_balance": 90,
-              "Ffcctrn.DbtrNm": "Jack Smith",
-              "Ffcctrn.CdtrNm": "John Smith",
-              "Currency.symbol": "EUR"
+              "currency": "EUR"
             }
           ]
         }
@@ -1269,7 +1271,25 @@
         "type": "array",
         "items": {
           "$ref": "#/components/schemas/payment"
-        }
+        },
+        "x-examples": {
+          "All payment array": [
+            {
+              "id": "71873979-1c48-44a1-b740-90a2bcb2835e",
+              "amount": 10,
+              "reason": "Invoice 123",
+              "method": "FFCCTRNS",
+              "currency": "EUR",
+              "ledger": {
+                "id": "9e51441c-de1a-4638-ba3a-6394f45b6b99"
+              },
+              "beneficiary": {
+                "id": "497f6eca-6276-4993-bfeb-53cbbbba6f08"
+              }
+            }
+          ]
+        },
+        "description": "All payments array"
       },
       "arrayOfBeneficiaries": {
         "title": "arrayOfBeneficiaries",
