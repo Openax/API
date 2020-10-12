@@ -151,7 +151,8 @@ paths:
               examples:
                 All transactions:
                   value:
-                    - type: debit
+                    - id: b3a0dd34-6cf0-43d8-bca5-f56a58671c6a
+                      type: debit
                       status: completed
                       reason: Invoice 123
                       amount: 10
@@ -160,7 +161,8 @@ paths:
                       Ffcctrn.DbtrNm: John Doe
                       Ffcctrn.CdtrNm: Mike Smith
                       Currency.symbol: EUR
-                    - type: credit
+                    - id: 3383dbd0-cbc9-4005-a00d-834d691e918f
+                      type: credit
                       status: completed
                       reason: Invoice 965
                       amount: 15
@@ -199,26 +201,24 @@ paths:
               examples:
                 Transaction debit:
                   value:
+                    id: b3a0dd34-6cf0-43d8-bca5-f56a58671c6a
                     type: debit
                     status: completed
                     reason: Invoice 123
                     amount: 10
                     method: FFCCTRNS
                     old_balance: 90
-                    Ffcctrn.DbtrNm: John Doe
-                    Ffcctrn.CdtrNm: Mike Smith
-                    Currency.symbol: EUR
+                    currency: EUR
                 Transaction credit:
                   value:
+                    id: 3383dbd0-cbc9-4005-a00d-834d691e918f
                     type: credit
                     status: completed
                     reason: Invoice 965
                     amount: 15
                     method: FFCCTRNS
                     old_balance: 90
-                    Ffcctrn.DbtrNm: Jack Smith
-                    Ffcctrn.CdtrNm: John Smith
-                    Currency.symbol: EUR
+                    currency: EUR
         '400':
           description: Invalid ID supplied
         '404':
@@ -834,6 +834,27 @@ components:
       title: Ledger
     transaction:
       type: object
+      x-examples:
+        Transaction debit:
+          id: b3a0dd34-6cf0-43d8-bca5-f56a58671c6a
+          type: debit
+          status: completed
+          reason: Invoice 123
+          amount: 10
+          method: FFCCTRNS
+          old_balance: 90
+          currency: EUR
+        Transaction credit:
+          id: 3383dbd0-cbc9-4005-a00d-834d691e918f
+          type: credit
+          status: completed
+          reason: Invoice 965
+          amount: 15
+          method: FFCCTRNS
+          old_balance: 90
+          currency: EUR
+      title: Transaction
+      description: This is the transaction Object
       properties:
         type:
           type: string
@@ -851,36 +872,16 @@ components:
             - PACS003D
         old_balance:
           type: integer
-      x-examples:
-        Transaction debit:
-          type: debit
-          status: completed
-          reason: Invoice 123
-          amount: 10
-          method: FFCCTRNS
-          old_balance: 90
-          Ffcctrn.DbtrNm: John Doe
-          Ffcctrn.CdtrNm: Mike Smith
-          Currency.symbol: EUR
-        Transaction credit:
-          type: credit
-          status: completed
-          reason: Invoice 965
-          amount: 15
-          method: FFCCTRNS
-          old_balance: 90
-          Ffcctrn.DbtrNm: Jack Smith
-          Ffcctrn.CdtrNm: John Smith
-          Currency.symbol: EUR
-      title: Transaction
-      description: This is the transaction Object
+        currency:
+          type: string
     arrayOfTransactions:
       type: array
       items:
         $ref: '#/components/schemas/transaction'
       x-examples:
         All transaction:
-          - type: debit
+          - id: b3a0dd34-6cf0-43d8-bca5-f56a58671c6a
+            type: debit
             status: completed
             reason: Invoice 123
             amount: 10
@@ -889,7 +890,8 @@ components:
             Ffcctrn.DbtrNm: John Doe
             Ffcctrn.CdtrNm: Mike Smith
             Currency.symbol: EUR
-          - type: credit
+          - id: 3383dbd0-cbc9-4005-a00d-834d691e918f
+            type: credit
             status: completed
             reason: Invoice 965
             amount: 15
