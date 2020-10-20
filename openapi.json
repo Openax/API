@@ -243,7 +243,25 @@
             "description": "No beneficiaries found"
           }
         },
-        "parameters": [],
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "format": "date"
+            },
+            "in": "query",
+            "name": "from",
+            "description": ""
+          },
+          {
+            "schema": {
+              "type": "string",
+              "format": "date"
+            },
+            "in": "query",
+            "name": "to"
+          }
+        ],
         "description": "Endpoint to retrieve all transactions",
         "tags": [
           "Transaction"
