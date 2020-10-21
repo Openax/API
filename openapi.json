@@ -410,7 +410,7 @@
             "description": "record to begin with (start at 0)"
           }
         ],
-        "description": "Endpoint to retrieve all transactions\nPagination is supported. You receive a limit of 25 records per request. In the response you receive  the count of records, so you can send the next request with the query param begin with the correct value",
+        "description": "Endpoint to retrieve all transactions\nPagination is supported. You receive a limit of 25 records per request. In the response you receive  the count of records, so you can send the next request with the query param begin with the correct value in order to get the next records",
         "tags": [
           "Transaction"
         ]
