@@ -191,7 +191,7 @@
         }
       ]
     },
-    "/api/transaction": {
+    "/api/transactions": {
       "get": {
         "summary": "get all transactions",
         "operationId": "getAllTransactions",
@@ -201,36 +201,114 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/arrayOfTransactions"
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string"
+                          },
+                          "type": {
+                            "type": "string",
+                            "enum": [
+                              "debit",
+                              "credit"
+                            ]
+                          },
+                          "status": {
+                            "type": "string"
+                          },
+                          "created_at": {
+                            "type": "string"
+                          },
+                          "updated_at": {
+                            "type": "string"
+                          },
+                          "reason": {
+                            "type": "string"
+                          },
+                          "mode": {
+                            "type": "string",
+                            "enum": [
+                              "atm",
+                              "card_payment",
+                              "card_refund",
+                              "card_chargeback",
+                              "card_credit",
+                              "exchange",
+                              "transfer",
+                              "loan",
+                              "fee",
+                              "refund",
+                              "topup",
+                              "topup_return",
+                              "tax",
+                              "tax_refund"
+                            ]
+                          },
+                          "amount": {
+                            "type": "number"
+                          },
+                          "balance": {
+                            "type": "number"
+                          },
+                          "currency": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    },
+                    "count": {
+                      "type": "number"
+                    },
+                    "per_page": {
+                      "type": "number"
+                    },
+                    "page": {
+                      "type": "number"
+                    },
+                    "page_count": {
+                      "type": "number"
+                    }
+                  }
                 },
                 "examples": {
-                  "All transactions": {
-                    "value": [
-                      {
-                        "id": "b3a0dd34-6cf0-43d8-bca5-f56a58671c6a",
-                        "type": "debit",
-                        "status": "completed",
-                        "reason": "Invoice 123",
-                        "amount": 10,
-                        "method": "FFCCTRNS",
-                        "old_balance": 90,
-                        "Ffcctrn.DbtrNm": "John Doe",
-                        "Ffcctrn.CdtrNm": "Mike Smith",
-                        "Currency.symbol": "EUR"
-                      },
-                      {
-                        "id": "3383dbd0-cbc9-4005-a00d-834d691e918f",
-                        "type": "credit",
-                        "status": "completed",
-                        "reason": "Invoice 965",
-                        "amount": 15,
-                        "method": "FFCCTRNS",
-                        "old_balance": 90,
-                        "Ffcctrn.DbtrNm": "Jack Smith",
-                        "Ffcctrn.CdtrNm": "John Smith",
-                        "Currency.symbol": "EUR"
-                      }
-                    ]
+                  "Response All Transactions": {
+                    "value": {
+                      "data": [
+                        {
+                          "id": "7f475b3e-fe0e-4565-8cfc-6b518b991f1f",
+                          "type": "debit",
+                          "status": "completed",
+                          "created_at": "2020-04-01T20:02:50.810Z",
+                          "updated_at": "2020-04-01T20:02:54.520Z",
+                          "reason": "Payment for Smith Co.",
+                          "mode": "transfer",
+                          "amount": 100,
+                          "balance": 9685,
+                          "currency": "EUR"
+                        },
+                        {
+                          "id": "132d13e0-f58b-4588-83e0-b2c54ef29c0a",
+                          "type": "debit",
+                          "status": "completed",
+                          "created_at": "2020-04-01T20:02:25.810Z",
+                          "updated_at": "2020-04-01T20:02:26.520Z",
+                          "reason": "Payment for John Co.",
+                          "mode": "transfer",
+                          "amount": 50,
+                          "balance": 9645,
+                          "currency": "EUR"
+                        }
+                      ],
+                      "count": 827,
+                      "per_page": 3,
+                      "page": 1,
+                      "page_count": 276
+                    }
                   }
                 }
               }
@@ -247,7 +325,8 @@
           {
             "schema": {
               "type": "string",
-              "format": "date"
+              "format": "date",
+              "example": "2020-05-21"
             },
             "in": "query",
             "name": "from",
@@ -256,10 +335,56 @@
           {
             "schema": {
               "type": "string",
-              "format": "date"
+              "format": "date",
+              "example": "2020-06-21"
             },
             "in": "query",
             "name": "to"
+          },
+          {
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "in": "query",
+            "name": "beneficiary"
+          },
+          {
+            "schema": {
+              "type": "string",
+              "enum": [
+                "atm",
+                "card_payment",
+                "card_refund",
+                "card_chargeback",
+                "card_credit",
+                "exchange",
+                "transfer",
+                "loan",
+                "fee",
+                "refund",
+                "topup",
+                "topup_return",
+                "tax",
+                "tax_refund"
+              ]
+            },
+            "in": "query",
+            "name": "mode"
+          },
+          {
+            "schema": {
+              "type": "number"
+            },
+            "in": "query",
+            "name": "limit"
+          },
+          {
+            "schema": {
+              "type": "number"
+            },
+            "in": "query",
+            "name": "begin"
           }
         ],
         "description": "Endpoint to retrieve all transactions",
@@ -1279,36 +1404,6 @@
           "currency": {
             "type": "string"
           }
-        }
-      },
-      "arrayOfTransactions": {
-        "type": "array",
-        "items": {
-          "$ref": "#/components/schemas/transaction"
-        },
-        "x-examples": {
-          "All transaction": [
-            {
-              "id": "b3a0dd34-6cf0-43d8-bca5-f56a58671c6a",
-              "type": "debit",
-              "status": "completed",
-              "reason": "Invoice 123",
-              "amount": 10,
-              "method": "FFCCTRNS",
-              "old_balance": 90,
-              "currency": "EUR"
-            },
-            {
-              "id": "3383dbd0-cbc9-4005-a00d-834d691e918f",
-              "type": "credit",
-              "status": "completed",
-              "reason": "Invoice 965",
-              "amount": 15,
-              "method": "FFCCTRNS",
-              "old_balance": 90,
-              "currency": "EUR"
-            }
-          ]
         }
       },
       "arrayOfPayments": {
