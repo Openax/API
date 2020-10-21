@@ -564,7 +564,8 @@
                   "type": "object",
                   "properties": {
                     "id": {
-                      "type": "string"
+                      "type": "string",
+                      "format": "uuid"
                     },
                     "status": {
                       "type": "string"
@@ -605,11 +606,13 @@
       "parameters": [
         {
           "schema": {
-            "type": "string"
+            "type": "string",
+            "format": "uuid"
           },
           "name": "id",
           "in": "path",
-          "required": true
+          "required": true,
+          "description": "Id of the payment to cancel"
         }
       ]
     },
