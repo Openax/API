@@ -330,7 +330,7 @@
             },
             "in": "query",
             "name": "from",
-            "description": ""
+            "description": "Filters Created_at"
           },
           {
             "schema": {
@@ -339,7 +339,8 @@
               "example": "2020-06-21"
             },
             "in": "query",
-            "name": "to"
+            "name": "to",
+            "description": "filters Created_at (default is now)"
           },
           {
             "schema": {
@@ -347,7 +348,8 @@
               "format": "uuid"
             },
             "in": "query",
-            "name": "beneficiary"
+            "name": "beneficiary",
+            "description": "Beneficiary Id"
           },
           {
             "schema": {
@@ -370,21 +372,24 @@
               ]
             },
             "in": "query",
-            "name": "mode"
+            "name": "mode",
+            "description": "Filters mode of transaction"
           },
           {
             "schema": {
               "type": "number"
             },
             "in": "query",
-            "name": "limit"
+            "name": "limit",
+            "description": "number of record to receive"
           },
           {
             "schema": {
               "type": "number"
             },
             "in": "query",
-            "name": "begin"
+            "name": "begin",
+            "description": "record to begin with (start at 0)"
           }
         ],
         "description": "Endpoint to retrieve all transactions",
