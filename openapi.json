@@ -973,16 +973,20 @@
                 "type": "object",
                 "properties": {
                   "ledger_id": {
-                    "type": "string"
+                    "type": "string",
+                    "format": "uuid"
                   },
                   "beneficiary_id": {
-                    "type": "string"
+                    "type": "string",
+                    "format": "uuid"
                   },
                   "amount": {
                     "type": "number"
                   },
                   "currency": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "3-letter ISO currency code",
+                    "example": "EUR"
                   },
                   "date": {
                     "type": "string",
