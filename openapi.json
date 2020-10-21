@@ -209,7 +209,8 @@
                         "type": "object",
                         "properties": {
                           "id": {
-                            "type": "string"
+                            "type": "string",
+                            "format": "uuid"
                           },
                           "type": {
                             "type": "string",
@@ -219,13 +220,20 @@
                             ]
                           },
                           "status": {
-                            "type": "string"
+                            "type": "string",
+                            "enum": [
+                              "pending",
+                              "completed",
+                              "error"
+                            ]
                           },
                           "created_at": {
-                            "type": "string"
+                            "type": "string",
+                            "format": "date-time"
                           },
                           "updated_at": {
-                            "type": "string"
+                            "type": "string",
+                            "format": "date-time"
                           },
                           "reason": {
                             "type": "string"
@@ -256,7 +264,8 @@
                             "type": "number"
                           },
                           "currency": {
-                            "type": "string"
+                            "type": "string",
+                            "description": "3-letter ISO currency code"
                           }
                         }
                       }
@@ -280,7 +289,7 @@
                     "value": {
                       "data": [
                         {
-                          "id": "7f475b3e-fe0e-4565-8cfc-6b518b991f1f",
+                          "id": "7f475b3e-fe0e-4565-8cfc-6b518bli1f1f",
                           "type": "debit",
                           "status": "completed",
                           "created_at": "2020-04-01T20:02:50.810Z",
@@ -292,7 +301,7 @@
                           "currency": "EUR"
                         },
                         {
-                          "id": "132d13e0-f58b-4588-83e0-b2c54ef29c0a",
+                          "id": "132d13e0-f58b-4588-83e0-b2884ef29c0a",
                           "type": "debit",
                           "status": "completed",
                           "created_at": "2020-04-01T20:02:25.810Z",
@@ -304,21 +313,37 @@
                           "currency": "EUR"
                         }
                       ],
-                      "count": 827,
-                      "per_page": 3,
+                      "count": 2,
+                      "per_page": 25,
                       "page": 1,
-                      "page_count": 276
+                      "page_count": 1
                     }
                   }
                 }
               }
             }
           },
-          "400": {
-            "description": "Invalid request"
-          },
           "404": {
-            "description": "No beneficiaries found"
+            "description": "No Records found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "examples": {
+                  "example-1": {
+                    "value": {
+                      "error": "No record found"
+                    }
+                  }
+                }
+              }
+            }
           }
         },
         "parameters": [
@@ -381,19 +406,11 @@
               "type": "number"
             },
             "in": "query",
-            "name": "limit",
-            "description": "number of record to receive"
-          },
-          {
-            "schema": {
-              "type": "number"
-            },
-            "in": "query",
             "name": "begin",
             "description": "record to begin with (start at 0)"
           }
         ],
-        "description": "Endpoint to retrieve all transactions",
+        "description": "Endpoint to retrieve all transactions\nPagination is supported. You receive a limit of 25 records per request. In the response you receive  the count of records, so you can send the next request with the query param begin with the correct value",
         "tags": [
           "Transaction"
         ]
