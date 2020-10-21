@@ -888,41 +888,81 @@
     },
     "/api/payment/add": {
       "post": {
-        "summary": "Create a payment",
-        "operationId": "postNewPayment",
+        "summary": "Add a payment",
+        "operationId": "post-bank-add",
         "responses": {
           "200": {
-            "description": "Succesfull",
+            "description": "OK",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/payment"
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "ledger_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "beneficiary_id": {
+                      "type": "string"
+                    },
+                    "amount": {
+                      "type": "number"
+                    },
+                    "currency": {
+                      "type": "string",
+                      "description": "ISO code 3 letters"
+                    },
+                    "method": {
+                      "type": "string",
+                      "enum": [
+                        "SEPA",
+                        "SWIFT",
+                        "FAST"
+                      ]
+                    },
+                    "payment_date": {
+                      "type": "string"
+                    },
+                    "reason": {
+                      "type": "string"
+                    },
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "pending",
+                        "completed",
+                        "refused",
+                        "error"
+                      ]
+                    },
+                    "created_at": {
+                      "type": "string",
+                      "format": "date-time"
+                    }
+                  }
                 },
                 "examples": {
-                  "Posted Payment": {
+                  "example payment response": {
                     "value": {
-                      "id": "71873979-1c48-44a1-b740-90a2bcb2835e",
-                      "amount": 10,
-                      "reason": "Invoice 123",
-                      "method": "FFCCTRNS",
+                      "id": "d6dd1c83-531d-4cab-ba7b-60f77c6c5519",
+                      "beneficiary_id": "0966b4e3-89a4-46ca-95e1-b834e0a0f434",
+                      "ledger_id": "2b870cf2-94c3-46a1-924d-c8179db63d1d",
+                      "reason": "test",
+                      "amount": 2,
+                      "method": "SEPA",
+                      "status": "pending",
+                      "payment_date": "2020-10-18",
                       "currency": "EUR",
-                      "ledger": {
-                        "id": "9e51441c-de1a-4638-ba3a-6394f45b6b99"
-                      },
-                      "beneficiary": {
-                        "id": "497f6eca-6276-4993-bfeb-53cbbbba6f08"
-                      }
+                      "created_at": "2020-04-01T20:02:54.520Z"
                     }
                   }
                 }
               }
             }
-          },
-          "400": {
-            "description": "Bad Request"
-          },
-          "406": {
-            "description": "Not Acceptable"
           }
         },
         "description": "Endpoint to create a new payment",
@@ -932,98 +972,68 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "amount": {
-                    "type": "integer"
-                  },
-                  "reason": {
+                  "ledger_id": {
                     "type": "string"
                   },
-                  "payment_date": {
+                  "beneficiary_id": {
+                    "type": "string"
+                  },
+                  "amount": {
+                    "type": "number"
+                  },
+                  "currency": {
+                    "type": "string"
+                  },
+                  "date": {
+                    "type": "string",
+                    "format": "date",
+                    "example": "2020-06-01"
+                  },
+                  "reason": {
                     "type": "string"
                   },
                   "method": {
                     "type": "string",
                     "enum": [
-                      "FFCCTRNS",
-                      "IFCCTRNS"
+                      "SEPA",
+                      "SWIFT",
+                      "FAST"
                     ]
-                  },
-                  "currency": {
-                    "type": "string"
-                  },
-                  "ledger": {
-                    "type": "object",
-                    "properties": {
-                      "id": {
-                        "type": "string"
-                      }
-                    }
-                  },
-                  "beneficiary": {
-                    "type": "object",
-                    "properties": {
-                      "id": {
-                        "type": "string"
-                      }
-                    }
                   }
                 },
                 "required": [
+                  "ledger_id",
+                  "beneficiary_id",
                   "amount",
-                  "method",
-                  "currency",
-                  "ledger",
-                  "beneficiary"
+                  "currency"
                 ]
               },
               "examples": {
-                "Add regular SCT payment": {
+                "Post regular": {
                   "value": {
-                    "amount": 10,
-                    "reason": "Invoice 123",
-                    "method": "FFCCTRNS",
-                    "currency": "EUR",
-                    "ledger": {
-                      "id": "9e51441c-de1a-4638-ba3a-6394f45b6b99"
-                    },
-                    "beneficiary": {
-                      "id": "497f6eca-6276-4993-bfeb-53cbbbba6f08"
-                    }
+                    "beneficiary_id": "0966b4e3-89a4-46ca-95e1-b834e0a0f434",
+                    "ledger_id": "2b870cf2-94c3-46a1-924d-c8179db63d1d",
+                    "reason": "test",
+                    "amount": 2,
+                    "method": "SEPA",
+                    "date": "2020-10-18",
+                    "currency": "EUR"
                   }
                 },
-                "Add a scheduled payment": {
+                "Post Instant": {
                   "value": {
-                    "amount": 10,
-                    "payment_date": "2020-10-05",
-                    "reason": "Invoice 123",
-                    "method": "FFCCTRNS",
-                    "currency": "EUR",
-                    "ledger": {
-                      "id": "9e51441c-de1a-4638-ba3a-6394f45b6b99"
-                    },
-                    "beneficiary": {
-                      "id": "497f6eca-6276-4993-bfeb-53cbbbba6f08"
-                    }
-                  }
-                },
-                "Add a fast payment": {
-                  "value": {
-                    "amount": 10,
-                    "reason": "Invoice 123",
-                    "method": "IFCCTRNS",
-                    "currency": "EUR",
-                    "ledger": {
-                      "id": "9e51441c-de1a-4638-ba3a-6394f45b6b99"
-                    },
-                    "beneficiary": {
-                      "id": "497f6eca-6276-4993-bfeb-53cbbbba6f08"
-                    }
+                    "beneficiary_id": "0966b4e3-89a4-46ca-95e1-b834e0a0f434",
+                    "ledger_id": "2b870cf2-94c3-46a1-924d-c8179db63d1d",
+                    "reason": "test",
+                    "amount": 2,
+                    "method": "FAST",
+                    "currency": "EUR"
                   }
                 }
               }
             }
           },
-          "description": "Create a new payment"
+          "description": "Post a new payment "
         },
         "tags": [
           "Payment"
