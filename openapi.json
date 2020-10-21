@@ -373,7 +373,8 @@
             },
             "in": "query",
             "name": "mode",
-            "description": "Filters mode of transaction"
+            "description": "Filters mode of transaction",
+            "required": true
           },
           {
             "schema": {
