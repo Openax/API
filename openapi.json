@@ -574,8 +574,8 @@
                 "examples": {
                   "example canceled": {
                     "value": {
-                      "id": "",
-                      "status": ""
+                      "id": "7f475b3e-fe0e-4565-8cfc-6b518b991f1f",
+                      "status": "canceled"
                     }
                   }
                 }
@@ -597,7 +597,7 @@
             "description": "Created"
           }
         },
-        "description": "Endpoint to delete a payment",
+        "description": "Endpoint to delete a payment\n\nOnly for payments with status pending",
         "tags": [
           "Payment"
         ]
