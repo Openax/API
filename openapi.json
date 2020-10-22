@@ -908,118 +908,6 @@
         }
       ]
     },
-    "/api/beneficiary/update/{id}": {
-      "parameters": [
-        {
-          "schema": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "name": "id",
-          "in": "path",
-          "required": true,
-          "description": "Id of the beneficiary to update"
-        }
-      ],
-      "post": {
-        "summary": "Update a beneficiary",
-        "operationId": "updateBeneficiaryById",
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        },
-        "description": "Endpoint to update a beneficiary",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "iban": {
-                    "type": "string"
-                  },
-                  "bank_address": {
-                    "type": "string"
-                  },
-                  "bank_account_holder_name": {
-                    "type": "string"
-                  },
-                  "bank_name": {
-                    "type": "string"
-                  },
-                  "first_name": {
-                    "type": "string"
-                  },
-                  "last_name": {
-                    "type": "string"
-                  },
-                  "bic": {
-                    "type": "string"
-                  },
-                  "address": {
-                    "type": "string"
-                  },
-                  "city": {
-                    "type": "string"
-                  },
-                  "type": {
-                    "type": "string"
-                  },
-                  "bank_country": {
-                    "type": "string"
-                  },
-                  "currency": {
-                    "type": "string"
-                  },
-                  "company_name": {
-                    "type": "string"
-                  }
-                }
-              },
-              "examples": {
-                "Individual update": {
-                  "value": {
-                    "iban": "GB10OPEX00993074774433",
-                    "bank_address": "45 KING WILLIAM STREET REGIS HOUSE FLOOR 2",
-                    "bank_account_holder_name": "John Doe",
-                    "bank_name": "Openax Limited",
-                    "first_name": "John",
-                    "last_name": "Doe",
-                    "bic": "OPEXGB2LXXX",
-                    "name": "John",
-                    "address": "12 King street",
-                    "city": "London",
-                    "type": "individual",
-                    "bank_country": "UK",
-                    "currency": "EUR"
-                  }
-                },
-                "Corporate update": {
-                  "value": {
-                    "iban": "GB55OPEX00993010899608",
-                    "bank_address": "45 KING WILLIAM STREET REGIS HOUSE FLOOR 2",
-                    "bank_name": "Openax Limited",
-                    "company_name": "Smith Co.",
-                    "bic": "OPEXGB2LXXX",
-                    "name": "Smith",
-                    "address": "123 King street",
-                    "city": "London",
-                    "type": "corporate",
-                    "bank_country": "UK",
-                    "currency": "EUR"
-                  }
-                }
-              }
-            }
-          },
-          "description": "Update to do to the specified beneficiary"
-        },
-        "tags": [
-          "Beneficiary"
-        ]
-      }
-    },
     "/api/beneficiary/add": {
       "post": {
         "summary": "Create a Beneficiary",
@@ -1055,6 +943,9 @@
                               },
                               "bic": {
                                 "type": "string"
+                              },
+                              "currency": {
+                                "type": "string"
                               }
                             }
                           },
@@ -1065,6 +956,9 @@
                               },
                               "sort_code": {
                                 "type": "string"
+                              },
+                              "currency": {
+                                "type": "string"
                               }
                             }
                           }
@@ -1074,7 +968,22 @@
                     }
                   }
                 },
-                "examples": {}
+                "examples": {
+                  "example-1": {
+                    "value": {
+                      "type": "string",
+                      "company_name": "string",
+                      "first_name": "string",
+                      "last_name": "string",
+                      "accounts": [
+                        {
+                          "iban": "string",
+                          "bic": "string"
+                        }
+                      ]
+                    }
+                  }
+                }
               }
             }
           },
@@ -1104,30 +1013,63 @@
                   "last_name": {
                     "type": "string"
                   },
-                  "account": {
-                    "oneOf": [
-                      {
-                        "properties": {
-                          "iban ": {
-                            "type": "string"
-                          },
-                          "bic": {
-                            "type": "string"
-                          }
-                        }
-                      },
-                      {
-                        "properties": {
-                          "account_no": {
-                            "type": "string"
-                          },
-                          "bic": {
-                            "type": "string"
-                          }
-                        }
+                  "address": {
+                    "type": "object",
+                    "properties": {
+                      "street_line1": {
+                        "type": "string"
                       }
-                    ],
-                    "type": "object"
+                    }
+                  },
+                  "account": {
+                    "type": "array",
+                    "items": {
+                      "anyOf": [
+                        {
+                          "description": "fields for IBAN countries:",
+                          "properties": {
+                            "iban": {
+                              "type": "string"
+                            },
+                            "bic": {
+                              "type": "string"
+                            },
+                            "currency": {
+                              "type": "string"
+                            }
+                          }
+                        },
+                        {
+                          "description": "fields for UK GBP accounts:",
+                          "properties": {
+                            "account_no": {
+                              "type": "string"
+                            },
+                            "sort_code": {
+                              "type": "string"
+                            },
+                            "currency": {
+                              "type": "string"
+                            }
+                          }
+                        },
+                        {
+                          "properties": {
+                            "account_no": {
+                              "type": "string"
+                            },
+                            "routing_number": {
+                              "type": "string"
+                            },
+                            "currency": {
+                              "type": "string"
+                            }
+                          },
+                          "description": "fields for US USD accounts:"
+                        }
+                      ],
+                      "type": "object"
+                    }
                   }
                 }
               },
@@ -1138,18 +1080,21 @@
                     "company_name": "string",
                     "first_name": "string",
                     "last_name": "string",
-                    "account_no": "string",
-                    "sort_code": "string"
-                  }
-                },
-                "example-2": {
-                  "value": {
-                    "type": "string",
-                    "company_name": "string",
-                    "first_name": "string",
-                    "last_name": "string",
-                    "iban ": "string",
-                    "bic": "string"
+                    "address": {
+                      "street_line1": "string"
+                    },
+                    "account": [
+                      {
+                        "iban": "string",
+                        "bic": "string",
+                        "currency": "string"
+                      },
+                      {
+                        "account_no": "string",
+                        "bic": "string",
+                        "currency": "string"
+                      }
+                    ]
                   }
                 }
               }
