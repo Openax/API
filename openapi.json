@@ -1435,28 +1435,809 @@
         }
       ]
     },
-    "/api/mandate": {
+    "/api/mandate/{id}": {
       "get": {
         "summary": "Get one mandate",
         "tags": [
           "mandate"
         ],
-        "responses": {},
-        "operationId": "get-api-mandate"
-      },
-      "post": {
-        "summary": "Create new mandate",
-        "operationId": "post-api-mandate",
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "description": "",
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "type": {
+                      "type": "string",
+                      "minLength": 1,
+                      "enum": [
+                        "OOFF",
+                        "RCUR"
+                      ]
+                    },
+                    "code_tel": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "id": {
+                      "type": "string",
+                      "minLength": 1,
+                      "format": "uuid"
+                    },
+                    "created_at": {
+                      "type": "string",
+                      "minLength": 1,
+                      "format": "date-time"
+                    },
+                    "updated_at": {
+                      "type": "string",
+                      "minLength": 1,
+                      "format": "date-time"
+                    },
+                    "schema_id": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "name": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "iban": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "bic": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "email": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "signature_date": {
+                      "type": "string",
+                      "minLength": 1,
+                      "format": "date"
+                    },
+                    "phone": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "reference": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "currency": {
+                      "type": "string",
+                      "minLength": 1,
+                      "description": "three letter ISO code"
+                    }
+                  },
+                  "required": [
+                    "status",
+                    "type",
+                    "code_tel",
+                    "id",
+                    "created_at",
+                    "updated_at",
+                    "schema_id",
+                    "name",
+                    "iban",
+                    "bic",
+                    "email",
+                    "signature_date",
+                    "phone",
+                    "reference",
+                    "currency"
+                  ]
+                },
+                "examples": {
+                  "example-1": {
+                    "value": {
+                      "status": "new",
+                      "type": "RCUR",
+                      "code_tel": "33",
+                      "id": "6b5c84a4-611e-4de1-99bf-1810859e0e4e",
+                      "created_at": "2020-12-07T14:27:40.604Z",
+                      "updated_at": "2020-12-07T14:27:40.604Z",
+                      "schema_id": "LT02ZZZ777777000",
+                      "name": "Debitor Name",
+                      "iban": "MT61PYMX09014000000407910100001",
+                      "bic": "XPAYLT20XXX",
+                      "email": "example@example.com",
+                      "signature_date": "2020-11-15",
+                      "phone": "609090541",
+                      "reference": "mandate-number-one",
+                      "currency": "EUR"
+                    }
+                  }
+                }
+              }
+            }
           }
         },
-        "description": "",
+        "operationId": "get-api-mandate",
+        "description": "endpoint to return one mandate"
+      },
+      "parameters": [
+        {
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "description": "Id of the Mandate to return"
+        }
+      ]
+    },
+    "/api/mandate/add": {
+      "post": {
+        "summary": "Create new mandate",
+        "operationId": "post-api-mandate-add",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "description": "",
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "minLength": 1,
+                      "format": "uuid"
+                    },
+                    "status": {
+                      "type": "string",
+                      "minLength": 1
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "status"
+                  ]
+                },
+                "examples": {
+                  "example-1": {
+                    "value": {
+                      "id": "94737c2a-72bb-4a46-a74f-51e9bbb07358",
+                      "status": "new"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
         "tags": [
           "mandate"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "description": "",
+                "type": "object",
+                "properties": {
+                  "iban": {
+                    "type": "string",
+                    "minLength": 1,
+                    "description": "Debitor Iban"
+                  },
+                  "bic": {
+                    "type": "string",
+                    "minLength": 1,
+                    "description": "Debitor Bic"
+                  },
+                  "name": {
+                    "type": "string",
+                    "minLength": 1,
+                    "description": "Debitor Name"
+                  },
+                  "signature_date": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "schema_id": {
+                    "type": "string",
+                    "minLength": 1,
+                    "description": "Your Creditor Scheme ID"
+                  },
+                  "reference": {
+                    "type": "string",
+                    "minLength": 1,
+                    "description": "Your Unique reference for this mandate"
+                  },
+                  "type": {
+                    "type": "string",
+                    "minLength": 1,
+                    "enum": [
+                      "OOFF",
+                      "RCUR"
+                    ]
+                  },
+                  "email": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "code_tel": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "phone": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "currency": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "iban",
+                  "bic",
+                  "name",
+                  "signature_date",
+                  "schema_id",
+                  "reference",
+                  "type",
+                  "email",
+                  "code_tel",
+                  "phone",
+                  "currency"
+                ]
+              },
+              "examples": {
+                "example-1": {
+                  "value": {
+                    "iban": "MT61PYMX09014000000407910100001",
+                    "bic": "XPAYLT20XXX",
+                    "name": "Debitor Name",
+                    "signature_date": "2020-11-15",
+                    "schema_id": "LT02ZZZ777777000",
+                    "reference": "mandate-number-one",
+                    "type": "RCUR",
+                    "email": "example@example.com",
+                    "code_tel": "33",
+                    "phone": "609090541",
+                    "currency": "EUR"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/directdebit/add": {
+      "post": {
+        "summary": "Create new direct debit",
+        "operationId": "post-api-directdebit-add",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "description": "",
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "minLength": 1,
+                      "format": "uuid"
+                    },
+                    "status": {
+                      "type": "string",
+                      "minLength": 1
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "status"
+                  ]
+                },
+                "examples": {
+                  "example-1": {
+                    "value": {
+                      "id": "2ede111a-8611-4100-8a3f-e35cfa5b7965",
+                      "status": "new"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "description": "",
+                "type": "object",
+                "properties": {
+                  "mandate_id": {
+                    "type": "string",
+                    "minLength": 1,
+                    "format": "uuid"
+                  },
+                  "ledger_id": {
+                    "type": "string",
+                    "minLength": 1,
+                    "format": "uuid"
+                  },
+                  "iban_id": {
+                    "type": "string",
+                    "minLength": 1,
+                    "format": "uuid"
+                  },
+                  "currency": {
+                    "type": "string",
+                    "minLength": 1,
+                    "description": "three letter ISO code"
+                  },
+                  "amount": {
+                    "type": "number"
+                  },
+                  "collection_date": {
+                    "type": "string",
+                    "minLength": 1,
+                    "format": "date"
+                  },
+                  "reason": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                },
+                "required": [
+                  "mandate_id",
+                  "ledger_id",
+                  "iban_id",
+                  "currency",
+                  "amount",
+                  "collection_date",
+                  "reason"
+                ]
+              },
+              "examples": {
+                "example-1": {
+                  "value": {
+                    "mandate_id": "9c47f0be-72b8-4c07-8a43-7d9dbd4ad78b",
+                    "ledger_id": "ba6c2e77-7d5d-4a1e-936e-e524bb7cb1ea",
+                    "iban_id": "d92198b0-9087-4381-aa8f-169f7e9d6d47",
+                    "currency": "EUR",
+                    "amount": 3,
+                    "collection_date": "2020-12-07",
+                    "reason": "Invoice 25"
+                  }
+                }
+              }
+            }
+          },
+          "description": ""
+        },
+        "tags": [
+          "Direct Debit"
         ]
       }
+    },
+    "/api/mandates": {
+      "get": {
+        "summary": "Get all mandates",
+        "tags": [
+          "mandate"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "description": "",
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "uniqueItems": true,
+                      "minItems": 1,
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "status": {
+                            "type": "string",
+                            "minLength": 1
+                          },
+                          "type": {
+                            "type": "string",
+                            "minLength": 1,
+                            "enum": [
+                              "OOFF",
+                              "RCUR"
+                            ]
+                          },
+                          "id": {
+                            "type": "string",
+                            "minLength": 1,
+                            "format": "uuid"
+                          },
+                          "created_at": {
+                            "type": "string",
+                            "minLength": 1,
+                            "format": "date-time"
+                          },
+                          "name": {
+                            "type": "string",
+                            "minLength": 1
+                          },
+                          "iban": {
+                            "type": "string",
+                            "minLength": 1
+                          },
+                          "bic": {
+                            "type": "string",
+                            "minLength": 1
+                          },
+                          "signature_date": {
+                            "type": "string",
+                            "minLength": 1
+                          },
+                          "reference": {
+                            "type": "string",
+                            "minLength": 1
+                          },
+                          "currency": {
+                            "type": "string",
+                            "minLength": 1
+                          }
+                        },
+                        "required": [
+                          "status",
+                          "type",
+                          "id",
+                          "created_at",
+                          "name",
+                          "iban",
+                          "bic",
+                          "signature_date",
+                          "reference",
+                          "currency"
+                        ]
+                      }
+                    },
+                    "count": {
+                      "type": "number"
+                    },
+                    "per_page": {
+                      "type": "number"
+                    },
+                    "page": {
+                      "type": "number"
+                    },
+                    "page_count": {
+                      "type": "number"
+                    }
+                  },
+                  "required": [
+                    "data",
+                    "count",
+                    "per_page",
+                    "page",
+                    "page_count"
+                  ]
+                },
+                "examples": {
+                  "example-1": {
+                    "value": {
+                      "data": [
+                        {
+                          "status": "new",
+                          "type": "RCUR",
+                          "id": "6b5c84a4-611e-4de1-99bf-1810859e0e4e",
+                          "created_at": "2020-12-07T14:27:40.604Z",
+                          "name": "Debitor Name",
+                          "iban": "MT61PYMX09014000000407910100001",
+                          "bic": "XPAYLT20XXX",
+                          "signature_date": "2020-11-15",
+                          "reference": "mandate-number-one",
+                          "currency": "EUR"
+                        },
+                        {
+                          "status": "new",
+                          "type": "OOFF",
+                          "id": "0ff3492d-28b9-4225-8895-b55643454388",
+                          "created_at": "2020-12-07T14:27:31.940Z",
+                          "name": "Debitor Name",
+                          "iban": "MT61PYMX09014000000407910100001",
+                          "bic": "XPAYLT20XXX",
+                          "signature_date": "2020-11-14",
+                          "reference": "mandate-number-two",
+                          "currency": "EUR"
+                        }
+                      ],
+                      "count": 2,
+                      "per_page": 10,
+                      "page": 1,
+                      "page_count": 1
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "operationId": "get-api-mandates",
+        "description": "Endpoint to return all your mandates"
+      }
+    },
+    "/api/directdebits": {
+      "get": {
+        "summary": "Get all direct debit",
+        "tags": [
+          "Direct Debit"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "description": "",
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "uniqueItems": true,
+                      "minItems": 1,
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "status": {
+                            "type": "string",
+                            "minLength": 1
+                          },
+                          "id": {
+                            "type": "string",
+                            "minLength": 1,
+                            "format": "uuid"
+                          },
+                          "created_at": {
+                            "type": "string",
+                            "minLength": 1,
+                            "format": "date-time"
+                          },
+                          "amount": {
+                            "type": "string",
+                            "minLength": 1
+                          },
+                          "reason": {
+                            "type": "string",
+                            "minLength": 1
+                          },
+                          "collection_date": {
+                            "type": "string",
+                            "minLength": 1,
+                            "format": "date"
+                          },
+                          "settlement_date": {
+                            "type": "string",
+                            "format": "date"
+                          },
+                          "name": {
+                            "type": "string",
+                            "minLength": 1
+                          },
+                          "reference": {
+                            "type": "string",
+                            "minLength": 1
+                          },
+                          "currency": {
+                            "type": "string",
+                            "minLength": 1
+                          }
+                        },
+                        "required": [
+                          "status",
+                          "id",
+                          "created_at",
+                          "amount",
+                          "reason",
+                          "collection_date",
+                          "name",
+                          "reference",
+                          "currency"
+                        ]
+                      }
+                    },
+                    "count": {
+                      "type": "number"
+                    },
+                    "per_page": {
+                      "type": "number"
+                    },
+                    "page": {
+                      "type": "number"
+                    },
+                    "page_count": {
+                      "type": "number"
+                    }
+                  },
+                  "required": [
+                    "data",
+                    "count",
+                    "per_page",
+                    "page",
+                    "page_count"
+                  ]
+                },
+                "examples": {
+                  "example-1": {
+                    "value": {
+                      "data": [
+                        {
+                          "status": "new",
+                          "id": "2ede111a-8611-4100-8a3f-e35cfa5b7965",
+                          "created_at": "2020-12-07T13:56:01.731Z",
+                          "amount": "3",
+                          "reason": "Invoice 25",
+                          "collection_date": "2020-12-07",
+                          "settlement_date": "2020-12-07",
+                          "name": "Debitor Name",
+                          "reference": "mandate-number-one",
+                          "currency": "EUR"
+                        },
+                        {
+                          "status": "new",
+                          "id": "a4317636-ac8f-46a8-90ee-9a093edeb256",
+                          "created_at": "2020-12-07T13:55:33.253Z",
+                          "amount": "3",
+                          "reason": "Invoice 25",
+                          "collection_date": "2020-12-07",
+                          "settlement_date": "2020-12-07",
+                          "name": "Debitor Name",
+                          "reference": "mandate-number-two",
+                          "currency": "EUR"
+                        }
+                      ],
+                      "count": 2,
+                      "per_page": 10,
+                      "page": 1,
+                      "page_count": 1
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "operationId": "get-api-directdebits"
+      }
+    },
+    "/api/directdebit/{id}": {
+      "get": {
+        "summary": "Get one direct debit",
+        "tags": [
+          "Direct Debit"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "description": "",
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "id": {
+                      "type": "string",
+                      "minLength": 1,
+                      "format": "uuid"
+                    },
+                    "created_at": {
+                      "type": "string",
+                      "minLength": 1,
+                      "format": "date-time"
+                    },
+                    "updated_at": {
+                      "type": "string",
+                      "minLength": 1,
+                      "format": "date-time"
+                    },
+                    "amount": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "reason": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "collection_date": {
+                      "type": "string",
+                      "minLength": 1,
+                      "format": "date"
+                    },
+                    "settlement_date": {
+                      "type": "string",
+                      "format": "date"
+                    },
+                    "info": {
+                      "type": "string"
+                    },
+                    "name": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "reference": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "currency": {
+                      "type": "string",
+                      "minLength": 1
+                    }
+                  },
+                  "required": [
+                    "status",
+                    "id",
+                    "created_at",
+                    "updated_at",
+                    "amount",
+                    "reason",
+                    "collection_date",
+                    "name",
+                    "reference",
+                    "currency"
+                  ]
+                },
+                "examples": {
+                  "example-1": {
+                    "value": {
+                      "status": "in_progress",
+                      "id": "2ede111a-8611-4100-8a3f-e35cfa5b7965",
+                      "created_at": "2020-12-07T13:56:01.731Z",
+                      "updated_at": "2020-12-07T13:56:01.731Z",
+                      "amount": "3",
+                      "reason": "Invoice 25",
+                      "collection_date": "2020-12-07",
+                      "settlement_date": "2020-12-07",
+                      "info": "ready to send",
+                      "name": "Debitor Name",
+                      "reference": "mandate-number-one",
+                      "currency": "EUR"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "operationId": "get-api-directdebit",
+        "description": "Endpoint to return one direct debit"
+      },
+      "parameters": [
+        {
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "description": "ID of the direct debit to return"
+        }
+      ]
     }
   },
   "components": {
@@ -1902,6 +2683,9 @@
     },
     {
       "name": "mandate"
+    },
+    {
+      "name": "Direct Debit"
     }
   ]
 }
