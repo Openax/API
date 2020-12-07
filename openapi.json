@@ -107,42 +107,95 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/arrayOfBeneficiaries"
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "type": {
+                            "type": "string"
+                          },
+                          "id": {
+                            "type": "string"
+                          },
+                          "created_at": {
+                            "type": "string"
+                          },
+                          "updated_at": {
+                            "type": "string"
+                          },
+                          "iban": {
+                            "type": "string"
+                          },
+                          "company_name": {
+                            "type": "string"
+                          },
+                          "first_name": {
+                            "type": "string"
+                          },
+                          "last_name": {
+                            "type": "string"
+                          },
+                          "bic": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
                 },
                 "examples": {
                   "All beneficiaries": {
-                    "value": [
-                      {
-                        "id": "537f6eca-6276-4993-bfeb-53cbbbba6d19",
-                        "iban": "GB55OPEX00993010899608",
-                        "bank_address": "45 KING WILLIAM STREET REGIS HOUSE FLOOR 2",
-                        "bank_name": "Openax Limited",
-                        "company_name": "Smith Co.",
-                        "bic": "OPEXGB2LXXX",
-                        "name": "Smith",
-                        "address": "123 King street",
-                        "city": "London",
-                        "type": "corporate",
-                        "bank_country": "UK",
-                        "currency": "EUR"
-                      },
-                      {
-                        "id": "497f6eca-6276-4993-bfeb-53cbbbba6f08",
-                        "iban": "GB10OPEX00993074774433",
-                        "bank_address": "45 KING WILLIAM STREET REGIS HOUSE FLOOR 2",
-                        "bank_account_holder_name": "John Doe",
-                        "bank_name": "Openax Limited",
-                        "first_name": "John",
-                        "last_name": "Doe",
-                        "bic": "OPEXGB2LXXX",
-                        "name": "John",
-                        "address": "123 King street",
-                        "city": "London",
-                        "type": "individual",
-                        "bank_country": "UK",
-                        "currency": "EUR"
-                      }
-                    ]
+                    "value": {
+                      "data": [
+                        {
+                          "type": "individual",
+                          "id": "139478be-65f3-46b5-9804-03dcf87dcdc1",
+                          "created_at": "2020-03-26T11:37:40.838Z",
+                          "updated_at": "2020-03-26T11:42:39.483Z",
+                          "iban": "FR4817569000306869458164C35",
+                          "first_name": "test67",
+                          "last_name": "test67",
+                          "name": "test67",
+                          "bic": "UCJAES2MXXX",
+                          "Currency": {
+                            "symbol": "EUR"
+                          }
+                        },
+                        {
+                          "type": "corporate",
+                          "id": "a2551ac6-23b2-4eb4-8426-6b66af13112e",
+                          "created_at": "2020-03-25T17:05:07.808Z",
+                          "updated_at": "2020-03-25T17:05:07.808Z",
+                          "iban": "NL11INGB8284009536",
+                          "company_name": "test43",
+                          "name": "test43",
+                          "bic": "ABNACHZ8XXX",
+                          "Currency": {
+                            "symbol": "EUR"
+                          }
+                        },
+                        {
+                          "type": "corporate",
+                          "id": "0ab9eaa0-8cf7-43bc-a8b4-a3e2a43d8c26",
+                          "created_at": "2020-03-26T11:42:20.544Z",
+                          "updated_at": "2020-03-26T11:42:20.544Z",
+                          "iban": "FR4817569000306869458164C35",
+                          "company_name": "test68",
+                          "name": "test68",
+                          "bic": "COBADEFF060",
+                          "Currency": {
+                            "symbol": "EUR"
+                          }
+                        }
+                      ],
+                      "count": 68,
+                      "per_page": 3,
+                      "page": 1,
+                      "page_count": 23
+                    }
                   }
                 }
               }
@@ -289,7 +342,7 @@
                     "value": {
                       "data": [
                         {
-                          "id": "7f475b3e-fe0e-4565-8cfc-6b518bli1f1f",
+                          "id": "c9e14780-a4c8-41f4-ae0f-a2d857850f64",
                           "type": "debit",
                           "status": "completed",
                           "created_at": "2020-04-01T20:02:50.810Z",
@@ -410,73 +463,7 @@
             "description": "record to begin with (start at 0)"
           }
         ],
-        "description": "Endpoint to retrieve all transactions\nPagination is supported. You receive a limit of 25 records per request. In the response you receive  the count of records, so you can send the next request with the query param begin with the correct value",
-        "tags": [
-          "Transaction"
-        ]
-      }
-    },
-    "/api/transaction/{id}": {
-      "get": {
-        "summary": "Find transaction by ID",
-        "operationId": "getTransactionById",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "description": "ID of transaction to return",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuidv4"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "successful operation",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/transaction"
-                },
-                "examples": {
-                  "Transaction debit": {
-                    "value": {
-                      "id": "b3a0dd34-6cf0-43d8-bca5-f56a58671c6a",
-                      "type": "debit",
-                      "status": "completed",
-                      "reason": "Invoice 123",
-                      "amount": 10,
-                      "method": "FFCCTRNS",
-                      "old_balance": 90,
-                      "currency": "EUR"
-                    }
-                  },
-                  "Transaction credit": {
-                    "value": {
-                      "id": "3383dbd0-cbc9-4005-a00d-834d691e918f",
-                      "type": "credit",
-                      "status": "completed",
-                      "reason": "Invoice 965",
-                      "amount": 15,
-                      "method": "FFCCTRNS",
-                      "old_balance": 90,
-                      "currency": "EUR"
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid ID supplied"
-          },
-          "404": {
-            "description": "Transaction not found"
-          }
-        },
-        "description": "Endpoint to retrieve one transaction by Id",
+        "description": "Endpoint to retrieve all transactions\n\nPagination is supported. You receive a limit of 25 records per request. In the response you receive  the count of records, so you can send the next request with the query param begin with the correct value in order to get the next records",
         "tags": [
           "Transaction"
         ]
@@ -484,7 +471,7 @@
     },
     "/api/payments": {
       "get": {
-        "summary": "get all payments",
+        "summary": "Get all payments",
         "operationId": "getAllPayments",
         "responses": {
           "200": {
@@ -492,7 +479,116 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/arrayOfPayments"
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string",
+                            "format": "uuid"
+                          },
+                          "status": {
+                            "type": "string",
+                            "enum": [
+                              "send",
+                              "completed",
+                              "error",
+                              "refused",
+                              "pending"
+                            ]
+                          },
+                          "method": {
+                            "type": "string",
+                            "enum": [
+                              "SWIFT",
+                              "SEPA",
+                              "FAST"
+                            ]
+                          },
+                          "created_at": {
+                            "type": "string",
+                            "format": "date-time"
+                          },
+                          "amount": {
+                            "type": "number"
+                          },
+                          "beneficiary_id": {
+                            "type": "string",
+                            "format": "uuid"
+                          },
+                          "ledger_id": {
+                            "type": "string",
+                            "format": "uuid"
+                          },
+                          "currency": {
+                            "type": "string",
+                            "description": "3 letters ISO code"
+                          },
+                          "date": {
+                            "type": "string",
+                            "format": "date",
+                            "example": "2020-06-01"
+                          },
+                          "reference": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    },
+                    "count": {
+                      "type": "number"
+                    },
+                    "per_page": {
+                      "type": "number"
+                    },
+                    "page": {
+                      "type": "number"
+                    },
+                    "page_count": {
+                      "type": "number"
+                    }
+                  }
+                },
+                "examples": {
+                  "All Payments": {
+                    "value": {
+                      "data": [
+                        {
+                          "status": "completed",
+                          "method": "SEPA",
+                          "id": "201c6e0f-c720-4fe1-a318-fef451ab0af1",
+                          "created_at": "2020-03-24T09:00:22.859Z",
+                          "reason": "Invoice 123456 Smith Co.",
+                          "amount": 4,
+                          "date": "2020-03-25",
+                          "beneficiary_id": "023a0383-ccb0-48ee-ab2b-2d640e57c380",
+                          "ledger_id": "0a88b35a-2652-46d9-9954-335c2d9b47f8",
+                          "currency": "EUR",
+                          "reference": "Invoice 12345"
+                        },
+                        {
+                          "status": "completed",
+                          "method": "FAST",
+                          "id": "77a5d560-d131-44d6-be19-85ac6110f3db",
+                          "created_at": "2020-03-26T11:38:06.119Z",
+                          "reason": "Invoice 554412 John Co.",
+                          "amount": 4,
+                          "date": "2020-03-26",
+                          "beneficiary_id": "139478be-65f3-46b5-9804-03dcf87dcdc1",
+                          "ledger_id": "9e51441c-de1a-4638-ba3a-6394f45b6b99",
+                          "currency": "EUR",
+                          "reference": "Invoice 58845"
+                        }
+                      ],
+                      "count": 2,
+                      "per_page": 25,
+                      "page": 1,
+                      "page_count": 1
+                    }
+                  }
                 }
               }
             }
@@ -504,8 +600,117 @@
             "description": "No payments found"
           }
         },
-        "parameters": [],
-        "description": "Endpoint to get all payments",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "format": "date",
+              "example": "2020-06-01"
+            },
+            "in": "query",
+            "name": "from",
+            "description": "filters crated_at"
+          },
+          {
+            "schema": {
+              "type": "string",
+              "example": "2020-06-01"
+            },
+            "in": "query",
+            "name": "to",
+            "description": "filters created_at"
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "query",
+            "name": "begin",
+            "description": "record to begin with (start at 0)"
+          },
+          {
+            "schema": {
+              "type": "string",
+              "enum": [
+                "SWIFT",
+                "SEPA",
+                "FAST"
+              ]
+            },
+            "in": "query",
+            "name": "method",
+            "description": "filters method"
+          },
+          {
+            "schema": {
+              "type": "string",
+              "enum": [
+                "send",
+                "completed",
+                "error",
+                "pending",
+                "refused"
+              ]
+            },
+            "in": "query",
+            "name": "status",
+            "description": "filters status"
+          },
+          {
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "in": "query",
+            "name": "beneficiary",
+            "description": "filters beneficiary"
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "query",
+            "name": "ledger",
+            "description": "filters ledger"
+          },
+          {
+            "schema": {
+              "type": "number"
+            },
+            "in": "query",
+            "name": "amount",
+            "description": "filters amount"
+          },
+          {
+            "schema": {
+              "type": "string",
+              "example": "EUR"
+            },
+            "in": "query",
+            "name": "currency",
+            "description": "filters currency 3 letters currency code"
+          },
+          {
+            "schema": {
+              "type": "string",
+              "example": "2020-06-01",
+              "format": "date"
+            },
+            "in": "query",
+            "name": "date",
+            "description": "filters date"
+          },
+          {
+            "schema": {
+              "type": "string",
+              "example": "Invoice 264545"
+            },
+            "in": "query",
+            "name": "reference",
+            "description": "filters reference"
+          }
+        ],
+        "description": "Endpoint to get all payments\n\nPagination is supported. You receive a limit of 25 records per request. In the response you receive  the count of records, so you can send the next request with the query param begin with the correct value in order to get the next records",
         "tags": [
           "Payment"
         ]
@@ -515,41 +720,128 @@
       "get": {
         "summary": "Find payment by ID",
         "operationId": "getPaymentById",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "description": "ID of payment to return",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuidv4"
-            }
-          }
-        ],
         "responses": {
           "200": {
             "description": "successful operation",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/payment"
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "beneficiary_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "ledger_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "reason": {
+                      "type": "string"
+                    },
+                    "amount": {
+                      "type": "number"
+                    },
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "send",
+                        "pending",
+                        "completed",
+                        "refused",
+                        "error"
+                      ]
+                    },
+                    "method": {
+                      "type": "string",
+                      "enum": [
+                        "SWIFT",
+                        "SEPA",
+                        "FAST"
+                      ]
+                    },
+                    "date": {
+                      "type": "string",
+                      "format": "date",
+                      "example": "2020-06-01"
+                    },
+                    "currency": {
+                      "type": "string",
+                      "description": "3 letters ISO code",
+                      "example": "EUR"
+                    },
+                    "reference": {
+                      "type": "string"
+                    },
+                    "created_at": {
+                      "type": "string",
+                      "format": "date-time"
+                    }
+                  }
+                },
+                "examples": {
+                  "One payment": {
+                    "value": {
+                      "id": "d6dd1c83-531d-4cab-ba7b-60f77c6c5519",
+                      "beneficiary_id": "0966b4e3-89a4-46ca-95e1-b834e0a0f434",
+                      "ledger_id": "2b870cf2-94c3-46a1-924d-c8179db63d1d",
+                      "reason": "test",
+                      "amount": 2,
+                      "method": "SEPA",
+                      "status": "pending",
+                      "date": "2020-10-18",
+                      "currency": "EUR",
+                      "created_at": "2020-04-01T20:02:54.520Z",
+                      "reference": "Invoice 123 Smith Co."
+                    }
+                  }
                 }
               }
             }
           },
-          "400": {
-            "description": "Invalid ID supplied"
-          },
           "404": {
-            "description": "Payment not found"
+            "description": "Payment not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "examples": {
+                  "Not found": {
+                    "value": {
+                      "error": "Not found"
+                    }
+                  }
+                }
+              }
+            }
           }
         },
         "description": "Endpoint to get one payment by Id",
         "tags": [
           "Payment"
         ]
-      }
+      },
+      "parameters": [
+        {
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "name": "id",
+          "in": "path",
+          "required": true
+        }
+      ]
     },
     "/api/payment/canceled/{id}": {
       "delete": {
@@ -564,7 +856,8 @@
                   "type": "object",
                   "properties": {
                     "id": {
-                      "type": "string"
+                      "type": "string",
+                      "format": "uuid"
                     },
                     "status": {
                       "type": "string"
@@ -574,8 +867,8 @@
                 "examples": {
                   "example canceled": {
                     "value": {
-                      "id": "",
-                      "status": ""
+                      "id": "7f475b3e-fe0e-4565-8cfc-6b518b991f1f",
+                      "status": "canceled"
                     }
                   }
                 }
@@ -597,23 +890,11 @@
             "description": "Created"
           }
         },
-        "description": "Endpoint to delete a payment",
+        "description": "Endpoint to delete a payment\n\nOnly for payments with status pending",
         "tags": [
           "Payment"
         ]
       },
-      "parameters": [
-        {
-          "schema": {
-            "type": "string"
-          },
-          "name": "id",
-          "in": "path",
-          "required": true
-        }
-      ]
-    },
-    "/api/beneficiary/update/{id}": {
       "parameters": [
         {
           "schema": {
@@ -623,107 +904,9 @@
           "name": "id",
           "in": "path",
           "required": true,
-          "description": "Id of the beneficiary to update"
+          "description": "Id of the payment to cancel"
         }
-      ],
-      "post": {
-        "summary": "Update a beneficiary",
-        "operationId": "updateBeneficiaryById",
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        },
-        "description": "Endpoint to update a beneficiary",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "iban": {
-                    "type": "string"
-                  },
-                  "bank_address": {
-                    "type": "string"
-                  },
-                  "bank_account_holder_name": {
-                    "type": "string"
-                  },
-                  "bank_name": {
-                    "type": "string"
-                  },
-                  "first_name": {
-                    "type": "string"
-                  },
-                  "last_name": {
-                    "type": "string"
-                  },
-                  "bic": {
-                    "type": "string"
-                  },
-                  "address": {
-                    "type": "string"
-                  },
-                  "city": {
-                    "type": "string"
-                  },
-                  "type": {
-                    "type": "string"
-                  },
-                  "bank_country": {
-                    "type": "string"
-                  },
-                  "currency": {
-                    "type": "string"
-                  },
-                  "company_name": {
-                    "type": "string"
-                  }
-                }
-              },
-              "examples": {
-                "Individual update": {
-                  "value": {
-                    "iban": "GB10OPEX00993074774433",
-                    "bank_address": "45 KING WILLIAM STREET REGIS HOUSE FLOOR 2",
-                    "bank_account_holder_name": "John Doe",
-                    "bank_name": "Openax Limited",
-                    "first_name": "John",
-                    "last_name": "Doe",
-                    "bic": "OPEXGB2LXXX",
-                    "name": "John",
-                    "address": "12 King street",
-                    "city": "London",
-                    "type": "individual",
-                    "bank_country": "UK",
-                    "currency": "EUR"
-                  }
-                },
-                "Corporate update": {
-                  "value": {
-                    "iban": "GB55OPEX00993010899608",
-                    "bank_address": "45 KING WILLIAM STREET REGIS HOUSE FLOOR 2",
-                    "bank_name": "Openax Limited",
-                    "company_name": "Smith Co.",
-                    "bic": "OPEXGB2LXXX",
-                    "name": "Smith",
-                    "address": "123 King street",
-                    "city": "London",
-                    "type": "corporate",
-                    "bank_country": "UK",
-                    "currency": "EUR"
-                  }
-                }
-              }
-            }
-          },
-          "description": "Update to do to the specified beneficiary"
-        },
-        "tags": [
-          "Beneficiary"
-        ]
-      }
+      ]
     },
     "/api/beneficiary/add": {
       "post": {
@@ -735,41 +918,69 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/beneficiary"
+                  "type": "object",
+                  "properties": {
+                    "type": {
+                      "type": "string"
+                    },
+                    "company_name": {
+                      "type": "string"
+                    },
+                    "first_name": {
+                      "type": "string"
+                    },
+                    "last_name": {
+                      "type": "string"
+                    },
+                    "accounts": {
+                      "type": "array",
+                      "items": {
+                        "anyOf": [
+                          {
+                            "properties": {
+                              "iban": {
+                                "type": "string"
+                              },
+                              "bic": {
+                                "type": "string"
+                              },
+                              "currency": {
+                                "type": "string"
+                              }
+                            }
+                          },
+                          {
+                            "properties": {
+                              "account_no": {
+                                "type": "string"
+                              },
+                              "sort_code": {
+                                "type": "string"
+                              },
+                              "currency": {
+                                "type": "string"
+                              }
+                            }
+                          }
+                        ],
+                        "type": "object"
+                      }
+                    }
+                  }
                 },
                 "examples": {
-                  "Individual beneficiary created": {
+                  "example-1": {
                     "value": {
-                      "id": "497f6eca-6276-4993-bfeb-53cbbbba6f08",
-                      "iban": "GB55OPEX00993010899608",
-                      "bank_address": "45 KING WILLIAM STREET REGIS HOUSE FLOOR 2",
-                      "bank_account_holder_name": "John Doe",
-                      "bank_name": "Openax Limited",
-                      "first_name": "John",
-                      "last_name": "Doe",
-                      "bic": "OPEXGB2LXXX",
-                      "name": "John",
-                      "address": "123 King street",
-                      "city": "London",
-                      "type": "individual",
-                      "bank_country": "UK",
-                      "currency": "EUR"
-                    }
-                  },
-                  "Corporate beneficiary created": {
-                    "value": {
-                      "id": "537f6eca-6276-4993-bfeb-53cbbbba6d19",
-                      "iban": "GB55OPEX00993010899608",
-                      "bank_address": "45 KING WILLIAM STREET REGIS HOUSE FLOOR 2",
-                      "bank_name": "Openax Limited",
-                      "company_name": "Smith Co.",
-                      "bic": "OPEXGB2LXXX",
-                      "name": "Smith",
-                      "address": "123 King street",
-                      "city": "London",
-                      "type": "corporate",
-                      "bank_country": "UK",
-                      "currency": "EUR"
+                      "type": "string",
+                      "company_name": "string",
+                      "first_name": "string",
+                      "last_name": "string",
+                      "accounts": [
+                        {
+                          "iban": "string",
+                          "bic": "string"
+                        }
+                      ]
                     }
                   }
                 }
@@ -790,90 +1001,100 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "iban": {
-                    "type": "string"
-                  },
-                  "bank_address": {
-                    "type": "string"
-                  },
-                  "bank_name": {
+                  "type": {
                     "type": "string"
                   },
                   "company_name": {
-                    "type": "string",
-                    "description": "must be present when type is corporate"
-                  },
-                  "first_name": {
-                    "type": "string",
-                    "description": "must be present only when type is individual"
-                  },
-                  "last_name": {
-                    "type": "string",
-                    "description": "must be present only when type is individual"
-                  },
-                  "bic": {
                     "type": "string"
                   },
-                  "name": {
+                  "first_name": {
+                    "type": "string"
+                  },
+                  "last_name": {
                     "type": "string"
                   },
                   "address": {
-                    "type": "string"
+                    "type": "object",
+                    "properties": {
+                      "street_line1": {
+                        "type": "string"
+                      }
+                    }
                   },
-                  "city": {
-                    "type": "string"
-                  },
-                  "type": {
-                    "type": "string",
-                    "enum": [
-                      "individual",
-                      "corporate"
-                    ]
-                  },
-                  "bank_country": {
-                    "type": "string"
-                  },
-                  "currency": {
-                    "type": "string"
+                  "account": {
+                    "type": "array",
+                    "items": {
+                      "anyOf": [
+                        {
+                          "description": "fields for IBAN countries:",
+                          "properties": {
+                            "iban": {
+                              "type": "string"
+                            },
+                            "bic": {
+                              "type": "string"
+                            },
+                            "currency": {
+                              "type": "string"
+                            }
+                          }
+                        },
+                        {
+                          "description": "fields for UK GBP accounts:",
+                          "properties": {
+                            "account_no": {
+                              "type": "string"
+                            },
+                            "sort_code": {
+                              "type": "string"
+                            },
+                            "currency": {
+                              "type": "string"
+                            }
+                          }
+                        },
+                        {
+                          "properties": {
+                            "account_no": {
+                              "type": "string"
+                            },
+                            "routing_number": {
+                              "type": "string"
+                            },
+                            "currency": {
+                              "type": "string"
+                            }
+                          },
+                          "description": "fields for US USD accounts:"
+                        }
+                      ],
+                      "type": "object"
+                    }
                   }
-                },
-                "required": [
-                  "iban",
-                  "bic",
-                  "type"
-                ]
+                }
               },
               "examples": {
-                "post corporate beneficiary": {
+                "example-1": {
                   "value": {
-                    "iban": "GB55OPEX00993010899608",
-                    "bank_address": "45 KING WILLIAM STREET REGIS HOUSE FLOOR 2",
-                    "bank_name": "Openax Limited",
-                    "company_name": "Smith Co.",
-                    "bic": "OPEXGB2LXXX",
-                    "name": "Smith",
-                    "address": "123 King street",
-                    "city": "London",
-                    "type": "corporate",
-                    "bank_country": "UK",
-                    "currency": "EUR"
-                  }
-                },
-                "post individual beneficiary": {
-                  "value": {
-                    "iban": "GB10OPEX00993074774433",
-                    "bank_address": "45 KING WILLIAM STREET REGIS HOUSE FLOOR 2",
-                    "bank_account_holder_name": "John Doe",
-                    "bank_name": "Openax Limited",
-                    "first_name": "John",
-                    "last_name": "Doe",
-                    "bic": "OPEXGB2LXXX",
-                    "name": "John",
-                    "address": "123 King street",
-                    "city": "London",
-                    "type": "individual",
-                    "bank_country": "UK",
-                    "currency": "EUR"
+                    "type": "string",
+                    "company_name": "string",
+                    "first_name": "string",
+                    "last_name": "string",
+                    "address": {
+                      "street_line1": "string"
+                    },
+                    "account": [
+                      {
+                        "iban": "string",
+                        "bic": "string",
+                        "currency": "string"
+                      },
+                      {
+                        "account_no": "string",
+                        "bic": "string",
+                        "currency": "string"
+                      }
+                    ]
                   }
                 }
               }
@@ -888,41 +1109,85 @@
     },
     "/api/payment/add": {
       "post": {
-        "summary": "Create a payment",
-        "operationId": "postNewPayment",
+        "summary": "Add a payment",
+        "operationId": "post-bank-add",
         "responses": {
           "200": {
-            "description": "Succesfull",
+            "description": "OK",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/payment"
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "ledger_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "beneficiary_id": {
+                      "type": "string"
+                    },
+                    "amount": {
+                      "type": "number"
+                    },
+                    "currency": {
+                      "type": "string",
+                      "description": "ISO code 3 letters"
+                    },
+                    "method": {
+                      "type": "string",
+                      "enum": [
+                        "SEPA",
+                        "SWIFT",
+                        "FAST"
+                      ]
+                    },
+                    "payment_date": {
+                      "type": "string"
+                    },
+                    "reason": {
+                      "type": "string"
+                    },
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "pending",
+                        "completed",
+                        "refused",
+                        "error"
+                      ]
+                    },
+                    "created_at": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "reference": {
+                      "type": "string"
+                    }
+                  }
                 },
                 "examples": {
-                  "Posted Payment": {
+                  "example payment response": {
                     "value": {
-                      "id": "71873979-1c48-44a1-b740-90a2bcb2835e",
-                      "amount": 10,
-                      "reason": "Invoice 123",
-                      "method": "FFCCTRNS",
+                      "id": "d6dd1c83-531d-4cab-ba7b-60f77c6c5519",
+                      "beneficiary_id": "0966b4e3-89a4-46ca-95e1-b834e0a0f434",
+                      "ledger_id": "2b870cf2-94c3-46a1-924d-c8179db63d1d",
+                      "reason": "test",
+                      "amount": 2,
+                      "method": "SEPA",
+                      "status": "pending",
+                      "payment_date": "2020-10-18",
                       "currency": "EUR",
-                      "ledger": {
-                        "id": "9e51441c-de1a-4638-ba3a-6394f45b6b99"
-                      },
-                      "beneficiary": {
-                        "id": "497f6eca-6276-4993-bfeb-53cbbbba6f08"
-                      }
+                      "created_at": "2020-04-01T20:02:54.520Z",
+                      "reference": "Invoice 4568"
                     }
                   }
                 }
               }
             }
-          },
-          "400": {
-            "description": "Bad Request"
-          },
-          "406": {
-            "description": "Not Acceptable"
           }
         },
         "description": "Endpoint to create a new payment",
@@ -932,98 +1197,76 @@
               "schema": {
                 "type": "object",
                 "properties": {
+                  "ledger_id": {
+                    "type": "string",
+                    "format": "uuid"
+                  },
+                  "beneficiary_id": {
+                    "type": "string",
+                    "format": "uuid"
+                  },
                   "amount": {
-                    "type": "integer"
+                    "type": "number"
+                  },
+                  "currency": {
+                    "type": "string",
+                    "description": "3-letter ISO currency code",
+                    "example": "EUR"
+                  },
+                  "date": {
+                    "type": "string",
+                    "format": "date",
+                    "example": "2020-06-01"
                   },
                   "reason": {
-                    "type": "string"
-                  },
-                  "payment_date": {
                     "type": "string"
                   },
                   "method": {
                     "type": "string",
                     "enum": [
-                      "FFCCTRNS",
-                      "IFCCTRNS"
+                      "SEPA",
+                      "SWIFT",
+                      "FAST"
                     ]
                   },
-                  "currency": {
+                  "reference": {
                     "type": "string"
-                  },
-                  "ledger": {
-                    "type": "object",
-                    "properties": {
-                      "id": {
-                        "type": "string"
-                      }
-                    }
-                  },
-                  "beneficiary": {
-                    "type": "object",
-                    "properties": {
-                      "id": {
-                        "type": "string"
-                      }
-                    }
                   }
                 },
                 "required": [
+                  "ledger_id",
+                  "beneficiary_id",
                   "amount",
-                  "method",
-                  "currency",
-                  "ledger",
-                  "beneficiary"
+                  "currency"
                 ]
               },
               "examples": {
-                "Add regular SCT payment": {
+                "Post regular": {
                   "value": {
-                    "amount": 10,
-                    "reason": "Invoice 123",
-                    "method": "FFCCTRNS",
+                    "beneficiary_id": "0966b4e3-89a4-46ca-95e1-b834e0a0f434",
+                    "ledger_id": "2b870cf2-94c3-46a1-924d-c8179db63d1d",
+                    "reason": "test",
+                    "amount": 2,
+                    "method": "SEPA",
+                    "date": "2020-10-18",
                     "currency": "EUR",
-                    "ledger": {
-                      "id": "9e51441c-de1a-4638-ba3a-6394f45b6b99"
-                    },
-                    "beneficiary": {
-                      "id": "497f6eca-6276-4993-bfeb-53cbbbba6f08"
-                    }
+                    "reference": "Invoice 4455"
                   }
                 },
-                "Add a scheduled payment": {
+                "Post Instant": {
                   "value": {
-                    "amount": 10,
-                    "payment_date": "2020-10-05",
-                    "reason": "Invoice 123",
-                    "method": "FFCCTRNS",
-                    "currency": "EUR",
-                    "ledger": {
-                      "id": "9e51441c-de1a-4638-ba3a-6394f45b6b99"
-                    },
-                    "beneficiary": {
-                      "id": "497f6eca-6276-4993-bfeb-53cbbbba6f08"
-                    }
-                  }
-                },
-                "Add a fast payment": {
-                  "value": {
-                    "amount": 10,
-                    "reason": "Invoice 123",
-                    "method": "IFCCTRNS",
-                    "currency": "EUR",
-                    "ledger": {
-                      "id": "9e51441c-de1a-4638-ba3a-6394f45b6b99"
-                    },
-                    "beneficiary": {
-                      "id": "497f6eca-6276-4993-bfeb-53cbbbba6f08"
-                    }
+                    "beneficiary_id": "0966b4e3-89a4-46ca-95e1-b834e0a0f434",
+                    "ledger_id": "2b870cf2-94c3-46a1-924d-c8179db63d1d",
+                    "reason": "test",
+                    "amount": 2,
+                    "method": "FAST",
+                    "currency": "EUR"
                   }
                 }
               }
             }
           },
-          "description": "Create a new payment"
+          "description": "Post a new payment "
         },
         "tags": [
           "Payment"
@@ -1080,6 +1323,139 @@
         },
         "operationId": "getInfo",
         "description": "Endpoint to retrieve Ledgers and balance informations"
+      }
+    },
+    "/api/transaction/{id}": {
+      "get": {
+        "summary": "Get One Transaction",
+        "tags": [
+          "Transaction"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "type": {
+                      "type": "string",
+                      "enum": [
+                        "debit",
+                        "credit"
+                      ]
+                    },
+                    "status": {
+                      "type": "string",
+                      "example": "pending",
+                      "enum": [
+                        "pending",
+                        "completed",
+                        "error"
+                      ]
+                    },
+                    "created_at": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "updated_at": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "reason": {
+                      "type": "string"
+                    },
+                    "mode": {
+                      "type": "string",
+                      "enum": [
+                        "atm",
+                        "card_payment",
+                        "card_refund",
+                        "card_chargeback",
+                        "card_credit",
+                        "exchange",
+                        "transfer",
+                        "fee",
+                        "refund",
+                        "topup",
+                        "topup_return",
+                        "tax",
+                        "tax_refund"
+                      ]
+                    },
+                    "amount": {
+                      "type": "number"
+                    },
+                    "balance": {
+                      "type": "number"
+                    },
+                    "currency": {
+                      "type": "string",
+                      "description": "3 letters ISO code"
+                    }
+                  }
+                },
+                "examples": {
+                  "One transaction": {
+                    "value": {
+                      "id": "c9e14780-a4c8-41f4-ae0f-a2d857850f64",
+                      "type": "debit",
+                      "status": "completed",
+                      "created_at": "2020-04-01T20:02:50.810Z",
+                      "updated_at": "2020-04-01T20:02:54.520Z",
+                      "reason": "Payment for Smith Co.",
+                      "mode": "transfer",
+                      "amount": 100,
+                      "balance": 9685,
+                      "currency": "EUR"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "operationId": "get-api-transaction",
+        "description": "Endpoint to receive one transaction"
+      },
+      "parameters": [
+        {
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "name": "id",
+          "in": "path",
+          "required": true
+        }
+      ]
+    },
+    "/api/mandate": {
+      "get": {
+        "summary": "Get one mandate",
+        "tags": [
+          "mandate"
+        ],
+        "responses": {},
+        "operationId": "get-api-mandate"
+      },
+      "post": {
+        "summary": "Create new mandate",
+        "operationId": "post-api-mandate",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "description": "",
+        "tags": [
+          "mandate"
+        ]
       }
     }
   },
@@ -1429,30 +1805,6 @@
           }
         }
       },
-      "arrayOfPayments": {
-        "type": "array",
-        "items": {
-          "$ref": "#/components/schemas/payment"
-        },
-        "x-examples": {
-          "All payment array": [
-            {
-              "id": "71873979-1c48-44a1-b740-90a2bcb2835e",
-              "amount": 10,
-              "reason": "Invoice 123",
-              "method": "FFCCTRNS",
-              "currency": "EUR",
-              "ledger": {
-                "id": "9e51441c-de1a-4638-ba3a-6394f45b6b99"
-              },
-              "beneficiary": {
-                "id": "497f6eca-6276-4993-bfeb-53cbbbba6f08"
-              }
-            }
-          ]
-        },
-        "description": "All payments array"
-      },
       "arrayOfBeneficiaries": {
         "title": "arrayOfBeneficiaries",
         "type": "array",
@@ -1547,6 +1899,9 @@
     },
     {
       "name": "Account"
+    },
+    {
+      "name": "mandate"
     }
   ]
 }
