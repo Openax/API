@@ -1434,6 +1434,29 @@
           "required": true
         }
       ]
+    },
+    "/api/mandate": {
+      "get": {
+        "summary": "Get one mandate",
+        "tags": [
+          "mandate"
+        ],
+        "responses": {},
+        "operationId": "get-api-mandate"
+      },
+      "post": {
+        "summary": "Create new mandate",
+        "operationId": "post-api-mandate",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "description": "",
+        "tags": [
+          "mandate"
+        ]
+      }
     }
   },
   "components": {
@@ -1876,6 +1899,9 @@
     },
     {
       "name": "Account"
+    },
+    {
+      "name": "mandate"
     }
   ]
 }
