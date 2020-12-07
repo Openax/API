@@ -75,7 +75,7 @@
                   ]
                 },
                 "examples": {
-                  "Found beneficiary": {
+                  "One beneficiary": {
                     "value": {
                       "type": "individual",
                       "id": "e00a3a0e-4a74-4b9b-b61b-df6cfa10f418",
@@ -278,7 +278,7 @@
                         },
                         {
                           "type": "credit",
-                          "method": "normal",
+                          "method": "turbo",
                           "mode": "transfer",
                           "id": "c261b438-9c8d-4d52-8b32-9c20f175f4b4",
                           "created_at": "2020-12-07T13:40:32.889Z",
@@ -366,58 +366,64 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "description": "",
                   "type": "object",
                   "properties": {
                     "data": {
                       "type": "array",
+                      "uniqueItems": true,
+                      "minItems": 1,
                       "items": {
                         "type": "object",
                         "properties": {
-                          "id": {
-                            "type": "string",
-                            "format": "uuid"
-                          },
                           "status": {
                             "type": "string",
-                            "enum": [
-                              "send",
-                              "completed",
-                              "error",
-                              "refused",
-                              "pending"
-                            ]
+                            "minLength": 1
                           },
-                          "method": {
-                            "type": "string"
+                          "id": {
+                            "type": "string",
+                            "minLength": 1,
+                            "format": "uuid"
                           },
                           "created_at": {
                             "type": "string",
+                            "minLength": 1,
                             "format": "date-time"
                           },
                           "amount": {
-                            "type": "number"
+                            "type": "string",
+                            "minLength": 1
+                          },
+                          "date": {
+                            "type": "string",
+                            "minLength": 1,
+                            "format": "date"
                           },
                           "beneficiary_id": {
                             "type": "string",
-                            "format": "uuid"
-                          },
-                          "ledger_id": {
-                            "type": "string",
+                            "minLength": 1,
                             "format": "uuid"
                           },
                           "currency": {
                             "type": "string",
-                            "description": "3 letters ISO code"
+                            "minLength": 1,
+                            "description": "three letter ISO code"
                           },
-                          "date": {
+                          "name": {
                             "type": "string",
-                            "format": "date",
-                            "example": "2020-06-01"
-                          },
-                          "reference": {
-                            "type": "string"
+                            "minLength": 1
                           }
-                        }
+                        },
+                        "required": [
+                          "status",
+                          "id",
+                          "created_at",
+                          "amount",
+                          "date",
+                          "beneficiary_id",
+                          "currency",
+                          "name"
+                        ]
                       }
                     },
                     "count": {
@@ -432,41 +438,42 @@
                     "page_count": {
                       "type": "number"
                     }
-                  }
+                  },
+                  "required": [
+                    "data",
+                    "count",
+                    "per_page",
+                    "page",
+                    "page_count"
+                  ]
                 },
                 "examples": {
                   "All Payments": {
                     "value": {
                       "data": [
                         {
-                          "status": "completed",
-                          "method": "SEPA",
-                          "id": "201c6e0f-c720-4fe1-a318-fef451ab0af1",
-                          "created_at": "2020-03-24T09:00:22.859Z",
-                          "reason": "Invoice 123456 Smith Co.",
-                          "amount": 4,
-                          "date": "2020-03-25",
-                          "beneficiary_id": "023a0383-ccb0-48ee-ab2b-2d640e57c380",
-                          "ledger_id": "0a88b35a-2652-46d9-9954-335c2d9b47f8",
+                          "status": "pending",
+                          "id": "ca079bda-9f4a-40c5-bcad-5303f0018d2e",
+                          "created_at": "2020-12-07T15:27:06.098Z",
+                          "amount": "1",
+                          "date": "2020-12-07",
+                          "beneficiary_id": "5fe933ca-6708-4eec-acfd-9604dbeb2c57",
                           "currency": "EUR",
-                          "reference": "Invoice 12345"
+                          "name": "John Corp"
                         },
                         {
                           "status": "completed",
-                          "method": "FAST",
-                          "id": "77a5d560-d131-44d6-be19-85ac6110f3db",
-                          "created_at": "2020-03-26T11:38:06.119Z",
-                          "reason": "Invoice 554412 John Co.",
-                          "amount": 4,
-                          "date": "2020-03-26",
-                          "beneficiary_id": "139478be-65f3-46b5-9804-03dcf87dcdc1",
-                          "ledger_id": "9e51441c-de1a-4638-ba3a-6394f45b6b99",
+                          "id": "d426f800-0d82-4e2e-a7c2-50f0383237c2",
+                          "created_at": "2020-12-07T15:31:56.152Z",
+                          "amount": "1",
+                          "date": "2020-12-07",
+                          "beneficiary_id": "5fe933ca-6708-4eec-acfd-9604dbeb2c57",
                           "currency": "EUR",
-                          "reference": "Invoice 58845"
+                          "name": "John Corp"
                         }
                       ],
                       "count": 2,
-                      "per_page": 25,
+                      "per_page": 10,
                       "page": 1,
                       "page_count": 1
                     }
@@ -886,8 +893,8 @@
                   },
                   "example turbo": {
                     "value": {
-                      "id": "d92198b0-6276-4993-bfeb-9604dbeb2c57",
-                      "status": "pending"
+                      "id": "d426f800-0d82-4e2e-a7c2-50f0383237c2",
+                      "status": "completed"
                     }
                   }
                 }
