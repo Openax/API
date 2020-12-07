@@ -350,7 +350,7 @@
             "description": "record to begin with (start at 0)"
           }
         ],
-        "description": "Endpoint to retrieve all transactions\n\nPagination is supported. You receive a limit of 25 records per request. In the response you receive  the count of records, so you can send the next request with the query param begin with the correct value in order to get the next records",
+        "description": "Endpoint to retrieve all transactions\n\nPagination is supported. You receive a limit of 10 records per request. In the response you receive  the count of records, so you can send the next request with the query param begin with the correct value in order to get the next records",
         "tags": [
           "Transaction"
         ]
@@ -511,7 +511,7 @@
             "description": "record to begin with (start at 0)"
           }
         ],
-        "description": "Endpoint to get all payments\n\nPagination is supported. You receive a limit of 25 records per request. In the response you receive  the count of records, so you can send the next request with the query param begin with the correct value in order to get the next records",
+        "description": "Endpoint to get all payments\n\nPagination is supported. You receive a limit of 10 records per request. In the response you receive  the count of records, so you can send the next request with the query param begin with the correct value in order to get the next records",
         "tags": [
           "Payment"
         ]
@@ -1271,7 +1271,8 @@
               }
             }
           }
-        }
+        },
+        "description": "endpoint to create a new mandate"
       }
     },
     "/api/directdebit/add": {
@@ -1383,7 +1384,8 @@
         },
         "tags": [
           "Direct Debit"
-        ]
+        ],
+        "description": "endpoint to submit a new direct debit"
       }
     },
     "/api/mandates": {
@@ -1531,7 +1533,7 @@
           }
         },
         "operationId": "get-api-mandates",
-        "description": "Endpoint to return all your mandates",
+        "description": "Endpoint to return all your mandates\n\nPagination is supported. You receive a limit of 10 records per request. In the response you receive  the count of records, so you can send the next request with the query param begin with the correct value in order to get the next records",
         "parameters": [
           {
             "schema": {
@@ -1694,7 +1696,8 @@
             "in": "query",
             "name": "begin"
           }
-        ]
+        ],
+        "description": "Endpoint to return all direct debits\n\nPagination is supported. You receive a limit of 10 records per request. In the response you receive  the count of records, so you can send the next request with the query param begin with the correct value in order to get the next records"
       }
     },
     "/api/directdebit/{id}": {
@@ -1934,7 +1937,7 @@
           }
         },
         "operationId": "get-api-beneficiaries",
-        "description": "This endpoint to return all your beneficiaries",
+        "description": "This endpoint to return all your beneficiaries\n\nPagination is supported. You receive a limit of 10 records per request. In the response you receive  the count of records, so you can send the next request with the query param begin with the correct value in order to get the next records",
         "parameters": [
           {
             "schema": {
@@ -2013,7 +2016,8 @@
             }
           }
         },
-        "operationId": "get-api-ledgers"
+        "operationId": "get-api-ledgers",
+        "description": "Endpoint to return Ledgers"
       }
     },
     "/api/balances": {
@@ -2080,7 +2084,8 @@
             }
           }
         },
-        "operationId": "get-api-balances"
+        "operationId": "get-api-balances",
+        "description": "Endpoint to return balances"
       }
     }
   },
