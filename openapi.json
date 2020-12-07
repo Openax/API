@@ -107,94 +107,108 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "description": "",
                   "type": "object",
                   "properties": {
                     "data": {
                       "type": "array",
+                      "uniqueItems": true,
+                      "minItems": 1,
                       "items": {
                         "type": "object",
                         "properties": {
-                          "type": {
-                            "type": "string"
-                          },
                           "id": {
-                            "type": "string"
+                            "type": "string",
+                            "minLength": 1,
+                            "format": "uuid"
                           },
                           "created_at": {
-                            "type": "string"
-                          },
-                          "updated_at": {
-                            "type": "string"
+                            "type": "string",
+                            "minLength": 1,
+                            "format": "date-time"
                           },
                           "iban": {
-                            "type": "string"
+                            "type": "string",
+                            "minLength": 1
                           },
-                          "company_name": {
-                            "type": "string"
-                          },
-                          "first_name": {
-                            "type": "string"
-                          },
-                          "last_name": {
-                            "type": "string"
+                          "name": {
+                            "type": "string",
+                            "minLength": 1
                           },
                           "bic": {
-                            "type": "string"
+                            "type": "string",
+                            "minLength": 1
+                          },
+                          "currency": {
+                            "type": "string",
+                            "minLength": 1,
+                            "description": "three letter ISO code"
+                          },
+                          "country": {
+                            "type": "string",
+                            "minLength": 1,
+                            "description": ""
                           }
-                        }
+                        },
+                        "required": [
+                          "id",
+                          "created_at",
+                          "iban",
+                          "name",
+                          "bic",
+                          "currency",
+                          "country"
+                        ]
                       }
+                    },
+                    "count": {
+                      "type": "number"
+                    },
+                    "per_page": {
+                      "type": "number"
+                    },
+                    "page": {
+                      "type": "number"
+                    },
+                    "page_count": {
+                      "type": "number"
                     }
-                  }
+                  },
+                  "required": [
+                    "data",
+                    "count",
+                    "per_page",
+                    "page",
+                    "page_count"
+                  ]
                 },
                 "examples": {
                   "All beneficiaries": {
                     "value": {
                       "data": [
                         {
-                          "type": "individual",
-                          "id": "139478be-65f3-46b5-9804-03dcf87dcdc1",
-                          "created_at": "2020-03-26T11:37:40.838Z",
-                          "updated_at": "2020-03-26T11:42:39.483Z",
-                          "iban": "FR4817569000306869458164C35",
-                          "first_name": "test67",
-                          "last_name": "test67",
-                          "name": "test67",
-                          "bic": "UCJAES2MXXX",
-                          "Currency": {
-                            "symbol": "EUR"
-                          }
+                          "id": "e00a3a0e-4a74-4b9b-b61b-df6cfa10f418",
+                          "created_at": "2020-11-25T10:25:26.840Z",
+                          "iban": "FR1420041010050500013M02606",
+                          "name": "Martin Dupont",
+                          "bic": "CCBPFRPPXXX",
+                          "currency": "EUR",
+                          "country": "France"
                         },
                         {
-                          "type": "corporate",
-                          "id": "a2551ac6-23b2-4eb4-8426-6b66af13112e",
-                          "created_at": "2020-03-25T17:05:07.808Z",
-                          "updated_at": "2020-03-25T17:05:07.808Z",
-                          "iban": "NL11INGB8284009536",
-                          "company_name": "test43",
-                          "name": "test43",
-                          "bic": "ABNACHZ8XXX",
-                          "Currency": {
-                            "symbol": "EUR"
-                          }
-                        },
-                        {
-                          "type": "corporate",
-                          "id": "0ab9eaa0-8cf7-43bc-a8b4-a3e2a43d8c26",
-                          "created_at": "2020-03-26T11:42:20.544Z",
-                          "updated_at": "2020-03-26T11:42:20.544Z",
-                          "iban": "FR4817569000306869458164C35",
-                          "company_name": "test68",
-                          "name": "test68",
-                          "bic": "COBADEFF060",
-                          "Currency": {
-                            "symbol": "EUR"
-                          }
+                          "id": "e1a0947e-191b-406c-a5fe-4fbcd3bd3ad6",
+                          "created_at": "2020-12-01T13:16:12.014Z",
+                          "iban": "SE3550000000054910000003",
+                          "name": "John Smith",
+                          "bic": "VPLALT21XXX",
+                          "currency": "EUR",
+                          "country": "Italy"
                         }
                       ],
-                      "count": 68,
-                      "per_page": 3,
+                      "count": 2,
+                      "per_page": 10,
                       "page": 1,
-                      "page_count": 23
+                      "page_count": 1
                     }
                   }
                 }
@@ -208,8 +222,7 @@
             "description": "UnauthorizedNot Found -- The requested resource could not be found."
           }
         }
-      },
-      "parameters": []
+      }
     },
     "/api/beneficiary/delete/{id}": {
       "post": {
@@ -2663,8 +2676,12 @@
   },
   "servers": [
     {
-      "description": "SwaggerHub API Auto Mocking",
-      "url": "https://sandboxcrm.openax.com"
+      "description": "sandbox",
+      "url": "https://sandbox-b2b.openax.com"
+    },
+    {
+      "description": "",
+      "url": "https://b2b.openax.com"
     }
   ],
   "security": [],
