@@ -1821,7 +1821,9 @@
     "/api/beneficiaries": {
       "get": {
         "summary": "Get all beneficiaries",
-        "tags": [],
+        "tags": [
+          "Beneficiary"
+        ],
         "responses": {
           "200": {
             "description": "OK",
