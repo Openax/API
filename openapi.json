@@ -2146,146 +2146,96 @@
         }
       },
       "beneficiary": {
+        "description": "",
         "type": "object",
-        "description": "Beneficiary object",
-        "x-examples": {
-          "post individual": {
-            "iban": "GB10OPEX00993074774433",
-            "bank_address": "45 KING WILLIAM STREET REGIS HOUSE FLOOR 2",
-            "bank_account_holder_name": "John Doe",
-            "bank_name": "Openax Limited",
-            "first_name": "John",
-            "last_name": "Doe",
-            "bic": "OPEXGB2LXXX",
-            "name": "John",
-            "address": "123 King street",
-            "city": "London",
-            "type": "individual",
-            "bank_country": "UK",
-            "currency": "EUR"
-          },
-          "post corporate": {
-            "iban": "GB55OPEX00993010899608",
-            "bank_address": "45 KING WILLIAM STREET REGIS HOUSE FLOOR 2",
-            "bank_name": "Openax Limited",
-            "company_name": "Smith Co.",
-            "bic": "OPEXGB2LXXX",
-            "name": "Smith",
-            "address": "123 King street",
-            "city": "London",
-            "type": "corporate",
-            "bank_country": "UK",
-            "currency": "EUR"
-          },
-          "get one": {
-            "id": "497f6eca-6276-4993-bfeb-53cbbbba6f08",
-            "iban": "GB10OPEX00993074774433",
-            "bank_address": "45 KING WILLIAM STREET REGIS HOUSE FLOOR 2",
-            "bank_account_holder_name": "John Doe",
-            "bank_name": "Openax Limited",
-            "first_name": "John",
-            "last_name": "Doe",
-            "bic": "OPEXGB2LXXX",
-            "name": "John",
-            "address": "123 King street",
-            "city": "London",
-            "type": "individual",
-            "bank_country": "UK",
-            "currency": "EUR"
-          },
-          "Array of beneficiaries": [
-            {
-              "id": "537f6eca-6276-4993-bfeb-53cbbbba6d19",
-              "iban": "GB55OPEX00993010899608",
-              "bank_address": "45 KING WILLIAM STREET REGIS HOUSE FLOOR 2",
-              "bank_name": "Openax Limited",
-              "company_name": "Smith Co.",
-              "bic": "OPEXGB2LXXX",
-              "name": "Smith",
-              "address": "123 King street",
-              "city": "London",
-              "type": "corporate",
-              "bank_country": "UK",
-              "currency": "EUR"
-            },
-            {
-              "id": "497f6eca-6276-4993-bfeb-53cbbbba6f08",
-              "iban": "GB10OPEX00993074774433",
-              "bank_address": "45 KING WILLIAM STREET REGIS HOUSE FLOOR 2",
-              "bank_account_holder_name": "John Doe",
-              "bank_name": "Openax Limited",
-              "first_name": "John",
-              "last_name": "Doe",
-              "bic": "OPEXGB2LXXX",
-              "name": "John",
-              "address": "123 King street",
-              "city": "London",
-              "type": "individual",
-              "bank_country": "UK",
-              "currency": "EUR"
-            }
-          ]
-        },
-        "title": "Beneficiary",
         "properties": {
-          "id": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "iban": {
-            "type": "string"
-          },
-          "bank_address": {
-            "type": "string"
-          },
-          "bank_account_holder_name": {
-            "type": "string"
-          },
-          "bank_name": {
-            "type": "string"
-          },
-          "first_name": {
-            "type": "string",
-            "description": "first name of the individual beneficiary, this field must exist when company_name does not"
-          },
-          "last_name": {
-            "type": "string",
-            "description": "last name of the individual beneficiary, this field must exist when company_name does not"
-          },
-          "bic": {
-            "type": "string"
-          },
-          "name": {
-            "type": "string"
-          },
-          "address": {
-            "type": "string"
-          },
-          "city": {
-            "type": "string"
-          },
           "type": {
             "type": "string",
-            "enum": [
-              "individual",
-              "corporate"
-            ]
+            "minLength": 1
           },
           "company_name": {
             "type": "string",
-            "description": "name of the corporate beneficiary, this field must exist when type is set to \"corporate\""
+            "minLength": 1
           },
-          "bank_country": {
-            "type": "string"
+          "first_name": {
+            "type": "string",
+            "minLength": 1
           },
-          "currency": {
-            "type": "string"
+          "last_name": {
+            "type": "string",
+            "minLength": 1
+          },
+          "address": {
+            "type": "object",
+            "properties": {
+              "street_line1": {
+                "type": "string",
+                "minLength": 1
+              },
+              "street_line2": {
+                "type": "string",
+                "minLength": 1
+              },
+              "region": {
+                "type": "string",
+                "minLength": 1
+              },
+              "city": {
+                "type": "string",
+                "minLength": 1
+              },
+              "country": {
+                "type": "string",
+                "minLength": 1
+              },
+              "postcode": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "required": [
+              "street_line1",
+              "street_line2",
+              "region",
+              "city",
+              "country",
+              "postcode"
+            ]
+          },
+          "bank_accounts": {
+            "type": "array",
+            "uniqueItems": true,
+            "minItems": 1,
+            "items": {
+              "required": [
+                "iban",
+                "bic",
+                "currency"
+              ],
+              "properties": {
+                "iban": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "bic": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "currency": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              }
+            }
           }
         },
         "required": [
-          "iban",
-          "bic",
-          "type"
+          "type",
+          "company_name",
+          "first_name",
+          "last_name",
+          "address",
+          "bank_accounts"
         ]
       },
       "payment": {
