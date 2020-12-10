@@ -5,7 +5,8 @@
     "description": "Openax API\n",
     "termsOfService": "https://openax.com",
     "contact": {
-      "email": "apiteam@openax.com"
+      "email": "apiteam@openax.com",
+      "name": "Team API"
     },
     "license": {
       "name": "Apache 2.0",
