@@ -525,7 +525,9 @@
     "/api/beneficiaries": {
       "get": {
         "summary": "Get all beneficiaries",
-        "tags": [],
+        "tags": [
+          "Beneficiary"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -2487,16 +2489,16 @@
   "security": [],
   "tags": [
     {
-      "name": "Beneficiary"
+      "name": "Account"
     },
     {
-      "name": "Transaction"
+      "name": "Beneficiary"
     },
     {
       "name": "Payment"
     },
     {
-      "name": "Account"
+      "name": "Transaction"
     },
     {
       "name": "mandate"
