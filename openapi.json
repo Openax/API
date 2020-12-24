@@ -263,6 +263,9 @@
                   },
                   "address": {
                     "type": "object",
+                    "required": [
+                      "country"
+                    ],
                     "properties": {
                       "street_line1": {
                         "type": "string",
@@ -288,26 +291,14 @@
                         "type": "string",
                         "minLength": 1
                       }
-                    },
-                    "required": [
-                      "street_line1",
-                      "street_line2",
-                      "region",
-                      "city",
-                      "country",
-                      "postcode"
-                    ]
+                    }
                   },
                   "bank_accounts": {
                     "type": "array",
                     "uniqueItems": true,
                     "minItems": 1,
                     "items": {
-                      "required": [
-                        "iban",
-                        "bic",
-                        "currency"
-                      ],
+                      "type": "object",
                       "properties": {
                         "iban": {
                           "type": "string",
@@ -321,7 +312,12 @@
                           "type": "string",
                           "minLength": 1
                         }
-                      }
+                      },
+                      "required": [
+                        "iban",
+                        "bic",
+                        "currency"
+                      ]
                     }
                   }
                 },
@@ -381,10 +377,6 @@
                   "description": "",
                   "type": "object",
                   "properties": {
-                    "type": {
-                      "type": "string",
-                      "minLength": 1
-                    },
                     "id": {
                       "type": "string",
                       "minLength": 1,
@@ -395,50 +387,94 @@
                       "minLength": 1,
                       "format": "date-time"
                     },
-                    "iban": {
-                      "type": "string",
-                      "minLength": 1
-                    },
                     "name": {
                       "type": "string",
                       "minLength": 1
                     },
-                    "bic": {
-                      "type": "string",
-                      "minLength": 1
+                    "address": {
+                      "type": "object",
+                      "properties": {
+                        "street_line1": {
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        "street_line2": {
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        "region": {
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        "city": {
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        "country": {
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        "postcode": {
+                          "type": "string",
+                          "minLength": 1
+                        }
+                      },
+                      "required": [
+                        "country"
+                      ]
                     },
-                    "country": {
-                      "type": "string",
-                      "minLength": 1
-                    },
-                    "currency": {
-                      "type": "string",
-                      "minLength": 1,
-                      "description": "three letter ISO code"
+                    "bank_accounts": {
+                      "type": "array",
+                      "uniqueItems": true,
+                      "minItems": 1,
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "iban": {
+                            "type": "string",
+                            "minLength": 1
+                          },
+                          "bic": {
+                            "type": "string",
+                            "minLength": 1
+                          },
+                          "currency": {
+                            "type": "string",
+                            "minLength": 1
+                          }
+                        },
+                        "required": [
+                          "iban",
+                          "bic",
+                          "currency"
+                        ]
+                      }
                     }
                   },
                   "required": [
-                    "type",
                     "id",
                     "created_at",
-                    "iban",
-                    "name",
-                    "bic",
-                    "country",
-                    "currency"
+                    "name"
                   ]
                 },
                 "examples": {
                   "Found beneficiary": {
                     "value": {
-                      "type": "individual",
-                      "id": "e00a3a0e-4a74-4b9b-b61b-df6cfa10f418",
-                      "created_at": "2020-11-25T10:25:26.840Z",
-                      "iban": "FR1420041010050500013M02606",
+                      "id": "497f6eca-6276-4993-bfeb-53cbbbba6f08",
+                      "created_at": "2019-08-24T14:15:22Z",
                       "name": "Dupont Martin",
-                      "bic": "CCBPFRPPXXX",
-                      "country": "France",
-                      "currency": "EUR"
+                      "address": {
+                        "street_line1": "Rue de paris 123",
+                        "city": "Paris",
+                        "country": "fr"
+                      },
+                      "bank_accounts": [
+                        {
+                          "iban": "FR7630006000011234567890189",
+                          "bic": "ACEMFRP1",
+                          "currency": "EUR"
+                        }
+                      ]
                     }
                   }
                 }
@@ -554,36 +590,78 @@
                             "minLength": 1,
                             "format": "date-time"
                           },
-                          "iban": {
-                            "type": "string",
-                            "minLength": 1
-                          },
                           "name": {
                             "type": "string",
                             "minLength": 1
                           },
-                          "bic": {
-                            "type": "string",
-                            "minLength": 1
+                          "address": {
+                            "type": "object",
+                            "properties": {
+                              "street_line1": {
+                                "type": "string",
+                                "minLength": 1
+                              },
+                              "street_line2": {
+                                "type": "string",
+                                "minLength": 1
+                              },
+                              "region": {
+                                "type": "string",
+                                "minLength": 1
+                              },
+                              "city": {
+                                "type": "string",
+                                "minLength": 1
+                              },
+                              "country": {
+                                "type": "string",
+                                "minLength": 1
+                              },
+                              "postcode": {
+                                "type": "string",
+                                "minLength": 1
+                              }
+                            },
+                            "required": [
+                              "street_line1",
+                              "street_line2",
+                              "region",
+                              "city",
+                              "country",
+                              "postcode"
+                            ]
                           },
-                          "currency": {
-                            "type": "string",
-                            "minLength": 1,
-                            "description": "three letter ISO code"
-                          },
-                          "country": {
-                            "type": "string",
-                            "minLength": 1
+                          "bank_accounts": {
+                            "type": "array",
+                            "uniqueItems": true,
+                            "minItems": 1,
+                            "items": {
+                              "required": [
+                                "iban",
+                                "bic",
+                                "currency"
+                              ],
+                              "properties": {
+                                "iban": {
+                                  "type": "string",
+                                  "minLength": 1
+                                },
+                                "bic": {
+                                  "type": "string",
+                                  "minLength": 1
+                                },
+                                "currency": {
+                                  "type": "string",
+                                  "minLength": 1
+                                }
+                              }
+                            }
                           }
                         },
                         "required": [
                           "id",
                           "created_at",
-                          "iban",
-                          "name",
-                          "bic",
-                          "currency",
-                          "country"
+                          "name"
                         ]
                       }
                     },
@@ -635,6 +713,36 @@
                       "per_page": 10,
                       "page": 1,
                       "page_count": 1
+                    }
+                  },
+                  "example-2": {
+                    "value": {
+                      "data": [
+                        {
+                          "id": "497f6eca-6276-4993-bfeb-53cbbbba6f08",
+                          "created_at": "2019-08-24T14:15:22Z",
+                          "name": "string",
+                          "address": {
+                            "street_line1": "string",
+                            "street_line2": "string",
+                            "region": "string",
+                            "city": "string",
+                            "country": "string",
+                            "postcode": "string"
+                          },
+                          "bank_accounts": [
+                            {
+                              "iban": "string",
+                              "bic": "string",
+                              "currency": "string"
+                            }
+                          ]
+                        }
+                      ],
+                      "count": 0,
+                      "per_page": 0,
+                      "page": 0,
+                      "page_count": 0
                     }
                   }
                 }
