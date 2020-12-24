@@ -1683,7 +1683,46 @@
           "required": true,
           "description": "Id of the Mandate to return"
         }
-      ]
+      ],
+      "delete": {
+        "summary": "",
+        "operationId": "delete-api-mandate-id",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "result": {
+                      "type": "string",
+                      "default": "success"
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "result"
+                  ]
+                },
+                "examples": {
+                  "example-1": {
+                    "value": {
+                      "id": "497f6eca-6276-4993-bfeb-53cbbbba6f08",
+                      "result": "success"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "description": "Ebdpoint to delete a mandate"
+      }
     },
     "/api/mandates": {
       "get": {
@@ -1921,6 +1960,15 @@
                   "reason": {
                     "type": "string",
                     "minLength": 1
+                  },
+                  "sequence": {
+                    "type": "string",
+                    "enum": [
+                      "RCUR",
+                      "OOFF",
+                      "FRST",
+                      "FNAL"
+                    ]
                   }
                 },
                 "required": [
@@ -1930,7 +1978,8 @@
                   "currency",
                   "amount",
                   "collection_date",
-                  "reason"
+                  "reason",
+                  "sequence"
                 ]
               },
               "examples": {
@@ -1942,7 +1991,8 @@
                     "currency": "EUR",
                     "amount": 3,
                     "collection_date": "2020-12-07",
-                    "reason": "Invoice 25"
+                    "reason": "Invoice 25",
+                    "sequence": "RCUR"
                   }
                 }
               }
@@ -2224,6 +2274,274 @@
             "name": "begin"
           }
         ]
+      }
+    },
+    "/api/debits": {
+      "get": {
+        "summary": "Get Debits",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "description": "",
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "uniqueItems": true,
+                      "minItems": 1,
+                      "items": {
+                        "required": [
+                          "status",
+                          "id",
+                          "created_at",
+                          "amount",
+                          "reason",
+                          "settlement_date"
+                        ],
+                        "properties": {
+                          "status": {
+                            "type": "string",
+                            "minLength": 1
+                          },
+                          "id": {
+                            "type": "string",
+                            "minLength": 1
+                          },
+                          "created_at": {
+                            "type": "string",
+                            "minLength": 1
+                          },
+                          "amount": {
+                            "type": "string",
+                            "minLength": 1
+                          },
+                          "reason": {
+                            "type": "string",
+                            "minLength": 1
+                          },
+                          "settlement_date": {
+                            "type": "string",
+                            "minLength": 1
+                          },
+                          "Currency": {
+                            "type": "object",
+                            "properties": {
+                              "symbol": {
+                                "type": "string",
+                                "minLength": 1
+                              }
+                            },
+                            "required": [
+                              "symbol"
+                            ]
+                          },
+                          "Mandatereceive": {
+                            "type": "object",
+                            "properties": {
+                              "name": {
+                                "type": "string",
+                                "minLength": 1
+                              }
+                            },
+                            "required": [
+                              "name"
+                            ]
+                          }
+                        }
+                      }
+                    },
+                    "count": {
+                      "type": "number"
+                    },
+                    "per_page": {
+                      "type": "number"
+                    },
+                    "page": {
+                      "type": "number"
+                    },
+                    "page_count": {
+                      "type": "number"
+                    }
+                  },
+                  "required": [
+                    "data",
+                    "count",
+                    "per_page",
+                    "page",
+                    "page_count"
+                  ]
+                },
+                "examples": {
+                  "example-1": {
+                    "value": {
+                      "data": [
+                        {
+                          "status": "completed",
+                          "id": "31b377c1-9f6f-4430-9465-564672d8674c",
+                          "created_at": "2020-12-21T13:36:29.539Z",
+                          "amount": "12",
+                          "reason": "Invoice 25",
+                          "settlement_date": "2020-12-21",
+                          "Currency": {
+                            "symbol": "EUR"
+                          },
+                          "Mandatereceive": {
+                            "name": "John Corp"
+                          }
+                        },
+                        {
+                          "status": "completed",
+                          "id": "b729bc71-10a9-4a65-9426-ca5527488e16",
+                          "created_at": "2020-12-21T13:36:44.407Z",
+                          "amount": "23",
+                          "reason": "Invoice 26",
+                          "settlement_date": "2020-12-21",
+                          "Currency": {
+                            "symbol": "EUR"
+                          },
+                          "Mandatereceive": {
+                            "name": "Smith Corp"
+                          }
+                        }
+                      ],
+                      "count": 2,
+                      "per_page": 10,
+                      "page": 1,
+                      "page_count": 1
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "operationId": "get-api-debits",
+        "tags": [
+          "Debit"
+        ],
+        "description": "Get all debits order presented to your account"
+      }
+    },
+    "/api/debit": {
+      "get": {
+        "summary": "Get one Debit",
+        "tags": [
+          "Debit"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "description": "",
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "id": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "created_at": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "amount": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "reason": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "settlement_date": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "Currency": {
+                      "type": "object",
+                      "required": [
+                        "symbol"
+                      ],
+                      "properties": {
+                        "symbol": {
+                          "type": "string",
+                          "minLength": 1
+                        }
+                      }
+                    },
+                    "Mandatereceive": {
+                      "type": "object",
+                      "required": [
+                        "status",
+                        "name",
+                        "signature_date",
+                        "reference"
+                      ],
+                      "properties": {
+                        "status": {
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        "name": {
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        "signature_date": {
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        "reference": {
+                          "type": "string",
+                          "minLength": 1
+                        }
+                      }
+                    }
+                  },
+                  "required": [
+                    "status",
+                    "id",
+                    "created_at",
+                    "amount",
+                    "reason",
+                    "settlement_date",
+                    "Currency",
+                    "Mandatereceive"
+                  ]
+                },
+                "examples": {
+                  "example-1": {
+                    "value": {
+                      "status": "completed",
+                      "id": "2b608cbb-9894-46da-9035-bbea0f8b1774",
+                      "created_at": "2020-12-21T13:43:17.927Z",
+                      "amount": "1",
+                      "reason": "Invoice 25",
+                      "settlement_date": "2020-12-21",
+                      "Currency": {
+                        "symbol": "EUR"
+                      },
+                      "Mandatereceive": {
+                        "status": "accepted",
+                        "name": "Creditor Name",
+                        "signature_date": "2020-11-15",
+                        "reference": "mandate-receive-three"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "operationId": "get-api-debit",
+        "description": "Endpoint to find one debit"
       }
     }
   },
@@ -2627,6 +2945,9 @@
     },
     {
       "name": "Direct Debit"
+    },
+    {
+      "name": "Debit"
     }
   ]
 }
