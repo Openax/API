@@ -161,67 +161,94 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "description": "",
                   "type": "object",
                   "properties": {
-                    "type": {
-                      "type": "string"
+                    "id": {
+                      "type": "string",
+                      "minLength": 1
                     },
-                    "company_name": {
-                      "type": "string"
+                    "created_at": {
+                      "type": "string",
+                      "minLength": 1
                     },
-                    "first_name": {
-                      "type": "string"
+                    "name": {
+                      "type": "string",
+                      "minLength": 1
                     },
-                    "last_name": {
-                      "type": "string"
+                    "address": {
+                      "type": "object",
+                      "properties": {
+                        "street_line1": {
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        "city": {
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        "country": {
+                          "type": "string",
+                          "minLength": 1
+                        }
+                      },
+                      "required": [
+                        "street_line1",
+                        "city",
+                        "country"
+                      ]
                     },
-                    "accounts": {
+                    "bank_accounts": {
                       "type": "array",
+                      "uniqueItems": true,
+                      "minItems": 1,
                       "items": {
-                        "anyOf": [
-                          {
-                            "properties": {
-                              "iban": {
-                                "type": "string"
-                              },
-                              "bic": {
-                                "type": "string"
-                              },
-                              "currency": {
-                                "type": "string"
-                              }
-                            }
-                          },
-                          {
-                            "properties": {
-                              "account_no": {
-                                "type": "string"
-                              },
-                              "sort_code": {
-                                "type": "string"
-                              },
-                              "currency": {
-                                "type": "string"
-                              }
-                            }
-                          }
+                        "required": [
+                          "iban",
+                          "bic",
+                          "currency"
                         ],
-                        "type": "object"
+                        "properties": {
+                          "iban": {
+                            "type": "string",
+                            "minLength": 1
+                          },
+                          "bic": {
+                            "type": "string",
+                            "minLength": 1
+                          },
+                          "currency": {
+                            "type": "string",
+                            "minLength": 1
+                          }
+                        }
                       }
                     }
-                  }
+                  },
+                  "required": [
+                    "id",
+                    "created_at",
+                    "name",
+                    "address",
+                    "bank_accounts"
+                  ]
                 },
                 "examples": {
                   "example-1": {
                     "value": {
-                      "type": "string",
-                      "company_name": "string",
-                      "first_name": "string",
-                      "last_name": "string",
-                      "accounts": [
+                      "id": "497f6eca-6276-4993-bfeb-53cbbbba6f08",
+                      "created_at": "2019-08-24T14:15:22Z",
+                      "name": "Charles Corp",
+                      "address": {
+                        "street_line1": "King's street 321",
+                        "city": "London",
+                        "country": "uk"
+                      },
+                      "bank_accounts": [
                         {
-                          "iban": "string",
-                          "bic": "string"
+                          "iban": "GB98MIDL07009312345678",
+                          "bic": "ABCMGB21",
+                          "currency": "EUR"
                         }
                       ]
                     }
@@ -247,11 +274,11 @@
                 "properties": {
                   "type": {
                     "type": "string",
-                    "minLength": 1
-                  },
-                  "company_name": {
-                    "type": "string",
-                    "minLength": 1
+                    "minLength": 1,
+                    "enum": [
+                      "corporate",
+                      "individual"
+                    ]
                   },
                   "first_name": {
                     "type": "string",
@@ -261,21 +288,19 @@
                     "type": "string",
                     "minLength": 1
                   },
+                  "company_name": {
+                    "type": "string",
+                    "minLength": 1
+                  },
                   "address": {
                     "type": "object",
                     "required": [
+                      "street_line1",
+                      "city",
                       "country"
                     ],
                     "properties": {
                       "street_line1": {
-                        "type": "string",
-                        "minLength": 1
-                      },
-                      "street_line2": {
-                        "type": "string",
-                        "minLength": 1
-                      },
-                      "region": {
                         "type": "string",
                         "minLength": 1
                       },
@@ -284,10 +309,6 @@
                         "minLength": 1
                       },
                       "country": {
-                        "type": "string",
-                        "minLength": 1
-                      },
-                      "postcode": {
                         "type": "string",
                         "minLength": 1
                       }
@@ -323,33 +344,45 @@
                 },
                 "required": [
                   "type",
-                  "company_name",
-                  "first_name",
-                  "last_name",
                   "address",
                   "bank_accounts"
                 ]
               },
               "examples": {
-                "add beneficiary": {
+                "add beneficiary individual": {
                   "value": {
-                    "type": "string",
-                    "company_name": "string",
+                    "type": "corporate",
                     "first_name": "string",
                     "last_name": "string",
+                    "company_name": "string",
                     "address": {
                       "street_line1": "string",
-                      "street_line2": "string",
-                      "region": "string",
                       "city": "string",
-                      "country": "string",
-                      "postcode": "string"
+                      "country": "string"
                     },
                     "bank_accounts": [
                       {
                         "iban": "string",
                         "bic": "string",
                         "currency": "string"
+                      }
+                    ]
+                  }
+                },
+                "Add beneficiary corporate": {
+                  "value": {
+                    "type": "corporate",
+                    "company_name": "Charles Corp",
+                    "address": {
+                      "street_line1": "King's street 321",
+                      "city": "London",
+                      "country": "uk"
+                    },
+                    "bank_accounts": [
+                      {
+                        "iban": "GB98MIDL07009312345678",
+                        "bic": "ABCMGB21",
+                        "currency": "EUR"
                       }
                     ]
                   }
@@ -623,12 +656,7 @@
                               }
                             },
                             "required": [
-                              "street_line1",
-                              "street_line2",
-                              "region",
-                              "city",
-                              "country",
-                              "postcode"
+                              "country"
                             ]
                           },
                           "bank_accounts": {
@@ -636,11 +664,7 @@
                             "uniqueItems": true,
                             "minItems": 1,
                             "items": {
-                              "required": [
-                                "iban",
-                                "bic",
-                                "currency"
-                              ],
+                              "type": "object",
                               "properties": {
                                 "iban": {
                                   "type": "string",
@@ -654,7 +678,12 @@
                                   "type": "string",
                                   "minLength": 1
                                 }
-                              }
+                              },
+                              "required": [
+                                "iban",
+                                "bic",
+                                "currency"
+                              ]
                             }
                           }
                         },
@@ -687,62 +716,48 @@
                   ]
                 },
                 "examples": {
-                  "example-1": {
+                  "All data": {
                     "value": {
                       "data": [
                         {
-                          "id": "e00a3a0e-4a74-4b9b-b61b-df6cfa10f418",
-                          "created_at": "2020-11-25T10:25:26.840Z",
-                          "iban": "FR1420041010050500013M02606",
+                          "id": "497f6eca-6276-4993-bfeb-53cbbbba6f08",
+                          "created_at": "2019-08-24T14:15:22Z",
                           "name": "Dupont Martin",
-                          "bic": "CCBPFRPPXXX",
-                          "currency": "BHD",
-                          "country": "France"
+                          "address": {
+                            "street_line1": "Rue de paris 123",
+                            "city": "Paris",
+                            "country": "fr"
+                          },
+                          "bank_accounts": [
+                            {
+                              "iban": "FR7630006000011234567890189",
+                              "bic": "ACEMFRP1",
+                              "currency": "EUR"
+                            }
+                          ]
                         },
                         {
-                          "id": "e1a0947e-191b-406c-a5fe-4fbcd3bd3ad6",
-                          "created_at": "2020-12-01T13:16:12.014Z",
-                          "iban": "SE3550000000054910000003",
-                          "name": "John Smith",
-                          "bic": "VPLALT21XXX",
-                          "currency": "BHD",
-                          "country": "Lithuania"
+                          "id": "497f6eca-6276-4993-bfeb-53cbbbba6f08",
+                          "created_at": "2019-08-24T14:15:22Z",
+                          "name": "Charles Corp",
+                          "address": {
+                            "street_line1": "King's street 321",
+                            "city": "London",
+                            "country": "uk"
+                          },
+                          "bank_accounts": [
+                            {
+                              "iban": "GB98MIDL07009312345678",
+                              "bic": "ABCMGB21",
+                              "currency": "EUR"
+                            }
+                          ]
                         }
                       ],
                       "count": 2,
                       "per_page": 10,
                       "page": 1,
                       "page_count": 1
-                    }
-                  },
-                  "example-2": {
-                    "value": {
-                      "data": [
-                        {
-                          "id": "497f6eca-6276-4993-bfeb-53cbbbba6f08",
-                          "created_at": "2019-08-24T14:15:22Z",
-                          "name": "string",
-                          "address": {
-                            "street_line1": "string",
-                            "street_line2": "string",
-                            "region": "string",
-                            "city": "string",
-                            "country": "string",
-                            "postcode": "string"
-                          },
-                          "bank_accounts": [
-                            {
-                              "iban": "string",
-                              "bic": "string",
-                              "currency": "string"
-                            }
-                          ]
-                        }
-                      ],
-                      "count": 0,
-                      "per_page": 0,
-                      "page": 0,
-                      "page_count": 0
                     }
                   }
                 }
