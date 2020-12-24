@@ -351,20 +351,19 @@
               "examples": {
                 "add beneficiary individual": {
                   "value": {
-                    "type": "corporate",
-                    "first_name": "string",
-                    "last_name": "string",
-                    "company_name": "string",
+                    "type": "individual",
+                    "first_name": "Dupont",
+                    "last_name": "Martin",
                     "address": {
-                      "street_line1": "string",
-                      "city": "string",
-                      "country": "string"
+                      "street_line1": "Rue de paris 123",
+                      "city": "Paris",
+                      "country": "fr"
                     },
                     "bank_accounts": [
                       {
-                        "iban": "string",
-                        "bic": "string",
-                        "currency": "string"
+                        "iban": "FR7630006000011234567890189",
+                        "bic": "ACEMFRP1",
+                        "currency": "EUR"
                       }
                     ]
                   }
