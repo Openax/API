@@ -1685,7 +1685,7 @@
         }
       ],
       "delete": {
-        "summary": "",
+        "summary": "Delete a mandate",
         "operationId": "delete-api-mandate-id",
         "responses": {
           "200": {
@@ -1721,7 +1721,10 @@
             }
           }
         },
-        "description": "Ebdpoint to delete a mandate"
+        "description": "Ebdpoint to delete a mandate",
+        "tags": [
+          "mandate"
+        ]
       }
     },
     "/api/mandates": {
