@@ -481,12 +481,20 @@
                           "currency"
                         ]
                       }
+                    },
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "accepted",
+                        "refused"
+                      ]
                     }
                   },
                   "required": [
                     "id",
                     "created_at",
-                    "name"
+                    "name",
+                    "status"
                   ]
                 },
                 "examples": {
@@ -495,6 +503,7 @@
                       "id": "497f6eca-6276-4993-bfeb-53cbbbba6f08",
                       "created_at": "2019-08-24T14:15:22Z",
                       "name": "Dupont Martin",
+                      "status": "accepted",
                       "address": {
                         "street_line1": "Rue de paris 123",
                         "city": "Paris",
@@ -684,12 +693,20 @@
                                 "currency"
                               ]
                             }
+                          },
+                          "status": {
+                            "type": "string",
+                            "enum": [
+                              "accepted",
+                              "refused"
+                            ]
                           }
                         },
                         "required": [
                           "id",
                           "created_at",
-                          "name"
+                          "name",
+                          "status"
                         ]
                       }
                     },
@@ -722,6 +739,7 @@
                           "id": "497f6eca-6276-4993-bfeb-53cbbbba6f08",
                           "created_at": "2019-08-24T14:15:22Z",
                           "name": "Dupont Martin",
+                          "status": "accepted",
                           "address": {
                             "street_line1": "Rue de paris 123",
                             "city": "Paris",
@@ -739,6 +757,7 @@
                           "id": "497f6eca-6276-4993-bfeb-53cbbbba6f08",
                           "created_at": "2019-08-24T14:15:22Z",
                           "name": "Charles Corp",
+                          "status": "accepted",
                           "address": {
                             "street_line1": "King's street 321",
                             "city": "London",
