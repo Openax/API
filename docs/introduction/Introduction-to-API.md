@@ -70,7 +70,7 @@ Use the authorisation_code, client_assertion and client_id from previous steps t
 
 ```json http
 {
-  "method": "get",
+  "method": "post",
   "url": "https://todos.stoplight.io/todos",
   "headers": {
     "Content-Type": "application/x-www-form-urlencoded"
@@ -81,4 +81,13 @@ Use the authorisation_code, client_assertion and client_id from previous steps t
     "client_id": "insert client_id"
   }
 }
+```
+
+```json
+curl --request POST \
+  --url https://todos.stoplight.io/todos \
+  --header 'Content-Type: application/x-www-form-urlencoded' \
+  --data grant_type=authorization_code \
+  --data 'code=<insert authorisation_code>' \
+  --data 'client_id=insert client_id'
 ```
