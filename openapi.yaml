@@ -63,18 +63,6 @@ paths:
                     bic: OPEXGB2L
                     balance_id: 0c2f3f0a-6ab4-4863-91b9-1de53b3af554
       operationId: get-api-ledgers
-      description: |-
-        Endpoint to create and initiate a pipeline. 
-        ### Paragraph In a hole in the ground there lived a hobbit. Not a **nasty**, _dirty_, `wet` hole, filled with the ends of worms and an oozy smell, nor yet a dry, bare, sandy hole with nothing in it to sit down on or to eat: it was a [hobbit-hole](https://en.wikipedia.org/wiki/Hobbit#Lifestyle "Hobbit lifestyles"), and that means comfort.
-
-        ```json
-        {
-          "iss": <insert your_domain>,
-          "sub": <insert client_id>,
-          "aud": "https://openax.com",
-          "exp": 1606851519
-        }
-        ```
   /api/balances:
     get:
       summary: Get all Balances
