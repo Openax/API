@@ -63,6 +63,13 @@ paths:
                     bic: OPEXGB2L
                     balance_id: 0c2f3f0a-6ab4-4863-91b9-1de53b3af554
       operationId: get-api-ledgers
+      description: |
+
+        | FIELD | DESCRIPTION                                     | REQUIRED | SCHEMA |
+        | ----- | ----------------------------------------------- | -------- | ------ |
+        | iss   | Domain from redirect_url (without http&#x3A;//) | Yes      | Text   |
+        | A2    | B2                                              | C2       |        |
+        | A3    | B3                                              | C3       |        |
   /api/balances:
     get:
       summary: Get all Balances
