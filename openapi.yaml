@@ -1,11 +1,19 @@
 openapi: 3.0.0
 info:
   title: Openax
-  description: |-
+  description: |
     Openax API
 
 
     ## fffff 
+
+    dsfsdflmsdmf
+
+    | FIELD | DESCRIPTION                                     | REQUIRED | SCHEMA |
+    | ----- | ----------------------------------------------- | -------- | ------ |
+    | iss   | Domain from redirect_url (without http&#x3A;//) | Yes      | Text   |
+    | A2    | B2                                              | C2       |        |
+    | A3    | B3                                              | C3       |        |
   termsOfService: 'https://openax.com'
   contact:
     email: apiteam@openax.com
