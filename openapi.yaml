@@ -13,6 +13,12 @@ info:
   version: 1.0.0
 paths:
   /api/ledgers:
+    description: 'Endpoint to create and initiate a pipeline. 
+
+        ### Paragraph
+        In a hole in the ground there lived a hobbit. Not a **nasty**, _dirty_, `wet` hole, filled with the ends
+        of worms and an oozy smell, nor yet a dry, bare, sandy hole with nothing in it to sit down on or to
+        eat: it was a [hobbit-hole](https://en.wikipedia.org/wiki/Hobbit#Lifestyle "Hobbit lifestyles"), and that means comfort.'
     get:
       summary: Get all Ledgers
       tags:
@@ -23,11 +29,7 @@ paths:
           content:
             application/json:
               schema:
-                description: '# Introduction to API
-
-The API allows you to automate your own business processes.
-
-Whether it is automating payouts to your vendors or fetching transactions into your own application, this documentation is the place to start.'
+                description: ''
                 type: object
                 properties:
                   id:
