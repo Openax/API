@@ -2134,7 +2134,7 @@ components:
 servers:
   - description: sandbox
     url: 'https://sandbox-b2b.openax.com'
-  - description: ''
+  - description: Production
     url: 'https://b2b.openax.com'
 security: []
 tags:
