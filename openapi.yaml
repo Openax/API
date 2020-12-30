@@ -23,7 +23,11 @@ paths:
           content:
             application/json:
               schema:
-                description: ''
+                description: '# Introduction to API
+
+The API allows you to automate your own business processes.
+
+Whether it is automating payouts to your vendors or fetching transactions into your own application, this documentation is the place to start.'
                 type: object
                 properties:
                   id:
