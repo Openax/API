@@ -19,8 +19,7 @@
       "get": {
         "summary": "Get all Ledgers",
         "tags": [
-          "Account",
-          "Introduction"
+          "Account"
         ],
         "responses": {
           "200": {
@@ -2972,9 +2971,6 @@
     },
     {
       "name": "Debit"
-    },
-    {
-      "name": "Introduction"
     }
   ]
 }
