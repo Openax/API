@@ -19,7 +19,8 @@
       "get": {
         "summary": "Get all Ledgers",
         "tags": [
-          "Account"
+          "Account",
+          "Introduction"
         ],
         "responses": {
           "200": {
@@ -81,7 +82,8 @@
             }
           }
         },
-        "operationId": "get-api-ledgers"
+        "operationId": "get-api-ledgers",
+        "description": ""
       }
     },
     "/api/balances": {
@@ -2970,6 +2972,9 @@
     },
     {
       "name": "Debit"
+    },
+    {
+      "name": "Introduction"
     }
   ]
 }
