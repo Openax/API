@@ -635,7 +635,7 @@ paths:
                   type: string
                   minLength: 1
                   format: uuid
-                creditor_details:
+                creditor:
                   format: uuid
                   type: object
                   properties:
@@ -657,12 +657,6 @@ paths:
                 reason:
                   type: string
                   minLength: 1
-                method:
-                  type: string
-                  minLength: 1
-                  enum:
-                    - sepa
-                    - swift
                 method_type:
                   type: string
                   enum:
@@ -670,33 +664,23 @@ paths:
                     - turbo
               required:
                 - bank_account_id
-                - creditor_details
+                - creditor
                 - amount
                 - currency
                 - date
                 - reason
-                - method
             examples:
-              Post normal:
+              Exemple method type normal:
                 value:
-                  from_bank_account: d92198b0-9087-4381-aa8f-169f7e9d6d47
-                  beneficiary_id: 5fe933ca-6708-4eec-acfd-9604dbeb2c57
+                  bank_account_id: d92198b0-9087-4381-aa8f-169f7e9d6d47
+                  creditor:
+                    beneficiary_id: ''
+                    wallet_id: ''
                   amount: 1
                   currency: EUR
                   date: '2020-12-07'
                   reason: Invoice 23
-                  method: normal
-                  ledger_id: ba6c2e77-7d5d-4a1e-936e-e524bb7cb1ea
-              Post Instant:
-                value:
-                  iban_id: d92198b0-9087-4381-aa8f-169f7e9d6d47
-                  beneficiary_id: 5fe933ca-6708-4eec-acfd-9604dbeb2c57
-                  amount: 1
-                  currency: EUR
-                  date: '2020-12-07'
-                  reason: Invoice 24
-                  method: turbo
-                  ledger_id: ba6c2e77-7d5d-4a1e-936e-e524bb7cb1ea
+                  method_type: normal
           application/xml:
             schema:
               type: object
