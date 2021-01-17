@@ -292,77 +292,97 @@ paths:
               description: ''
               type: object
               properties:
-                type:
+                nickname:
                   type: string
                   minLength: 1
-                  enum:
-                    - corporate
-                    - individual
                 first_name:
                   type: string
-                  minLength: 1
                 last_name:
                   type: string
-                  minLength: 1
                 company_name:
+                  type: string
+                  minLength: 1
+                type:
                   type: string
                   minLength: 1
                 address:
                   type: object
                   required:
-                    - street_line1
+                    - street
                     - city
                     - country
+                    - postal_code
+                    - state
                   properties:
-                    street_line1:
+                    street:
                       type: string
-                      minLength: 1
                     city:
                       type: string
-                      minLength: 1
                     country:
                       type: string
-                      minLength: 1
-                bank_accounts:
+                    postal_code:
+                      type: string
+                    state:
+                      type: string
+                accounts:
                   type: array
                   uniqueItems: true
                   minItems: 1
                   items:
                     type: object
                     properties:
-                      iban:
+                      bic:
                         type: string
                         minLength: 1
-                      bic:
+                      iban:
                         type: string
                         minLength: 1
                       currency:
                         type: string
                         minLength: 1
+                      method:
+                        type: string
+                        minLength: 1
+                      country:
+                        type: string
+                        minLength: 1
                     required:
-                      - iban
                       - bic
+                      - iban
                       - currency
-                nickname:
-                  type: string
+                      - method
+                      - country
               required:
+                - nickname
+                - company_name
                 - type
                 - address
-                - bank_accounts
+                - accounts
             examples:
-              add beneficiary individual:
+              exemple:
                 value:
-                  type: individual
-                  first_name: Dupont
-                  last_name: Martin
+                  nickname: Company register
+                  first_name: null
+                  last_name: null
+                  company_name: Company register
+                  type: company
                   address:
-                    street_line1: Rue de paris 123
-                    city: Paris
-                    country: fr
-                  bank_accounts:
-                    - iban: FR7630006000011234567890189
-                      bic: ACEMFRP1
+                    street: ''
+                    city: ''
+                    country: ''
+                    postal_code: ''
+                    state: ''
+                  accounts:
+                    - bic: dd
+                      iban: dd
                       currency: EUR
+                      method: sepa
+                      country: fr
+                    - account_number: dd
+                      rooting_code: dd
+                      currency: USD
+                      method: swift
+                      country: us
               Add beneficiary corporate:
                 value:
                   type: corporate
@@ -700,7 +720,7 @@ paths:
               description: ''
               type: object
               properties:
-                iban_id:
+                from_bank_account:
                   type: string
                   minLength: 1
                   format: uuid
@@ -737,7 +757,7 @@ paths:
                     - normal
                     - turbo
               required:
-                - iban_id
+                - from_bank_account
                 - creditor_details
                 - amount
                 - currency
@@ -748,7 +768,7 @@ paths:
             examples:
               Post normal:
                 value:
-                  iban_id: d92198b0-9087-4381-aa8f-169f7e9d6d47
+                  from_bank_account: d92198b0-9087-4381-aa8f-169f7e9d6d47
                   beneficiary_id: 5fe933ca-6708-4eec-acfd-9604dbeb2c57
                   amount: 1
                   currency: EUR
@@ -766,6 +786,10 @@ paths:
                   reason: Invoice 24
                   method: turbo
                   ledger_id: ba6c2e77-7d5d-4a1e-936e-e524bb7cb1ea
+          application/xml:
+            schema:
+              type: object
+              properties: {}
         description: 'Post a new payment '
       tags:
         - Payout
