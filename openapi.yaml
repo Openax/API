@@ -2,7 +2,6 @@ openapi: 3.0.0
 info:
   title: Openax
   description: |
-
     # Introduction to API
 
     The API allows you to automate your own business processes.
@@ -204,7 +203,7 @@ paths:
                       id: 0f543a3a-47f2-4a59-9c59-7eaddc894bfd
                       symbol: EUR
       operationId: get-api-balances
-  /api/beneficiary/add:
+  /api/v1/beneficiary/add:
     post:
       summary: Create a Beneficiary
       operationId: postNewBeneficiary
@@ -344,6 +343,8 @@ paths:
                       - iban
                       - bic
                       - currency
+                nickname:
+                  type: string
               required:
                 - type
                 - address
@@ -377,6 +378,7 @@ paths:
         description: Create a new beneficiary
       tags:
         - Beneficiary
+    parameters: []
   '/api/beneficiary/{id}':
     get:
       summary: Beneficiary
@@ -658,7 +660,7 @@ paths:
             minimum: 0
           in: query
           name: begin
-  /api/payment/add:
+  /api/v1/payout/add:
     post:
       summary: Add a payment
       operationId: post-bank-add
@@ -702,9 +704,8 @@ paths:
                   type: string
                   minLength: 1
                   format: uuid
-                beneficiary_id:
-                  type: string
-                  minLength: 1
+                creditor_details:
+                  type: object
                   format: uuid
                 amount:
                   type: number
@@ -724,15 +725,20 @@ paths:
                   type: string
                   minLength: 1
                   enum:
-                    - normal
-                    - turbo
+                    - sepa
+                    - swift
                 ledger_id:
                   type: string
                   minLength: 1
                   format: uuid
+                method_type:
+                  type: string
+                  enum:
+                    - normal
+                    - turbo
               required:
                 - iban_id
-                - beneficiary_id
+                - creditor_details
                 - amount
                 - currency
                 - date
@@ -762,7 +768,8 @@ paths:
                   ledger_id: ba6c2e77-7d5d-4a1e-936e-e524bb7cb1ea
         description: 'Post a new payment '
       tags:
-        - Payment
+        - Payout
+    parameters: []
   '/api/payment/{id}':
     get:
       summary: Find payment by ID
@@ -2240,3 +2247,4 @@ tags:
   - name: mandate
   - name: Direct Debit
   - name: Debit
+  - name: Payout
