@@ -927,16 +927,16 @@ paths:
                         type:
                           type: string
                           minLength: 1
-                        method:
-                          type: string
                           enum:
-                            - normal
-                            - turbo
+                            - sepa
+                            - swift
+                            - card
                         mode:
                           type: string
                           minLength: 1
                           enum:
-                            - transfer
+                            - debit
+                            - credit
                         id:
                           type: string
                           minLength: 1
@@ -955,14 +955,6 @@ paths:
                           type: string
                           minLength: 1
                           description: three letter ISO code
-                      required:
-                        - type
-                        - mode
-                        - id
-                        - created_at
-                        - amount
-                        - name
-                        - currency
                   count:
                     type: number
                   per_page:
@@ -971,12 +963,6 @@ paths:
                     type: number
                   page_count:
                     type: number
-                required:
-                  - data
-                  - count
-                  - per_page
-                  - page
-                  - page_count
               examples:
                 Response All Transactions:
                   value:
