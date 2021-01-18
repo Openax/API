@@ -231,6 +231,9 @@ paths:
                 type:
                   type: string
                   minLength: 1
+                  enum:
+                    - corporate
+                    - individual
                 address:
                   type: object
                   properties:
@@ -721,10 +724,18 @@ paths:
                         name:
                           type: string
                           minLength: 1
-                        currency:
+                        currency_id:
                           type: string
                           minLength: 1
                           description: three letter ISO code
+                        updated_at:
+                          type: string
+                        completed_at:
+                          type: string
+                        creditor:
+                          type: object
+                        debitor:
+                          type: object
                   count:
                     type: number
                   per_page:
