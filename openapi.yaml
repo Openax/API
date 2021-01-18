@@ -203,16 +203,16 @@ paths:
                       id: 0f543a3a-47f2-4a59-9c59-7eaddc894bfd
                       symbol: EUR
       operationId: get-api-balances
-  /api/v1/creditor/add:
+  /api/v1/counterparty/add:
     post:
-      summary: Create a Creditor and Wallet
+      summary: Create a  counterparty and many wallets
       operationId: postNewBeneficiary
       responses:
         '400':
           description: Bad Request
         '406':
           description: Unauthorized
-      description: Endpoint to create a new Beneficiary Creditor and wallets information
+      description: Endpoint to create a new wallet information and wallets
       requestBody:
         content:
           application/json:
@@ -315,9 +315,9 @@ paths:
       tags:
         - Creditor
     parameters: []
-  '/api/v1/creditor/{id}':
+  '/api/v1/wallet-info/{id}':
     get:
-      summary: Get creditor id
+      summary: Get wallet information from id
       operationId: getBeneficiary
       responses:
         '200':
@@ -429,7 +429,7 @@ paths:
         '404':
           description: No beneficiaries found
       parameters: []
-      description: Retrive beneficiary by ID
+      description: Get wallet information by ID
       tags:
         - Creditor
     parameters:
@@ -440,7 +440,7 @@ paths:
         in: path
         description: Id of beneficiary to return
         required: true
-  '/api/v1/creditor/delete/{id}':
+  '/api/v1/wallet-info/delete/{id}':
     post:
       summary: Delete a creditor by ID
       operationId: deleteBeneficiaryById
@@ -659,7 +659,7 @@ paths:
                   enum:
                     - normal
                     - turbo
-                creditor_id:
+                creditor_wallet_info_id:
                   type: string
                 creditor_wallet_id:
                   type: string
