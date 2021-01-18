@@ -1904,6 +1904,95 @@ paths:
                     page: 1
                     page_count: 1
       operationId: get-api-V1-transactions
+  /api/v1/wallet/add:
+    get:
+      summary: Wallet add
+      tags:
+        - Counterparty
+        - Wallet
+      responses: {}
+      operationId: get-api-v1-wallet-add
+      requestBody:
+        content:
+          application/json:
+            schema:
+              description: ''
+              type: object
+              properties:
+                iban:
+                  type: string
+                bic:
+                  type: string
+                method:
+                  type: string
+                currency_id:
+                  type: string
+                country_id:
+                  type: string
+                counterparty_id:
+                  type: string
+              required:
+                - iban
+                - bic
+                - method
+                - currency_id
+                - country_id
+                - counterparty_id
+            examples:
+              example-1:
+                value:
+                  iban: ''
+                  bic: ''
+                  method: ''
+                  currency_id: ''
+                  country_id: ''
+                  counterparty_id: ''
+        description: ''
+      description: ''
+    post:
+      summary: ''
+      operationId: post-api-v1-wallet-add
+      responses:
+        '200':
+          description: OK
+      requestBody:
+        content:
+          application/json:
+            schema:
+              description: ''
+              type: object
+              properties:
+                iban:
+                  type: string
+                bic:
+                  type: string
+                method:
+                  type: string
+                currency_id:
+                  type: string
+                country_id:
+                  type: string
+                counterparty_id:
+                  type: string
+              required:
+                - iban
+                - bic
+                - method
+                - currency_id
+                - country_id
+                - counterparty_id
+  '/api/v1/wallet/{id}':
+    parameters:
+      - schema:
+          type: string
+        name: id
+        in: path
+        required: true
+    get:
+      summary: Delete wallet
+      tags: []
+      responses: {}
+      operationId: get-api-v1-wallet-id
 components:
   schemas:
     account:
@@ -2188,3 +2277,4 @@ tags:
   - name: Debit
   - name: Payout
   - name: Counterparty
+  - name: Wallet
