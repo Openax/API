@@ -100,109 +100,6 @@ info:
     url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
   version: 1.0.0
 paths:
-  /api/ledgers:
-    description: ''
-    get:
-      summary: Get all Ledgers
-      tags:
-        - Account
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                description: ''
-                type: object
-                properties:
-                  id:
-                    type: string
-                    minLength: 1
-                    format: uuid
-                  name:
-                    type: string
-                    minLength: 1
-                  iban:
-                    type: string
-                    minLength: 1
-                  iban_id:
-                    type: string
-                    minLength: 1
-                  bic:
-                    type: string
-                    minLength: 1
-                  balance_id:
-                    type: string
-                    minLength: 1
-                required:
-                  - id
-                  - name
-                  - iban
-                  - iban_id
-                  - bic
-                  - balance_id
-              examples:
-                example-1:
-                  value:
-                    id: ba6c2e77-7d5d-4a1e-936e-e524bb7cb1ea
-                    name: Carlos corp
-                    iban: GB73OPEX00993040952115
-                    iban_id: d92198b0-9087-4381-aa8f-169f7e9d6d47
-                    bic: OPEXGB2L
-                    balance_id: 0c2f3f0a-6ab4-4863-91b9-1de53b3af554
-      operationId: get-api-ledgers
-      description: |
-        | FIELD | DESCRIPTION                                     | REQUIRED | SCHEMA |
-        | ----- | ----------------------------------------------- | -------- | ------ |
-        | iss   | Domain from redirect_url (without http&#x3A;//) | Yes      | Text   |
-        | A2    | B2                                              | C2       |        |
-        | A3    | B3                                              | C3       |        |
-  /api/balances:
-    get:
-      summary: Get all Balances
-      tags:
-        - Account
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                description: ''
-                type: object
-                properties:
-                  id:
-                    type: string
-                    minLength: 1
-                    format: uuid
-                  amount:
-                    type: string
-                    minLength: 1
-                  Currency:
-                    type: object
-                    required:
-                      - id
-                      - symbol
-                    properties:
-                      id:
-                        type: string
-                        minLength: 1
-                      symbol:
-                        type: string
-                        minLength: 1
-                required:
-                  - id
-                  - amount
-                  - Currency
-              examples:
-                example-1:
-                  value:
-                    id: 0c2f3f0a-6ab4-4863-91b9-1de53b3af554
-                    amount: '11'
-                    Currency:
-                      id: 0f543a3a-47f2-4a59-9c59-7eaddc894bfd
-                      symbol: EUR
-      operationId: get-api-balances
   /api/v1/counterparty/add:
     post:
       summary: Create a  counterparty and many wallets
@@ -2002,32 +1899,40 @@ paths:
                     items:
                       required:
                         - id
-                        - name
+                        - status
+                        - nikname
+                        - corporate_id
+                        - individual_id
                       properties:
                         id:
                           type: string
                           minLength: 1
-                        name:
+                        status:
                           type: string
                           minLength: 1
-                        Balance:
+                        nikname:
+                          type: string
+                          minLength: 1
+                        corporate_id:
+                          type: string
+                          minLength: 1
+                        individual_id:
+                          type: string
+                          minLength: 1
+                        balances:
                           type: array
                           uniqueItems: true
                           minItems: 1
                           items:
                             required:
-                              - id
-                              - amount
                               - currency_id
+                              - amount
                             properties:
-                              id:
+                              currency_id:
                                 type: string
                                 minLength: 1
                               amount:
                                 type: number
-                              currency_id:
-                                type: string
-                                minLength: 1
                   count:
                     type: number
                   per_page:
@@ -2046,21 +1951,16 @@ paths:
                 example-1:
                   value:
                     data:
-                      - id: 3f48fd18-3e38-4045-83e9-87ddd8d16211
-                        name: rback freenchi
-                        Balance:
-                          - id: 9f5dd2b2-0a5f-4000-ae68-9d8c5453e187
-                            amount: 150
-                            currency_id: EUR
-                          - id: 9f5dd2b2-0a5f-4000-ae68-9d8c5453e187
+                      - id: uuid
+                        status: active
+                        nikname: Ledger 1
+                        corporate_id: uuid
+                        individual_id: uuid
+                        balances:
+                          - currency_id: EUR
                             amount: 100
-                            currency_id: USD
-                      - id: 9f8bee22-327a-4d0b-8623-28576bf84c80
-                        name: tass dass
-                        Balance:
-                          - id: 231d9d28-c275-47bc-b4b4-06760ef16407
-                            amount: 1000
-                            currency_id: EUR
+                          - currency_id: USD
+                            amount: 200
                     count: 2
                     per_page: 10
                     page: 1
