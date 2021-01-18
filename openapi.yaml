@@ -257,21 +257,21 @@ paths:
                       iban:
                         type: string
                         minLength: 1
-                      currency:
+                      currency_id:
                         type: string
                         minLength: 1
                       method:
                         type: string
                         minLength: 1
-                      country:
+                      country_id:
                         type: string
                         minLength: 1
                     required:
                       - bic
                       - iban
-                      - currency
+                      - currency_id
                       - method
-                      - country
+                      - country_id
               required:
                 - type
                 - wallets
