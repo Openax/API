@@ -647,9 +647,7 @@ paths:
                   enum:
                     - normal
                     - turbo
-                creditor_wallet_info_id:
-                  type: string
-                creditor_wallet_id:
+                wallet_id:
                   type: string
               required:
                 - account_number_id
