@@ -316,7 +316,7 @@ paths:
                       country: gb
         description: Create a new beneficiary
       tags:
-        - Creditor
+        - Counterparty
     parameters: []
   '/api/v1/counterparty/{id}':
     get:
@@ -453,9 +453,9 @@ paths:
           description: OK
       tags:
         - Counterparty
-  /api/v1/creditors:
+  /api/v1/counterparties:
     get:
-      summary: Get all creditors
+      summary: Counterparty Get all
       responses:
         '200':
           description: OK
@@ -585,7 +585,7 @@ paths:
           in: query
           name: begin
       tags:
-        - Creditor
+        - Counterparty
     parameters: []
   /api/v1/payout/add:
     post:
@@ -1931,5 +1931,4 @@ tags:
   - name: Direct Debit
   - name: Debit
   - name: Payout
-  - name: Creditor
   - name: Counterparty
