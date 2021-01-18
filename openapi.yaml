@@ -639,7 +639,7 @@ paths:
                   minLength: 1
                   format: date
                   example: '2020-12-07'
-                reason:
+                reference:
                   type: string
                   minLength: 1
                 method_type:
@@ -653,8 +653,7 @@ paths:
                 - account_number_id
                 - amount
                 - currency
-                - scheduled_for
-                - reason
+                - wallet_id
             examples:
               Exemple method type normal:
                 value:
