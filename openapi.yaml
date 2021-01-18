@@ -630,7 +630,7 @@ paths:
                   format: uuid
                 amount:
                   type: number
-                currency:
+                currency_id:
                   type: string
                   minLength: 1
                   description: three lette ISO code
@@ -652,7 +652,7 @@ paths:
               required:
                 - account_number_id
                 - amount
-                - currency
+                - currency_id
                 - wallet_id
             examples:
               Exemple method type normal:
