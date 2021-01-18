@@ -203,16 +203,16 @@ paths:
                       id: 0f543a3a-47f2-4a59-9c59-7eaddc894bfd
                       symbol: EUR
       operationId: get-api-balances
-  /api/v1/beneficiary/add:
+  /api/v1/creditor/add:
     post:
-      summary: Create a Beneficiary
+      summary: Create a Creditor and Wallet
       operationId: postNewBeneficiary
       responses:
         '400':
           description: Bad Request
         '406':
           description: Unauthorized
-      description: Endpoint to create a new Beneficiary and wallets information
+      description: Endpoint to create a new Beneficiary Creditor and wallets information
       requestBody:
         content:
           application/json:
@@ -313,11 +313,11 @@ paths:
                       country: gb
         description: Create a new beneficiary
       tags:
-        - Beneficiary
+        - Creditor
     parameters: []
-  '/api/beneficiary/{id}':
+  '/api/v1/creditor/{id}':
     get:
-      summary: Beneficiary
+      summary: Get creditor id
       operationId: getBeneficiary
       responses:
         '200':
@@ -330,83 +330,88 @@ paths:
                 properties:
                   id:
                     type: string
-                    minLength: 1
                     format: uuid
-                  created_at:
+                  nickname:
                     type: string
                     minLength: 1
-                    format: date-time
-                  name:
+                  company_name:
+                    type: string
+                    minLength: 1
+                  type:
                     type: string
                     minLength: 1
                   address:
                     type: object
+                    required:
+                      - street
+                      - city
+                      - country
+                      - postal_code
+                      - state
                     properties:
-                      street_line1:
+                      street:
                         type: string
-                        minLength: 1
-                      street_line2:
-                        type: string
-                        minLength: 1
-                      region:
-                        type: string
-                        minLength: 1
                       city:
                         type: string
-                        minLength: 1
                       country:
                         type: string
-                        minLength: 1
-                      postcode:
+                      postal_code:
                         type: string
-                        minLength: 1
-                    required:
-                      - country
-                  bank_accounts:
+                      state:
+                        type: string
+                  wallets:
                     type: array
                     uniqueItems: true
                     minItems: 1
                     items:
                       type: object
                       properties:
-                        iban:
+                        bic:
                           type: string
                           minLength: 1
-                        bic:
+                        iban:
                           type: string
                           minLength: 1
                         currency:
                           type: string
                           minLength: 1
+                        method:
+                          type: string
+                          minLength: 1
+                        country:
+                          type: string
+                          minLength: 1
                       required:
-                        - iban
                         - bic
+                        - iban
                         - currency
-                  status:
-                    type: string
-                    enum:
-                      - accepted
-                      - refused
+                        - method
+                        - country
                 required:
                   - id
-                  - created_at
-                  - name
-                  - status
+                  - nickname
+                  - company_name
+                  - type
+                  - address
+                  - wallets
               examples:
-                Found beneficiary:
+                Exemple get creditor id:
                   value:
-                    id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
-                    created_at: '2019-08-24T14:15:22Z'
-                    name: Dupont Martin
-                    status: accepted
+                    nickname: Company nickname
+                    company_name: Company name
+                    type: corporate
                     address:
-                      street_line1: Rue de paris 123
-                      city: Paris
-                      country: fr
-                    bank_accounts:
-                      - iban: FR7630006000011234567890189
-                        bic: ACEMFRP1
+                      street: ''
+                      city: ''
+                      country: ''
+                      postal_code: ''
+                      state: ''
+                    wallets:
+                      - bic: OPEXGB2L
+                        iban: GB73OPEX00993040952115
                         currency: EUR
+                        method: sepa
+                        country: gb
             application/xml:
               schema:
                 type: object
@@ -426,7 +431,7 @@ paths:
       parameters: []
       description: Retrive beneficiary by ID
       tags:
-        - Beneficiary
+        - Creditor
     parameters:
       - schema:
           type: string
@@ -593,7 +598,7 @@ paths:
     parameters: []
   /api/v1/payout/add:
     post:
-      summary: Add a payment
+      summary: Add a payout
       operationId: post-bank-add
       responses:
         '200':
@@ -631,18 +636,10 @@ paths:
               description: ''
               type: object
               properties:
-                bank_account_id:
+                account_number_id:
                   type: string
                   minLength: 1
                   format: uuid
-                creditor:
-                  format: uuid
-                  type: object
-                  properties:
-                    beneficiary_id:
-                      type: string
-                    wallet_id:
-                      type: string
                 amount:
                   type: number
                 currency:
@@ -662,9 +659,12 @@ paths:
                   enum:
                     - normal
                     - turbo
+                creditor_id:
+                  type: string
+                creditor_wallet_id:
+                  type: string
               required:
-                - bank_account_id
-                - creditor
+                - account_number_id
                 - amount
                 - currency
                 - date
@@ -2153,3 +2153,4 @@ tags:
   - name: Direct Debit
   - name: Debit
   - name: Payout
+  - name: Creditor
