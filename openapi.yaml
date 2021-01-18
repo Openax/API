@@ -223,8 +223,10 @@ paths:
                 nickname:
                   type: string
                   minLength: 1
-                first_name: {}
-                last_name: {}
+                first_name:
+                  type: string
+                last_name:
+                  type: string
                 company_name:
                   type: string
                   minLength: 1
@@ -266,6 +268,9 @@ paths:
                       method:
                         type: string
                         minLength: 1
+                        enum:
+                          - sepa
+                          - swift
                       country_id:
                         type: string
                         minLength: 1
@@ -375,21 +380,25 @@ paths:
                         iban:
                           type: string
                           minLength: 1
-                        currency:
+                        currency_id:
                           type: string
                           minLength: 1
                         method:
                           type: string
                           minLength: 1
-                        country:
+                        country_id:
                           type: string
                           minLength: 1
                       required:
                         - bic
                         - iban
-                        - currency
+                        - currency_id
                         - method
-                        - country
+                        - country_id
+                  first_name:
+                    type: string
+                  last_name:
+                    type: string
                 required:
                   - id
                   - nickname
@@ -480,7 +489,7 @@ paths:
                           type: string
                           minLength: 1
                           format: date-time
-                        name:
+                        nickname:
                           type: string
                           minLength: 1
                         address:
@@ -513,13 +522,17 @@ paths:
                               bic:
                                 type: string
                                 minLength: 1
-                              currency:
+                              currency_id:
                                 type: string
                                 minLength: 1
+                              method:
+                                type: string
+                              country_id:
+                                type: string
                             required:
                               - iban
                               - bic
-                              - currency
+                              - currency_id
                         status:
                           type: string
                           enum:
@@ -528,7 +541,7 @@ paths:
                       required:
                         - id
                         - created_at
-                        - name
+                        - nickname
                         - status
                   count:
                     type: number
@@ -577,7 +590,7 @@ paths:
                     page: 1
                     page_count: 1
       operationId: get-api-beneficiaries
-      description: This endpoint to return all your beneficiaries
+      description: This endpoint to return all your counterparties
       parameters:
         - schema:
             type: number
@@ -603,22 +616,107 @@ paths:
                   id:
                     type: string
                     minLength: 1
-                    format: uuid
+                  created_at:
+                    type: string
                   status:
+                    type: string
+                    minLength: 1
+                  mode:
+                    type: string
+                    minLength: 1
+                  type:
+                    type: string
+                    minLength: 1
+                  method:
+                    type: string
+                    minLength: 1
+                  amount:
+                    type: number
+                  method_type:
+                    type: string
+                    minLength: 1
+                  schedule_for:
+                    type: string
+                    minLength: 1
+                  reason:
+                    type: string
+                    minLength: 1
+                  debitor:
+                    type: object
+                    properties:
+                      bic:
+                        type: string
+                        minLength: 1
+                      iban:
+                        type: string
+                        minLength: 1
+                      name:
+                        type: string
+                        minLength: 1
+                    required:
+                      - bic
+                      - iban
+                      - name
+                  creditor:
+                    type: object
+                    properties:
+                      bic:
+                        type: string
+                        minLength: 1
+                      iban:
+                        type: string
+                        minLength: 1
+                      name:
+                        type: string
+                        minLength: 1
+                      method:
+                        type: string
+                        minLength: 1
+                    required:
+                      - bic
+                      - iban
+                      - name
+                      - method
+                  currency_id:
                     type: string
                     minLength: 1
                 required:
                   - id
+                  - created_at
                   - status
+                  - mode
+                  - type
+                  - method
+                  - amount
+                  - method_type
+                  - schedule_for
+                  - reason
+                  - debitor
+                  - creditor
+                  - currency_id
               examples:
                 example normal:
                   value:
                     id: ba6c2e77-6276-4993-bfeb-9604dbeb2c57
+                    created_at: ''
                     status: pending
-                example turbo:
-                  value:
-                    id: d92198b0-6276-4993-bfeb-9604dbeb2c57
-                    status: pending
+                    mode: debit
+                    type: transfer
+                    method: sepa
+                    amount: 5
+                    method_type: normal
+                    schedule_for: '2021-01-17'
+                    reason: Invoice 35
+                    debitor:
+                      bic: OPEXGB2L
+                      iban: GB73OPEX00993040952115
+                      name: John Smith
+                    creditor:
+                      bic: OPEXGB2L
+                      iban: GB73OPEX00993040952115
+                      name: Tom Smith
+                      method: sepa
+                    currency_id: EUR
       description: Endpoint to create a new payout
       requestBody:
         content:
@@ -642,7 +740,7 @@ paths:
                   minLength: 1
                   format: date
                   example: '2020-12-07'
-                reference:
+                reason:
                   type: string
                   minLength: 1
                 method_type:
@@ -658,17 +756,14 @@ paths:
                 - currency_id
                 - wallet_id
             examples:
-              Exemple method type normal:
+              example-2:
                 value:
-                  bank_account_id: d92198b0-9087-4381-aa8f-169f7e9d6d47
-                  creditor:
-                    beneficiary_id: ''
-                    wallet_id: ''
-                  amount: 1
-                  currency: EUR
-                  date: '2020-12-07'
-                  reason: Invoice 23
+                  account_number_id: 322be1f9-8204-4aa8-9b87-0cb2a58f8afb
+                  amount: 0
+                  currency_id: EUR
+                  scheduled_for: '2020-12-07'
                   method_type: normal
+                  wallet_id: 322be1f9-8204-4aa8-9b87-0cb2a58f8afb
           application/xml:
             schema:
               type: object
@@ -1648,6 +1743,167 @@ paths:
                       reference: mandate-receive-three
       operationId: get-api-debit
       description: Endpoint to find one debit
+  /api/V1/transactions:
+    get:
+      summary: Your GET endpoint
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                description: ''
+                type: object
+                properties:
+                  data:
+                    type: array
+                    uniqueItems: true
+                    minItems: 1
+                    items:
+                      required:
+                        - id
+                        - created_at
+                        - status
+                        - mode
+                        - type
+                        - method
+                        - amount
+                        - method_type
+                        - schedule_for
+                        - reason
+                        - currency_id
+                      properties:
+                        id:
+                          type: string
+                          minLength: 1
+                        created_at:
+                          type: string
+                        status:
+                          type: string
+                          minLength: 1
+                        mode:
+                          type: string
+                          minLength: 1
+                        type:
+                          type: string
+                          minLength: 1
+                        method:
+                          type: string
+                          minLength: 1
+                        amount:
+                          type: number
+                        method_type:
+                          type: string
+                          minLength: 1
+                        schedule_for:
+                          type: string
+                          minLength: 1
+                        reason:
+                          type: string
+                          minLength: 1
+                        debitor:
+                          type: object
+                          properties:
+                            bic:
+                              type: string
+                              minLength: 1
+                            iban:
+                              type: string
+                              minLength: 1
+                            name:
+                              type: string
+                              minLength: 1
+                          required:
+                            - bic
+                            - iban
+                            - name
+                        creditor:
+                          type: object
+                          properties:
+                            bic:
+                              type: string
+                              minLength: 1
+                            iban:
+                              type: string
+                              minLength: 1
+                            name:
+                              type: string
+                              minLength: 1
+                            method:
+                              type: string
+                              minLength: 1
+                          required:
+                            - bic
+                            - iban
+                            - name
+                            - method
+                        currency_id:
+                          type: string
+                          minLength: 1
+                  count:
+                    type: number
+                  per_page:
+                    type: number
+                  page:
+                    type: number
+                  page_count:
+                    type: number
+                required:
+                  - data
+                  - count
+                  - per_page
+                  - page
+                  - page_count
+              examples:
+                example-1:
+                  value:
+                    data:
+                      - id: ba6c2e77-6276-4993-bfeb-9604dbeb2c57
+                        created_at: ''
+                        status: pending
+                        mode: debit
+                        type: transfer
+                        method: sepa
+                        amount: 5
+                        method_type: normal
+                        schedule_for: '2021-01-17'
+                        reason: Invoice 35
+                        debitor:
+                          bic: OPEXGB2L
+                          iban: GB73OPEX00993040952115
+                          name: John Smith
+                        creditor:
+                          bic: OPEXGB2L
+                          iban: GB73OPEX00993040952115
+                          name: Tom Smith
+                          method: sepa
+                        currency_id: EUR
+                      - id: ba6c2e77-6276-4993-bfeb-9604dbeb2c57
+                        created_at: ''
+                        status: pending
+                        mode: debit
+                        type: transfer
+                        method: sepa
+                        amount: 5
+                        method_type: normal
+                        schedule_for: '2021-01-17'
+                        reason: Invoice 35
+                        debitor:
+                          bic: OPEXGB2L
+                          iban: GB73OPEX00993040952115
+                          name: John Smith
+                        creditor:
+                          bic: OPEXGB2L
+                          iban: GB73OPEX00993040952115
+                          name: Tom Smith
+                          method: sepa
+                        currency_id: EUR
+                    count: 2
+                    per_page: 10
+                    page: 1
+                    page_count: 1
+      operationId: get-api-V1-transactions
 components:
   schemas:
     account:
