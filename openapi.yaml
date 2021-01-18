@@ -440,28 +440,16 @@ paths:
         in: path
         description: Id of beneficiary to return
         required: true
-  '/api/v1/wallet-info/delete/{id}':
-    post:
-      summary: Delete a creditor by ID
-      operationId: deleteBeneficiaryById
-      description: Endpoint te remove a beneficiary from your list
+  /api/v1/counterparty:
+    parameters: []
+    delete:
+      summary: Counterparty
+      operationId: delete-api-v1-counterparty-delete-id
       responses:
         '200':
-          description: successful operation - beneficiary removed
-        '400':
-          description: Bad Request
-        '401':
-          description: Not Found -- The requested resource could not be found.
+          description: OK
       tags:
-        - Creditor
-    parameters:
-      - schema:
-          type: string
-          format: uuid
-        name: id
-        in: path
-        required: true
-        description: id of the beneficiary to remove
+        - Counterparty
   /api/v1/creditors:
     get:
       summary: Get all creditors
