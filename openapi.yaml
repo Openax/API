@@ -440,13 +440,11 @@ paths:
         in: path
         description: Id of beneficiary to return
         required: true
-  '/api/beneficiary/delete/{id}':
+  '/api/v1/creditor/delete/{id}':
     post:
-      summary: Delete a beneficiary by ID
+      summary: Delete a creditor by ID
       operationId: deleteBeneficiaryById
       description: Endpoint te remove a beneficiary from your list
-      tags:
-        - Beneficiary
       responses:
         '200':
           description: successful operation - beneficiary removed
@@ -454,6 +452,8 @@ paths:
           description: Bad Request
         '401':
           description: Not Found -- The requested resource could not be found.
+      tags:
+        - Creditor
     parameters:
       - schema:
           type: string
@@ -462,11 +462,9 @@ paths:
         in: path
         required: true
         description: id of the beneficiary to remove
-  /api/v1/beneficiaries:
+  /api/v1/creditors:
     get:
-      summary: Get all beneficiaries
-      tags:
-        - Beneficiary
+      summary: Get all creditors
       responses:
         '200':
           description: OK
@@ -595,6 +593,8 @@ paths:
             minimum: 0
           in: query
           name: begin
+      tags:
+        - Creditor
     parameters: []
   /api/v1/payout/add:
     post:
@@ -646,7 +646,7 @@ paths:
                   type: string
                   minLength: 1
                   description: three lette ISO code
-                date:
+                scheduled_for:
                   type: string
                   minLength: 1
                   format: date
@@ -667,7 +667,7 @@ paths:
                 - account_number_id
                 - amount
                 - currency
-                - date
+                - scheduled_for
                 - reason
             examples:
               Exemple method type normal:
@@ -686,221 +686,6 @@ paths:
               type: object
               properties: {}
         description: Post a new payout
-      tags:
-        - Payout
-    parameters: []
-  '/api/v1/payout/{id}':
-    get:
-      summary: Find payment by ID
-      operationId: getPaymentById
-      responses:
-        '200':
-          description: successful operation
-          content:
-            application/json:
-              schema:
-                description: ''
-                type: object
-                properties:
-                  status:
-                    type: string
-                    minLength: 1
-                  id:
-                    type: string
-                    minLength: 1
-                    format: uuid
-                  created_at:
-                    type: string
-                    minLength: 1
-                    format: date-time
-                  updated_at:
-                    type: string
-                    minLength: 1
-                    format: date-time
-                  reason:
-                    type: string
-                    minLength: 1
-                  amount:
-                    type: string
-                    minLength: 1
-                  date:
-                    type: string
-                    minLength: 1
-                    format: date
-                  beneficiary_id:
-                    type: string
-                    minLength: 1
-                    format: uuid
-                  iban_id:
-                    type: string
-                    minLength: 1
-                    format: uuid
-                  currency:
-                    type: string
-                    minLength: 1
-                    description: three letter ISO code
-                required:
-                  - status
-                  - id
-                  - created_at
-                  - updated_at
-                  - reason
-                  - amount
-                  - date
-                  - beneficiary_id
-                  - iban_id
-                  - currency
-              examples:
-                One payment:
-                  value:
-                    status: pending
-                    id: ca079bda-9f4a-40c5-bcad-5303f0018d2e
-                    created_at: '2020-12-07T15:27:06.098Z'
-                    updated_at: '2020-12-07T15:27:06.541Z'
-                    reason: Invoice 23
-                    amount: '1'
-                    date: '2020-12-07'
-                    beneficiary_id: 5fe933ca-6708-4eec-acfd-9604dbeb2c57
-                    iban_id: d92198b0-9087-4381-aa8f-169f7e9d6d47
-                    currency: EUR
-        '404':
-          description: Payment not found
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  error:
-                    type: string
-              examples:
-                Not found:
-                  value:
-                    error: Not found
-      description: Endpoint to get one payment by Id
-      tags:
-        - Payout
-    parameters:
-      - schema:
-          type: string
-          format: uuid
-        name: id
-        in: path
-        required: true
-  /api/v1/payouts:
-    get:
-      summary: Get all payouts
-      operationId: getAllPayments
-      responses:
-        '200':
-          description: successful operation
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  data:
-                    type: array
-                    items:
-                      type: object
-                      properties:
-                        id:
-                          type: string
-                          format: uuid
-                        status:
-                          type: string
-                          enum:
-                            - send
-                            - completed
-                            - error
-                            - refused
-                            - pending
-                        method:
-                          type: string
-                        created_at:
-                          type: string
-                          format: date-time
-                        amount:
-                          type: number
-                        beneficiary_id:
-                          type: string
-                          format: uuid
-                        ledger_id:
-                          type: string
-                          format: uuid
-                        currency:
-                          type: string
-                          description: 3 letters ISO code
-                        date:
-                          type: string
-                          format: date
-                          example: '2020-06-01'
-                        reference:
-                          type: string
-                  count:
-                    type: number
-                  per_page:
-                    type: number
-                  page:
-                    type: number
-                  page_count:
-                    type: number
-              examples:
-                All Payments:
-                  value:
-                    data:
-                      - status: completed
-                        method: SEPA
-                        id: 201c6e0f-c720-4fe1-a318-fef451ab0af1
-                        created_at: '2020-03-24T09:00:22.859Z'
-                        reason: Invoice 123456 Smith Co.
-                        amount: 4
-                        date: '2020-03-25'
-                        beneficiary_id: 023a0383-ccb0-48ee-ab2b-2d640e57c380
-                        ledger_id: 0a88b35a-2652-46d9-9954-335c2d9b47f8
-                        currency: EUR
-                        reference: Invoice 12345
-                      - status: completed
-                        method: FAST
-                        id: 77a5d560-d131-44d6-be19-85ac6110f3db
-                        created_at: '2020-03-26T11:38:06.119Z'
-                        reason: Invoice 554412 John Co.
-                        amount: 4
-                        date: '2020-03-26'
-                        beneficiary_id: 139478be-65f3-46b5-9804-03dcf87dcdc1
-                        ledger_id: 9e51441c-de1a-4638-ba3a-6394f45b6b99
-                        currency: EUR
-                        reference: Invoice 58845
-                    count: 2
-                    per_page: 25
-                    page: 1
-                    page_count: 1
-        '400':
-          description: Invalid request
-        '404':
-          description: No payments found
-      parameters:
-        - schema:
-            type: string
-            format: date
-            example: '2020-06-01'
-          in: query
-          name: from
-          description: filters crated_at
-        - schema:
-            type: string
-            example: '2020-06-01'
-          in: query
-          name: to
-          description: filters created_at
-        - schema:
-            type: number
-          in: query
-          name: begin
-          description: record to begin with (start at 0)
-      description: |-
-        Endpoint to get all payouts
-
-        Pagination is supported. You receive a limit of 25 records per request. In the response you receive  the count of records, so you can send the next request with the query param begin with the correct value in order to get the next records
       tags:
         - Payout
     parameters: []
@@ -967,22 +752,20 @@ paths:
                 Response All Transactions:
                   value:
                     data:
-                      - type: credit
-                        method: normal
-                        mode: transfer
-                        id: ec64fc60-eb25-4606-9b00-0b0c4244c647
+                      - id: ec64fc60-eb25-4606-9b00-0b0c4244c647
                         created_at: '2020-12-07T13:38:36.111Z'
-                        amount: '1'
-                        name: Some Creditor
-                        currency: EUR
-                      - type: credit
-                        method: normal
-                        mode: transfer
-                        id: c261b438-9c8d-4d52-8b32-9c20f175f4b4
-                        created_at: '2020-12-07T13:40:32.889Z'
-                        amount: '1'
-                        name: Some Creditor
-                        currency: EUR
+                        update_at: ''
+                        completed_at: ''
+                        type: transfer
+                        mode: credit
+                        payin: {}
+                      - id: ec64fc60-eb25-4606-9b00-0b0c4244c647
+                        created_at: '2020-12-07T13:38:36.111Z'
+                        update_at: ''
+                        completed_at: ''
+                        type: transfer
+                        mode: debit
+                        payout: {}
                     count: 2
                     per_page: 10
                     page: 1
@@ -2147,7 +1930,6 @@ servers:
 security: []
 tags:
   - name: Account
-  - name: Beneficiary
   - name: Transaction
   - name: mandate
   - name: Direct Debit
