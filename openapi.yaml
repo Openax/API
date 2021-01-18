@@ -315,9 +315,9 @@ paths:
       tags:
         - Creditor
     parameters: []
-  '/api/v1/wallet-info/{id}':
+  '/api/v1/counterparty/{id}':
     get:
-      summary: Get wallet information from id
+      summary: Get counterparty from id
       operationId: getBeneficiary
       responses:
         '200':
@@ -431,7 +431,7 @@ paths:
       parameters: []
       description: Get wallet information by ID
       tags:
-        - Creditor
+        - Counterparty
     parameters:
       - schema:
           type: string
@@ -1936,3 +1936,4 @@ tags:
   - name: Debit
   - name: Payout
   - name: Creditor
+  - name: Counterparty
