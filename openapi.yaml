@@ -337,12 +337,6 @@ paths:
                           minLength: 1
                         id:
                           type: string
-                      required:
-                        - bic
-                        - iban
-                        - currency_id
-                        - method
-                        - country_id
                   first_name:
                     type: string
                   last_name:
@@ -353,7 +347,6 @@ paths:
                   - company_name
                   - type
                   - address
-                  - wallets
               examples:
                 Exemple get one counterparty:
                   value:
@@ -479,10 +472,6 @@ paths:
                                 type: string
                               country_id:
                                 type: string
-                            required:
-                              - iban
-                              - bic
-                              - currency_id
                         status:
                           type: string
                           enum:
