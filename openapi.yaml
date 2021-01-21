@@ -626,7 +626,7 @@ paths:
               description: ''
               type: object
               properties:
-                account_number_id:
+                bank_account_id:
                   type: string
                   minLength: 1
                   format: uuid
@@ -652,14 +652,14 @@ paths:
                 wallet_id:
                   type: string
               required:
-                - account_number_id
+                - bank_account_id
                 - amount
                 - currency_id
                 - wallet_id
             examples:
               example-2:
                 value:
-                  account_number_id: 322be1f9-8204-4aa8-9b87-0cb2a58f8afb
+                  bank_account_id: 322be1f9-8204-4aa8-9b87-0cb2a58f8afb
                   amount: 0
                   currency_id: EUR
                   scheduled_for: '2020-12-07'
@@ -699,7 +699,6 @@ paths:
                           enum:
                             - sepa
                             - swift
-                            - card
                         mode:
                           type: string
                           minLength: 1
@@ -1662,20 +1661,7 @@ paths:
                     uniqueItems: true
                     minItems: 1
                     items:
-                      required:
-                        - id
-                        - created_at
-                        - updated_at
-                        - completed_at
-                        - currency_id
-                        - status
-                        - mode
-                        - type
-                        - method
-                        - amount
-                        - method_type
-                        - schedule_for
-                        - reason
+                      type: object
                       properties:
                         id:
                           type: string
@@ -1695,12 +1681,20 @@ paths:
                         mode:
                           type: string
                           minLength: 1
+                          enum:
+                            - debit
+                            - credit
                         type:
                           type: string
                           minLength: 1
+                          enum:
+                            - transfer
                         method:
                           type: string
                           minLength: 1
+                          enum:
+                            - sepa
+                            - swift
                         amount:
                           type: number
                         method_type:
@@ -1748,6 +1742,20 @@ paths:
                             - iban
                             - name
                             - method
+                      required:
+                        - id
+                        - created_at
+                        - updated_at
+                        - completed_at
+                        - currency_id
+                        - status
+                        - mode
+                        - type
+                        - method
+                        - amount
+                        - method_type
+                        - schedule_for
+                        - reason
                   count:
                     type: number
                   per_page:
@@ -1788,7 +1796,7 @@ paths:
                           iban: GB73OPEX00993040952115
                           name: Tom Smith
                           method: sepa
-                      - id: ba6c2e77-6276-4993-bfeb-9604dbeb2c57
+                      - id: ba6c2e77-6276-4993-bfeb-9604dbeb2c59
                         created_at: ''
                         updated_at: ''
                         completed_at: ''
