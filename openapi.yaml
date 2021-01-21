@@ -102,7 +102,7 @@ info:
 paths:
   /api/v1/counterparty/add:
     post:
-      summary: Create a  counterparty and many wallets
+      summary: Create a  counterparty
       operationId: postNewBeneficiary
       responses:
         '400':
@@ -146,40 +146,8 @@ paths:
                       type: string
                     state:
                       type: string
-                wallets:
-                  type: array
-                  uniqueItems: true
-                  minItems: 1
-                  items:
-                    type: object
-                    properties:
-                      bic:
-                        type: string
-                        minLength: 1
-                      iban:
-                        type: string
-                        minLength: 1
-                      currency_id:
-                        type: string
-                        minLength: 1
-                      method:
-                        type: string
-                        minLength: 1
-                        enum:
-                          - sepa
-                          - swift
-                      country_id:
-                        type: string
-                        minLength: 1
-                    required:
-                      - bic
-                      - iban
-                      - currency_id
-                      - method
-                      - country_id
               required:
                 - type
-                - wallets
             examples:
               Exemple corporate method sepa:
                 value:
