@@ -107,6 +107,86 @@ paths:
       responses:
         '400':
           description: Bad Request
+          content:
+            application/json:
+              schema:
+                description: ''
+                type: object
+                properties:
+                  id:
+                    type: string
+                    minLength: 1
+                    format: uuid
+                  created_at:
+                    type: string
+                    minLength: 1
+                  first_name:
+                    type: string
+                    minLength: 1
+                  last_name:
+                    type: string
+                    minLength: 1
+                  company_name:
+                    type: string
+                    minLength: 1
+                  status:
+                    type: string
+                    minLength: 1
+                    enum:
+                      - accepted
+                      - refused
+                  type:
+                    type: string
+                    minLength: 1
+                    enum:
+                      - individual
+                      - corporate
+                  nickname:
+                    type: string
+                    minLength: 4
+                  address:
+                    type: object
+                    properties:
+                      street:
+                        type: string
+                        minLength: 1
+                      city:
+                        type: string
+                        minLength: 1
+                      country:
+                        type: string
+                        minLength: 1
+                required:
+                  - id
+                  - created_at
+                  - status
+                  - type
+                  - nickname
+              examples:
+                example-1:
+                  value:
+                    id: 045777b4-46af-4a7e-a457-27422d435453
+                    created_at: '2021-01-21T17:02:30.774Z'
+                    first_name: Kazimir
+                    last_name: Nissim
+                    status: accepted
+                    type: individual
+                    nickname: some nickname
+                    address:
+                      street: king road 2
+                      city: london
+                      country: US
+                example-2:
+                  value:
+                    id: 045777b4-46af-4a7e-a457-27422d435453
+                    created_at: '2021-01-21T17:02:30.774Z'
+                    status: accepted
+                    type: corporate
+                    nickname: some nickname
+                    address:
+                      street: king road 2
+                      city: london
+                      country: US
         '406':
           description: Unauthorized
       description: Endpoint to create a new wallet information and wallets
@@ -117,24 +197,33 @@ paths:
               description: ''
               type: object
               properties:
-                nickname:
-                  type: string
-                  minLength: 1
-                first_name:
-                  type: string
-                last_name:
-                  type: string
-                company_name:
-                  type: string
-                  minLength: 1
                 type:
                   type: string
                   minLength: 1
                   enum:
-                    - corporate
                     - individual
+                    - corporate
+                first_name:
+                  type: string
+                  minLength: 1
+                last_name:
+                  type: string
+                  minLength: 1
+                company_name:
+                  type: string
+                  minLength: 1
+                nickname:
+                  type: string
+                  description: you can add any nickname
+                  minLength: 4
                 address:
                   type: object
+                  required:
+                    - street
+                    - city
+                    - country
+                    - postal_code
+                    - state
                   properties:
                     street:
                       type: string
@@ -148,24 +237,22 @@ paths:
                       type: string
               required:
                 - type
+                - address
             examples:
               Exemple corporate method sepa:
                 value:
-                  nickname: Company nickname
-                  company_name: Company name
                   type: corporate
+                  first_name: ff
+                  last_name: gg
+                  company_name: Company name
+                  nickname: Company nickname
+                  fullname: ddd
                   address:
                     street: ''
                     city: ''
                     country: ''
                     postal_code: ''
                     state: ''
-                  wallets:
-                    - bic: OPEXGB2L
-                      iban: GB73OPEX00993040952115
-                      currency_id: EUR
-                      method: sepa
-                      country_id: FR
               Exemple individual method swift:
                 value:
                   nickname: nickname
@@ -178,12 +265,6 @@ paths:
                     country: ''
                     postal_code: ''
                     state: ''
-                  wallets:
-                    - bic: OPEXGB2L
-                      iban: GB73OPEX00993040952115
-                      currency_id: EUR
-                      method: swift
-                      country_id: FR
         description: Create a new beneficiary
       tags:
         - Counterparty
