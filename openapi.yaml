@@ -635,7 +635,7 @@ paths:
                 currency_id:
                   type: string
                   minLength: 1
-                  description: three lette ISO code
+                  description: 'three lette ISO code, only if you have many wallets.'
                 scheduled_for:
                   type: string
                   minLength: 1
@@ -2050,6 +2050,17 @@ paths:
           name: begin
           description: record to begin with (start at 0)
     parameters: []
+  /tttttttt:
+    get:
+      summary: Your GET endpoint
+      tags: []
+      responses: {}
+      operationId: get-tttttttt
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/account'
 components:
   schemas:
     account:
