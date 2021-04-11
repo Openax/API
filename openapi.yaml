@@ -120,15 +120,6 @@ paths:
                   created_at:
                     type: string
                     minLength: 1
-                  first_name:
-                    type: string
-                    minLength: 1
-                  last_name:
-                    type: string
-                    minLength: 1
-                  company_name:
-                    type: string
-                    minLength: 1
                   status:
                     type: string
                     minLength: 1
@@ -141,52 +132,23 @@ paths:
                     enum:
                       - individual
                       - corporate
-                  nickname:
+                  fullname:
                     type: string
                     minLength: 4
-                  address:
-                    type: object
-                    properties:
-                      street:
-                        type: string
-                        minLength: 1
-                      city:
-                        type: string
-                        minLength: 1
-                      country:
-                        type: string
-                        minLength: 1
                 required:
                   - id
                   - created_at
                   - status
                   - type
-                  - nickname
+                  - fullname
               examples:
                 example-1:
                   value:
                     id: 045777b4-46af-4a7e-a457-27422d435453
                     created_at: '2021-01-21T17:02:30.774Z'
-                    first_name: Kazimir
-                    last_name: Nissim
                     status: accepted
                     type: individual
-                    nickname: some nickname
-                    address:
-                      street: king road 2
-                      city: london
-                      country: US
-                example-2:
-                  value:
-                    id: 045777b4-46af-4a7e-a457-27422d435453
-                    created_at: '2021-01-21T17:02:30.774Z'
-                    status: accepted
-                    type: corporate
-                    nickname: some nickname
-                    address:
-                      street: king road 2
-                      city: london
-                      country: US
+                    fullname: First name Last name
         '406':
           description: Unauthorized
       description: Endpoint to create a new wallet information and wallets
@@ -206,24 +168,17 @@ paths:
                 first_name:
                   type: string
                   minLength: 1
+                  description: mandatory when type is individual
                 last_name:
                   type: string
                   minLength: 1
+                  description: mandatory when type is individual
                 company_name:
                   type: string
                   minLength: 1
-                nickname:
-                  type: string
-                  description: you can add any nickname
-                  minLength: 4
+                  description: mandatory when type is corporate
                 address:
                   type: object
-                  required:
-                    - street
-                    - city
-                    - country
-                    - postal_code
-                    - state
                   properties:
                     street:
                       type: string
@@ -235,36 +190,26 @@ paths:
                       type: string
                     state:
                       type: string
+                mobile:
+                  type: string
+                  description: allowed when type is individual
+                email:
+                  type: string
+                  description: allowed when type is corporate
               required:
                 - type
-                - address
             examples:
-              Exemple corporate method sepa:
+              'Exemple corporate ':
                 value:
                   type: corporate
-                  first_name: ff
-                  last_name: gg
                   company_name: Company name
-                  nickname: Company nickname
-                  fullname: ddd
-                  address:
-                    street: ''
-                    city: ''
-                    country: ''
-                    postal_code: ''
-                    state: ''
-              Exemple individual method swift:
+                  email: mail@mail.com
+              'Exemple individual ':
                 value:
-                  nickname: nickname
                   first_name: First name
                   last_name: Last Name
                   type: individual
-                  address:
-                    street: ''
-                    city: ''
-                    country: ''
-                    postal_code: ''
-                    state: ''
+                  mobile: '+44587898541'
         description: Create a new beneficiary
       tags:
         - Counterparty
@@ -281,26 +226,106 @@ paths:
               schema:
                 description: ''
                 type: object
+                properties:
+                  id:
+                    type: string
+                    minLength: 1
+                  created_at:
+                    type: string
+                    minLength: 1
+                  fullname:
+                    type: string
+                    minLength: 1
+                  type:
+                    type: string
+                    minLength: 1
+                  email:
+                    type: string
+                    minLength: 1
+                  status:
+                    type: string
+                    minLength: 1
+                  address:
+                    type: object
+                    properties:
+                      street:
+                        type: string
+                      city:
+                        type: string
+                      country:
+                        type: string
+                      postal_code:
+                        type: string
+                      state:
+                        type: string
+                    required:
+                      - street
+                      - city
+                      - country
+                      - postal_code
+                      - state
+                  wallets:
+                    type: array
+                    uniqueItems: true
+                    minItems: 1
+                    items:
+                      required:
+                        - bic
+                        - iban
+                        - currency_id
+                        - method
+                        - country_id
+                        - id
+                      properties:
+                        bic:
+                          type: string
+                          minLength: 1
+                        iban:
+                          type: string
+                          minLength: 1
+                        currency_id:
+                          type: string
+                          minLength: 1
+                        method:
+                          type: string
+                          minLength: 1
+                        country_id:
+                          type: string
+                          minLength: 1
+                        id:
+                          type: string
+                          minLength: 1
+                required:
+                  - id
+                  - created_at
+                  - fullname
+                  - type
+                  - email
+                  - status
+                  - address
+                  - wallets
               examples:
                 Exemple get one counterparty:
                   value:
                     id: fe06e4b7-cd84-462f-9b10-86f6c0b57313
-                    nickname: Company nickname
-                    company_name: Company name
-                    type: corporate
+                    created_at: '2019-08-24T14:15:22Z'
+                    fullname: Dupont Martin
+                    type: individual
+                    status: accepted
                     address:
                       street: ''
                       city: ''
                       country: ''
                       postal_code: ''
                       state: ''
+                    email: mail@mail.com
                     wallets:
                       - bic: OPEXGB2L
                         iban: GB73OPEX00993040952115
                         currency_id: EUR
                         method: sepa
                         country_id: FR
-                        id: fe06e4b7-cd84-462f-9b10-86f6c0b57325
+                        id: bea5cb1f-27b4-4357-8c85-abdbce0c0a13
             application/xml:
               schema:
                 type: object
@@ -351,7 +376,7 @@ paths:
                 description: ''
                 type: object
                 properties:
-                  data:
+                  rows:
                     type: array
                     uniqueItems: true
                     minItems: 1
@@ -361,60 +386,23 @@ paths:
                         id:
                           type: string
                           minLength: 1
-                          format: uuid
                         created_at:
                           type: string
                           minLength: 1
-                          format: date-time
-                        nickname:
+                        fullname:
                           type: string
                           minLength: 1
-                        address:
-                          type: object
-                          properties:
-                            street:
-                              type: string
-                              minLength: 1
-                            city:
-                              type: string
-                              minLength: 1
-                            country:
-                              type: string
-                              minLength: 1
-                            postcode:
-                              type: string
-                              minLength: 1
-                          required:
-                            - country
-                        wallets:
-                          type: array
-                          uniqueItems: true
-                          minItems: 1
-                          items:
-                            type: object
-                            properties:
-                              iban:
-                                type: string
-                                minLength: 1
-                              bic:
-                                type: string
-                                minLength: 1
-                              currency_id:
-                                type: string
-                                minLength: 1
-                              method:
-                                type: string
-                              country_id:
-                                type: string
+                        type:
+                          type: string
+                          minLength: 1
                         status:
                           type: string
-                          enum:
-                            - accepted
-                            - refused
+                          minLength: 1
                       required:
                         - id
                         - created_at
-                        - nickname
+                        - fullname
+                        - type
                         - status
                   count:
                     type: number
@@ -425,7 +413,7 @@ paths:
                   page_count:
                     type: number
                 required:
-                  - data
+                  - rows
                   - count
                   - per_page
                   - page
@@ -433,31 +421,17 @@ paths:
               examples:
                 All data:
                   value:
-                    data:
+                    rows:
                       - id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                         created_at: '2019-08-24T14:15:22Z'
-                        name: Dupont Martin
+                        fullname: Dupont Martin
+                        type: individual
                         status: accepted
-                        address:
-                          street_line1: Rue de paris 123
-                          city: Paris
-                          country: fr
-                        bank_accounts:
-                          - iban: FR7630006000011234567890189
-                            bic: ACEMFRP1
-                            currency: EUR
                       - id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
                         created_at: '2019-08-24T14:15:22Z'
-                        name: Charles Corp
+                        fullname: Charles Corp
+                        type: corporate
                         status: accepted
-                        address:
-                          street_line1: King's street 321
-                          city: London
-                          country: uk
-                        bank_accounts:
-                          - iban: GB98MIDL07009312345678
-                            bic: ABCMGB21
-                            currency: EUR
                     count: 2
                     per_page: 10
                     page: 1
@@ -491,7 +465,17 @@ paths:
                     minLength: 1
                   created_at:
                     type: string
+                    minLength: 1
+                  ledger_id:
+                    type: string
+                    minLength: 1
+                  counterparty_id:
+                    type: string
+                    minLength: 1
                   status:
+                    type: string
+                    minLength: 1
+                  completed_at:
                     type: string
                     minLength: 1
                   mode:
@@ -514,49 +498,16 @@ paths:
                   reason:
                     type: string
                     minLength: 1
-                  debitor:
-                    type: object
-                    properties:
-                      bic:
-                        type: string
-                        minLength: 1
-                      iban:
-                        type: string
-                        minLength: 1
-                      name:
-                        type: string
-                        minLength: 1
-                    required:
-                      - bic
-                      - iban
-                      - name
-                  creditor:
-                    type: object
-                    properties:
-                      bic:
-                        type: string
-                        minLength: 1
-                      iban:
-                        type: string
-                        minLength: 1
-                      name:
-                        type: string
-                        minLength: 1
-                      method:
-                        type: string
-                        minLength: 1
-                    required:
-                      - bic
-                      - iban
-                      - name
-                      - method
                   currency_id:
                     type: string
                     minLength: 1
                 required:
                   - id
                   - created_at
+                  - ledger_id
+                  - counterparty_id
                   - status
+                  - completed_at
                   - mode
                   - type
                   - method
@@ -564,31 +515,23 @@ paths:
                   - method_type
                   - schedule_for
                   - reason
-                  - debitor
-                  - creditor
                   - currency_id
               examples:
                 example normal:
                   value:
                     id: ba6c2e77-6276-4993-bfeb-9604dbeb2c57
-                    created_at: ''
-                    status: pending
+                    created_at: '2021-01-22T15:20:30.774Z'
+                    ledger_id: 322be1f9-8204-4aa8-9b87-0cb2a58f8afb
+                    counterparty_id: fe06e4b7-cd84-462f-9b10-86f6c0b57313
+                    status: completed
+                    completed_at: '2021-01-23T08:20:30.774Z'
                     mode: debit
                     type: transfer
                     method: sepa
-                    amount: 5
+                    amount: 14.2
                     method_type: normal
-                    schedule_for: '2021-01-17'
+                    schedule_for: '2021-01-23'
                     reason: Invoice 35
-                    debitor:
-                      bic: OPEXGB2L
-                      iban: GB73OPEX00993040952115
-                      name: John Smith
-                    creditor:
-                      bic: OPEXGB2L
-                      iban: GB73OPEX00993040952115
-                      name: Tom Smith
-                      method: sepa
                     currency_id: EUR
       description: Endpoint to create a new payout
       requestBody:
@@ -598,45 +541,39 @@ paths:
               description: ''
               type: object
               properties:
-                bank_account_id:
+                ledger_id:
                   type: string
                   minLength: 1
-                  format: uuid
+                counterparty_id:
+                  type: string
+                  minLength: 1
                 amount:
                   type: number
                 currency_id:
                   type: string
                   minLength: 1
-                  description: 'three lette ISO code, only if you have many wallets.'
                 scheduled_for:
                   type: string
                   minLength: 1
-                  format: date
-                  example: '2020-12-07'
-                reason:
+                reference:
                   type: string
                   minLength: 1
-                method_type:
-                  type: string
-                  enum:
-                    - normal
-                    - turbo
-                wallet_id:
-                  type: string
               required:
-                - bank_account_id
+                - ledger_id
+                - counterparty_id
                 - amount
                 - currency_id
-                - wallet_id
+                - scheduled_for
+                - reference
             examples:
               example-2:
                 value:
-                  bank_account_id: 322be1f9-8204-4aa8-9b87-0cb2a58f8afb
-                  amount: 0
+                  ledger_id: 322be1f9-8204-4aa8-9b87-0cb2a58f8afb
+                  counterparty_id: fe06e4b7-cd84-462f-9b10-86f6c0b57313
+                  amount: 14.2
                   currency_id: EUR
                   scheduled_for: '2020-12-07'
-                  method_type: normal
-                  wallet_id: 322be1f9-8204-4aa8-9b87-0cb2a58f8afb
+                  reference: your reference
           application/xml:
             schema:
               type: object
@@ -645,7 +582,7 @@ paths:
       tags:
         - Payout
     parameters: []
-  /api/transactions:
+  /api/v1/transactions:
     get:
       summary: get all transactions
       operationId: getAllTransactions
@@ -658,51 +595,67 @@ paths:
                 description: ''
                 type: object
                 properties:
-                  data:
+                  rows:
                     type: array
                     uniqueItems: true
                     minItems: 1
                     items:
                       type: object
                       properties:
-                        type:
-                          type: string
-                          minLength: 1
-                          enum:
-                            - sepa
-                            - swift
-                        mode:
-                          type: string
-                          minLength: 1
-                          enum:
-                            - debit
-                            - credit
                         id:
                           type: string
                           minLength: 1
-                          format: uuid
                         created_at:
                           type: string
                           minLength: 1
-                          format: date-time
-                        amount:
+                        ledger_id:
                           type: string
                           minLength: 1
-                        name:
+                        counterparty_id:
+                          type: string
+                          minLength: 1
+                        status:
+                          type: string
+                          minLength: 1
+                        completed_at:
+                          type: string
+                          minLength: 1
+                        mode:
+                          type: string
+                          minLength: 1
+                        type:
+                          type: string
+                          minLength: 1
+                        method:
+                          type: string
+                          minLength: 1
+                        amount:
+                          type: number
+                        method_type:
+                          type: string
+                          minLength: 1
+                        schedule_for:
+                          type: string
+                          minLength: 1
+                        reason:
                           type: string
                           minLength: 1
                         currency_id:
                           type: string
                           minLength: 1
-                          description: three letter ISO code
-                        updated_at:
-                          type: string
-                        completed_at:
-                          type: string
-                        creditor:
-                          type: object
-                        debitor:
-                          type: object
+                      required:
+                        - id
+                        - created_at
+                        - ledger_id
+                        - counterparty_id
+                        - status
+                        - completed_at
+                        - mode
+                        - type
+                        - method
+                        - amount
+                        - method_type
+                        - currency_id
                   count:
                     type: number
                   per_page:
@@ -711,24 +664,42 @@ paths:
                     type: number
                   page_count:
                     type: number
+                required:
+                  - rows
+                  - count
+                  - per_page
+                  - page
+                  - page_count
               examples:
                 Response All Transactions:
                   value:
-                    data:
-                      - id: ec64fc60-eb25-4606-9b00-0b0c4244c647
-                        created_at: '2020-12-07T13:38:36.111Z'
-                        update_at: ''
-                        completed_at: ''
-                        type: transfer
-                        mode: credit
-                        payin: {}
-                      - id: ec64fc60-eb25-4606-9b00-0b0c4244c647
-                        created_at: '2020-12-07T13:38:36.111Z'
-                        update_at: ''
-                        completed_at: ''
-                        type: transfer
+                    rows:
+                      - id: ba6c2e77-6276-4993-bfeb-9604dbeb2c57
+                        created_at: '2021-01-22T15:20:30.774Z'
+                        ledger_id: 322be1f9-8204-4aa8-9b87-0cb2a58f8afb
+                        counterparty_id: fe06e4b7-cd84-462f-9b10-86f6c0b57313
+                        status: completed
+                        completed_at: '2021-01-23T08:20:30.774Z'
                         mode: debit
-                        payout: {}
+                        type: transfer
+                        method: sepa
+                        amount: 14.2
+                        method_type: normal
+                        schedule_for: '2021-01-23'
+                        reason: Invoice 35
+                        currency_id: EUR
+                      - id: gu6c2e77-6276-4993-bfeb-9604dbeb2c36
+                        created_at: '2021-01-14T15:20:30.774Z'
+                        ledger_id: 322be1f9-8204-4aa8-9b87-0cb2a58f8afb
+                        counterparty_id: pi06e4b7-cd84-462f-9b10-86f6c0b57374
+                        status: completed
+                        completed_at: '2021-01-23T08:20:30.774Z'
+                        mode: credit
+                        type: transfer
+                        method: sepa
+                        amount: 105.7
+                        method_type: turbo
+                        currency_id: EUR
                     count: 2
                     per_page: 10
                     page: 1
@@ -760,18 +731,48 @@ paths:
             example: '2020-06-21'
           in: query
           name: to
-          description: filters Created_at (default is now)
+          description: filters Created_at
         - schema:
             type: number
           in: query
           name: begin
           description: record to begin with (start at 0)
+          required: true
+        - schema:
+            type: string
+          in: query
+          name: more
+          description: filters amount
+        - schema:
+            type: string
+          in: query
+          name: less
+          description: filters amount
+        - schema:
+            type: string
+            enum:
+              - debit
+              - credit
+          in: query
+          name: mode
+          description: filters mode
+        - schema:
+            type: string
+            enum:
+              - completed
+              - refused
+              - pending
+              - error
+          in: query
+          name: status
+          description: filters status
       description: |-
         Endpoint to retrieve all transactions
 
         Pagination is supported. You receive a limit of 25 records per request. In the response you receive  the count of records, so you can send the next request with the query param begin with the correct value in order to get the next records
       tags:
         - Transaction
+    parameters: []
   /api/mandate/add:
     post:
       summary: Create new mandate
@@ -1615,10 +1616,10 @@ paths:
                       reference: mandate-receive-three
       operationId: get-api-debit
       description: Endpoint to find one debit
-  /api/V1/transactions:
-    get:
-      summary: Your GET endpoint
-      tags: []
+  /api/v1/wallet/add:
+    post:
+      summary: Add Wallet
+      operationId: post-api-v1-wallet-add
       responses:
         '200':
           description: OK
@@ -1628,180 +1629,55 @@ paths:
                 description: ''
                 type: object
                 properties:
-                  data:
-                    type: array
-                    uniqueItems: true
-                    minItems: 1
-                    items:
-                      type: object
-                      properties:
-                        id:
-                          type: string
-                          minLength: 1
-                        created_at:
-                          type: string
-                        updated_at:
-                          type: string
-                        completed_at:
-                          type: string
-                        currency_id:
-                          type: string
-                          minLength: 1
-                        status:
-                          type: string
-                          minLength: 1
-                        mode:
-                          type: string
-                          minLength: 1
-                          enum:
-                            - debit
-                            - credit
-                        type:
-                          type: string
-                          minLength: 1
-                          enum:
-                            - transfer
-                        method:
-                          type: string
-                          minLength: 1
-                          enum:
-                            - sepa
-                            - swift
-                        amount:
-                          type: number
-                        method_type:
-                          type: string
-                          minLength: 1
-                        schedule_for:
-                          type: string
-                          minLength: 1
-                        reason:
-                          type: string
-                          minLength: 1
-                        debitor:
-                          type: object
-                          properties:
-                            bic:
-                              type: string
-                              minLength: 1
-                            iban:
-                              type: string
-                              minLength: 1
-                            name:
-                              type: string
-                              minLength: 1
-                          required:
-                            - bic
-                            - iban
-                            - name
-                        creditor:
-                          type: object
-                          properties:
-                            bic:
-                              type: string
-                              minLength: 1
-                            iban:
-                              type: string
-                              minLength: 1
-                            name:
-                              type: string
-                              minLength: 1
-                            method:
-                              type: string
-                              minLength: 1
-                          required:
-                            - bic
-                            - iban
-                            - name
-                            - method
-                      required:
-                        - id
-                        - created_at
-                        - updated_at
-                        - completed_at
-                        - currency_id
-                        - status
-                        - mode
-                        - type
-                        - method
-                        - amount
-                        - method_type
-                        - schedule_for
-                        - reason
-                  count:
-                    type: number
-                  per_page:
-                    type: number
-                  page:
-                    type: number
-                  page_count:
-                    type: number
+                  id:
+                    type: string
+                    minLength: 1
+                  created_at:
+                    type: string
+                    minLength: 1
+                  iban:
+                    type: string
+                    minLength: 1
+                  bic:
+                    type: string
+                    minLength: 1
+                  currency_id:
+                    type: string
+                    minLength: 1
+                  country_id:
+                    type: string
+                    minLength: 1
+                  method:
+                    type: string
+                    minLength: 1
+                  method_type:
+                    type: string
+                    minLength: 1
+                  counterparty_id:
+                    type: string
+                    minLength: 1
                 required:
-                  - data
-                  - count
-                  - per_page
-                  - page
-                  - page_count
+                  - id
+                  - created_at
+                  - iban
+                  - bic
+                  - currency_id
+                  - country_id
+                  - method
+                  - method_type
+                  - counterparty_id
               examples:
                 example-1:
                   value:
-                    data:
-                      - id: ba6c2e77-6276-4993-bfeb-9604dbeb2c57
-                        created_at: ''
-                        updated_at: ''
-                        completed_at: ''
-                        currency_id: EUR
-                        status: pending
-                        mode: debit
-                        type: transfer
-                        method: sepa
-                        amount: 5
-                        method_type: normal
-                        schedule_for: '2021-01-17'
-                        reason: Invoice 35
-                        debitor:
-                          bic: OPEXGB2L
-                          iban: GB73OPEX00993040952115
-                          name: John Smith
-                        creditor:
-                          bic: OPEXGB2L
-                          iban: GB73OPEX00993040952115
-                          name: Tom Smith
-                          method: sepa
-                      - id: ba6c2e77-6276-4993-bfeb-9604dbeb2c59
-                        created_at: ''
-                        updated_at: ''
-                        completed_at: ''
-                        currency_id: EUR
-                        status: pending
-                        mode: debit
-                        type: transfer
-                        method: sepa
-                        amount: 5
-                        method_type: normal
-                        schedule_for: '2021-01-17'
-                        reason: Invoice 35
-                        debitor:
-                          bic: OPEXGB2L
-                          iban: GB73OPEX00993040952115
-                          name: John Smith
-                        creditor:
-                          bic: OPEXGB2L
-                          iban: GB73OPEX00993040952115
-                          name: Tom Smith
-                          method: sepa
-                    count: 2
-                    per_page: 10
-                    page: 1
-                    page_count: 1
-      operationId: get-api-V1-transactions
-  /api/v1/wallet/add:
-    post:
-      summary: Add Wallet
-      operationId: post-api-v1-wallet-add
-      responses:
-        '200':
-          description: OK
+                    id: bea5cb1f-27b4-4357-8c85-abdbce0c0a13
+                    created_at: '2021-01-21T15:20:30.774Z'
+                    iban: GB73OPEX00993040952115
+                    bic: OPEXGB2L
+                    currency_id: EUR
+                    country_id: UK
+                    method: sepa
+                    method_type: normal
+                    counterparty_id: fe06e4b7-cd84-462f-9b10-86f6c0b57313
       requestBody:
         content:
           application/json:
@@ -1811,32 +1687,38 @@ paths:
               properties:
                 iban:
                   type: string
+                  minLength: 1
                 bic:
                   type: string
-                method:
-                  type: string
+                  minLength: 1
                 currency_id:
                   type: string
+                  minLength: 1
                 country_id:
                   type: string
+                  minLength: 1
+                method:
+                  type: string
+                  minLength: 1
                 counterparty_id:
                   type: string
+                  minLength: 1
               required:
                 - iban
                 - bic
-                - method
                 - currency_id
                 - country_id
+                - method
                 - counterparty_id
             examples:
               example-1:
                 value:
-                  iban: string
-                  bic: string
-                  method: string
-                  currency_id: string
-                  country_id: string
-                  counterparty_id: string
+                  iban: GB73OPEX00993040952115
+                  bic: OPEXGB2L
+                  currency_id: EUR
+                  country_id: UK
+                  method: sepa
+                  counterparty_id: fe06e4b7-cd84-462f-9b10-86f6c0b57313
       description: Add a wallet to a couterparty
       tags:
         - Wallet
@@ -1872,17 +1754,12 @@ paths:
                 description: ''
                 type: object
                 properties:
-                  data:
+                  rows:
                     type: array
                     uniqueItems: true
                     minItems: 1
                     items:
-                      required:
-                        - id
-                        - status
-                        - nikname
-                        - corporate_id
-                        - individual_id
+                      type: object
                       properties:
                         id:
                           type: string
@@ -1890,13 +1767,10 @@ paths:
                         status:
                           type: string
                           minLength: 1
-                        nikname:
+                        name:
                           type: string
                           minLength: 1
-                        corporate_id:
-                          type: string
-                          minLength: 1
-                        individual_id:
+                        nickname:
                           type: string
                           minLength: 1
                         balances:
@@ -1904,15 +1778,21 @@ paths:
                           uniqueItems: true
                           minItems: 1
                           items:
-                            required:
-                              - currency_id
-                              - amount
+                            type: object
                             properties:
                               currency_id:
                                 type: string
                                 minLength: 1
                               amount:
                                 type: number
+                            required:
+                              - currency_id
+                              - amount
+                      required:
+                        - id
+                        - status
+                        - name
+                        - nickname
                   count:
                     type: number
                   per_page:
@@ -1922,7 +1802,7 @@ paths:
                   page_count:
                     type: number
                 required:
-                  - data
+                  - rows
                   - count
                   - per_page
                   - page
@@ -1930,18 +1810,15 @@ paths:
               examples:
                 example-1:
                   value:
-                    data:
+                    rows:
                       - id: uuid
                         status: active
-                        nikname: Ledger 1
-                        corporate_id: uuid
-                        individual_id: uuid
+                        name: Your Name
+                        nickname: Principale
                         balances:
                           - currency_id: EUR
                             amount: 100
-                          - currency_id: USD
-                            amount: 200
-                    count: 2
+                    count: 1
                     per_page: 10
                     page: 1
                     page_count: 1
@@ -1952,6 +1829,7 @@ paths:
           in: query
           name: begin
           description: record to begin with (start at 0)
+          required: true
   /api/V1/bank-accounts:
     get:
       summary: Get All bank accounts
@@ -1966,7 +1844,7 @@ paths:
                 description: ''
                 type: object
                 properties:
-                  data:
+                  rows:
                     type: array
                     uniqueItems: true
                     minItems: 1
@@ -1985,10 +1863,11 @@ paths:
                         ledger_id:
                           type: string
                           minLength: 1
-                        account_number:
-                          type: string
                       required:
                         - id
+                        - iban
+                        - bic
+                        - ledger_id
                   count:
                     type: number
                   per_page:
@@ -1998,7 +1877,7 @@ paths:
                   page_count:
                     type: number
                 required:
-                  - data
+                  - rows
                   - count
                   - per_page
                   - page
@@ -2006,19 +1885,20 @@ paths:
               examples:
                 example-1:
                   value:
-                    data:
+                    rows:
                       - id: 63410f58-c114-4a39-af47-09e4d5379c3b
                         iban: GB78OPEX00993029940876
                         bic: OPEXGB2L
                         ledger_id: 3f48fd18-3e38-4045-83e9-87ddd8d16211
                       - id: ca426234-9024-43c0-be7d-6e451d6b261b
                         account_number: '47501175'
+                        sort_code: '009930'
                         ledger_id: 3f48fd18-3e38-4045-83e9-87ddd8d16211
                       - id: 63410f58-c114-4a39-af47-09e4d5379c3b
                         iban: GB78OPEX00993029940876
                         bic: OPEXGB2L
                         ledger_id: 9f8bee22-327a-4d0b-8623-28576bf84c80
-                    count: 2
+                    count: 3
                     per_page: 10
                     page: 1
                     page_count: 1
@@ -2030,17 +1910,6 @@ paths:
           name: begin
           description: record to begin with (start at 0)
     parameters: []
-  /tttttttt:
-    get:
-      summary: Your GET endpoint
-      tags: []
-      responses: {}
-      operationId: get-tttttttt
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: 'http://json-schema.org/draft-07/schema'
 components:
   schemas:
     account:
